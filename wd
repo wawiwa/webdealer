@@ -1,5 +1,4 @@
 #!/bin/bash
 
-javac MyProg.java
-java MyProg
-
+javac src/edu/gmu/cs/infs614/webdealer/Webdealer.java
+java -cp $CLASSPATH:src edu.gmu.cs.infs614.webdealer.Webdealer
