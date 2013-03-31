@@ -1,0 +1,5 @@
+#!/bin/bash
+
+javac MyProg.java
+java MyProg
+
