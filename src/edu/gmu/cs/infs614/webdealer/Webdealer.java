@@ -8,6 +8,7 @@ package edu.gmu.cs.infs614.webdealer;
 
 import java.sql.*; //Import the java SQL library
 
+
 class Webdealer // Create a new class to encapsulate the program
 {
 
@@ -21,7 +22,7 @@ class Webdealer // Create a new class to encapsulate the program
 	public static void main(String args[]) // The main function
 
 	{
-
+		
 		try { // Keep an eye open for errors
 
 			String driverName = "oracle.jdbc.driver.OracleDriver";
@@ -42,11 +43,34 @@ class Webdealer // Create a new class to encapsulate the program
 					System.err.println("Neither login (wward5 or mjoy was successful. "+e2);
 				}
 			}
-
+			// needed this 
+			conn.setAutoCommit(true);
+			
 			System.out.println("Connected!");
 
+			
+			
+			Statement statement = null;
+	
+			SchemaInterpreter si = new SchemaInterpreter();
+			for(String line : si) {
+				//PreparedStatement pStmt = conn.prepareStatement(line);
+				try {
+					statement = conn.createStatement(); // Create a new statement
+					statement.addBatch(line);
+					statement.executeBatch();
+					statement.close();
+				} catch (Exception e) {
+					System.err.println("Most likely a DDL error, not a problem."+e);
+				}
+			}
+			
+			
+			
+			
+			
 			Statement stmt = conn.createStatement(); // Create a new statement
-
+			
 			// Now we execute our query and store the results in the myresults
 			// object:
 			ResultSet myresults = stmt
@@ -61,7 +85,8 @@ class Webdealer // Create a new class to encapsulate the program
 				System.out.println(myresults.getString("ename") + "\t\t"
 						+ myresults.getString("sal")); // Print the current row
 			}
-
+			
+			conn.commit();
 			conn.close(); // Close our connection.
 
 		} catch (Exception e) {
