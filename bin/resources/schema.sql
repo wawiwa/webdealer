@@ -192,9 +192,3 @@ category VARCHAR2(30),
 PRIMARY KEY (category_ID)
 );
 INSERT INTO Category VALUES (seq_category.next_val,'food');
-
-INSERT INTO Voucher (voucher_id)
-VALUES (seq_voucher.nextval);
-
-INSERT INTO Voucher (voucher_id)
-VALUES (seq_voucher.nextval);
