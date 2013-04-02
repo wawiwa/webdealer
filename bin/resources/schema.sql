@@ -10,15 +10,16 @@ DROP TABLE Deal CASCADE CONSTRAINTS;
 DROP TABLE Location CASCADE CONSTRAINTS;
 DROP TABLE Category CASCADE CONSTRAINTS;
 
-DROP TYPE seq_customer FORCE;
-DROP TYPE seq_payment_method FORCE;
-DROP TYPE seq_transaction FORCE;
-DROP TYPE seq_voucher FORCE;
-DROP TYPE seq_review FORCE;
-DROP TYPE seq_deal FORCE;
-DROP TYPE seq_merchant FORCE;
-DROP TYPE seq_location FORCE;
-DROP TYPE seq_category FORCE;
+DROP SEQUENCE seq_customer;
+DROP SEQUENCE seq_status;
+DROP SEQUENCE seq_payment_method;
+DROP SEQUENCE seq_transaction;
+DROP SEQUENCE seq_voucher;
+DROP SEQUENCE seq_review;
+DROP SEQUENCE seq_deal;
+DROP SEQUENCE seq_merchant;
+DROP SEQUENCE seq_location;
+DROP SEQUENCE seq_category;
 
 CREATE SEQUENCE seq_customer
 MINVALUE 1
@@ -87,9 +88,9 @@ last_name VARCHAR2(30),
 age INTEGER, 
 email_address VARCHAR2(100), 
 gender VARCHAR2(1), 
-PRIMARY KEY (customer_ID,email_address)
+PRIMARY KEY (customer_ID)
 );
-INSERT INTO Customer VALUES (seq_voucher.nextval,'John','Doe','30','jdoe@gmu.edu','m');
+INSERT INTO Customer VALUES (seq_customer.nextval,'John','Doe','30','jdoe@gmu.edu','m');
 
 CREATE TABLE Status(
 status_ID INTEGER, 
@@ -98,7 +99,7 @@ PRIMARY KEY (status_ID)
 );
 INSERT INTO Status VALUES (seq_status.nextval,'current');
 
-CREATE TABLE Payment_Method (
+CREATE TABLE Payment_Method(
 payment_ID INTEGER, 
 cc_number VARCHAR2(16),
 cc_default_number VARCHAR2(16),
@@ -109,7 +110,7 @@ FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID)
 );
 INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','1111222233334444','visa','1');
 
-CREATE TABLE Cust_Trans (
+CREATE TABLE Cust_Trans(
 payment_ID INTEGER, 
 customer_ID INTEGER,
 PRIMARY KEY (payment_ID),
@@ -117,47 +118,33 @@ FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID)
 );
 INSERT INTO Cust_Trans VALUES ('1','1');
 
-CREATE TABLE Transaction (
-transaction_ID INTEGER, 
-trans_date DATE,
-payment_ID INTEGER,
-voucher_ID INTEGER,
-PRIMARY KEY (transaction_ID),
-FOREIGN KEY (payment_ID) REFERENCES Payment_Method (payment_ID),
-FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
+CREATE TABLE Category(
+category_ID INTEGER, 
+category VARCHAR2(30),
+PRIMARY KEY (category_ID)
 );
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1','1');
+INSERT INTO Category VALUES (seq_category.nextval,'food');
 
-CREATE TABLE Voucher (
-voucher_ID INTEGER, 
-deal_ID INTEGER,
-status_ID INTEGER,
-PRIMARY KEY (voucher_ID),
-FOREIGN KEY (deal_ID) REFERENCES Payment_Method (deal_ID),
-FOREIGN KEY (status_ID) REFERENCES Payment_Method (status_ID)
-);
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'1','1');
-
-CREATE TABLE Review (
-review_ID INTEGER, 
-rating INTEGER,
-comments VARCHAR2(500),
-deal_ID INTEGER,
-transaction_ID INTEGER,
-PRIMARY KEY (review_ID),
-FOREIGN KEY (deal_ID) REFERENCES Payment_Method (deal_ID),
-FOREIGN KEY (transaction_ID) REFERENCES Payment_Method (transaction_ID)
-);
-INSERT INTO Review VALUES (seq_review.nextval,'5','Great deal!','1','1');
-
-CREATE TABLE Merchant (
+CREATE TABLE Merchant(
 merchant_ID INTEGER, 
 merchant_name VARCHAR2(30),
 PRIMARY KEY (merchant_ID)
 );
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'groupon');
 
-CREATE TABLE Deal (
+CREATE TABLE Location(
+location_ID INTEGER, 
+city VARCHAR2(30),
+state VARCHAR2(2),
+country VARCHAR2(2),
+continent VARCHAR2(2),
+merchant_ID INTEGER,
+PRIMARY KEY (location_ID),
+FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID)
+);
+INSERT INTO Location VALUES (seq_location.nextval,'Fairfax','VA','US','NA','1');
+
+CREATE TABLE Deal(
 deal_ID INTEGER,
 expiration_date DATE,
 description VARCHAR2(500),
@@ -169,26 +156,45 @@ sale_end_time DATE,
 location_ID INTEGER,
 category_ID INTEGER,
 PRIMARY KEY (deal_ID),
-FOREIGN KEY (location_ID) REFERENCES Payment_Method (location_ID),
-FOREIGN KEY (category_ID) REFERENCES Payment_Method (category_ID)
+FOREIGN KEY (location_ID) REFERENCES Location (location_ID),
+FOREIGN KEY (category_ID) REFERENCES Category (category_ID)
 );
 INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','$3 off chipotle burrito.','20','8.50','5.50','01-Apr-2013','25-Apr-2013','1','1');
 
-CREATE TABLE Location (
-location_ID INTEGER, 
-city VARCHAR2(30),
-state VARCHAR2(2),
-country VARCHAR2(2),
-continent VARCHAR2(2),
-merchant_id INTEGER,
-PRIMARY KEY (location_ID),
-FOREIGN KEY (merchant_ID) REFERENCES Payment_Method (merchant_ID)
+CREATE TABLE Voucher(
+voucher_ID INTEGER, 
+deal_ID INTEGER,
+status_ID INTEGER,
+PRIMARY KEY (voucher_ID),
+FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
+FOREIGN KEY (status_ID) REFERENCES Status (status_ID)
 );
-INSERT INTO Location VALUES (seq_location.nextval,'Fairfax','VA','US','NA','1');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'1','1');
 
-CREATE TABLE Category (
-category_ID INTEGER, 
-category VARCHAR2(30),
-PRIMARY KEY (category_ID)
+CREATE TABLE Transaction(
+transaction_ID INTEGER, 
+trans_date DATE,
+payment_ID INTEGER,
+voucher_ID INTEGER,
+customer_ID INTEGER,
+PRIMARY KEY (transaction_ID),
+FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method (payment_ID,customer_ID),
+FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
 );
-INSERT INTO Category VALUES (seq_category.next_val,'food');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1','1','1');
+
+CREATE TABLE Review(
+review_ID INTEGER, 
+rating INTEGER,
+comments VARCHAR2(500),
+deal_ID INTEGER,
+transaction_ID INTEGER,
+PRIMARY KEY (review_ID),
+FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
+FOREIGN KEY (transaction_ID) REFERENCES Transaction (transaction_ID)
+);
+INSERT INTO Review VALUES (seq_review.nextval,'5','Great deal!','1','1');
+
+
+
+
