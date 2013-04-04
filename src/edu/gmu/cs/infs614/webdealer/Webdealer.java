@@ -83,7 +83,7 @@ class Webdealer // Create a new class to encapsulate the program
 			}
 			catch (SQLException e1) {
 				try {
-					conn = DriverManager.getConnection(url, "mjoy","password "+e1);
+					conn = DriverManager.getConnection(url, "mjoy","prufrock1999"+e1);
 				}
 				catch (SQLException e2) {
 					System.err.println("Neither login (wward5 or mjoy was successful. "+e2);

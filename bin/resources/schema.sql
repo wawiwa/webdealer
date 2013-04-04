@@ -179,13 +179,13 @@ merchant_name VARCHAR2(30),
 PRIMARY KEY (merchant_ID)
 );
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'McDonalds');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Ari's Nail Salon');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Fine Nails Nail Salon');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Jiffy Lube');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Gold's Gym');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Little Tree Children's Theater');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Golds Gym');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Little Tree Children Theater');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Zip Line Adventures');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'It's a Small World Travel Agency');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Laura's Boutique');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'It''s a Small World Travel Agency');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Laura''s Boutique');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Cash for Gold');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Barnes & Noble');
 
@@ -229,10 +229,10 @@ INSERT INTO Deal VALUES (seq_deal.nextval,'1-June-2013','$3 off chipotle burrito
 INSERT INTO Deal VALUES (seq_deal.nextval,'31-Dec-2013','Manicure and Pedicure for $25','50','35.00','25.00','01-Apr-2013','25-Apr-2013','8','2');
 INSERT INTO Deal VALUES (seq_deal.nextval,'31-Jul-2014','50% off Oil Change and Spring Tune Up','20','70.00','35.00','01-Apr-2013','25-Apr-2013','10','3');
 INSERT INTO Deal VALUES (seq_deal.nextval,'1-Oct-2013','10-pack Personal Training Sessions','100','250.00','175.00','01-Apr-2013','25-Apr-2013','9','4');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','50% off a Child's Birthday Party','20','150.00','75.00','01-Apr-2013','25-Apr-2013','8','5');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','50% off a Child''s Birthday Party','20','150.00','75.00','01-Apr-2013','25-Apr-2013','8','5');
 INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Snorkling lessons for two!','20','500.00','125.50','01-Apr-2013','25-Apr-2013','7','6');
 INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Spanish lessons!','20','100.00','15.00','01-Apr-2013','25-Apr-2013','6','7');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','24" gold chain','20','75.00','45.00','01-Apr-2013','25-Apr-2013','5','8');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','24inch gold chain','20','75.00','45.00','01-Apr-2013','25-Apr-2013','5','8');
 INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Free energy-efficiency home audit','20','50.00','0.00','01-Apr-2013','25-Apr-2013','4','9');
 INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Personal Dance lessons','20','8.50','5.50','01-Apr-2013','25-Apr-2013','3','9');
 
