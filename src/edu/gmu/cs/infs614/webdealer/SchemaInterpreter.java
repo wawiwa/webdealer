@@ -16,12 +16,11 @@ import org.apache.commons.io.FileUtils;
 public class SchemaInterpreter implements Iterable<String> // Create a new class to encapsulate the program
 {
 	private static final String RESOURCE_DIR = "/resources/";
-	private static final String SCHEMA_FILE = "schema.sql";
 	
 	private ArrayList<String> m_formattedStatements;
 
-	public SchemaInterpreter() {
-		ingestSchema();
+	public SchemaInterpreter(String sql_file) {
+		ingestSchema(RESOURCE_DIR+sql_file);
 	}
 	
 	
@@ -31,8 +30,8 @@ public class SchemaInterpreter implements Iterable<String> // Create a new class
         return fs;
 	}
 	
-	private void ingestSchema() {
-		String resource = RESOURCE_DIR+SCHEMA_FILE;
+	private void ingestSchema(String sql_file) {
+		String resource = sql_file;
 		String line;
 		InputStreamReader isr;
 		BufferedReader sql;
@@ -50,6 +49,7 @@ public class SchemaInterpreter implements Iterable<String> // Create a new class
 		try {
 			while ((line = sql.readLine()) != null) {
 						
+				if(line.contains("//")) continue;
 				if(!line.contains(";")) {
 					statement = statement+" "+line;
 				}
@@ -76,7 +76,8 @@ public class SchemaInterpreter implements Iterable<String> // Create a new class
 	}
 	
 	public static void main(String args[]) {
-		SchemaInterpreter si = new SchemaInterpreter();
+		String sql_file = "schema.sql";
+		SchemaInterpreter si = new SchemaInterpreter(sql_file);
 		si.printSchema();
 		
 		for(String line : si) {
