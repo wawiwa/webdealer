@@ -29,4 +29,3 @@ CREATE VIEW view_status AS
 
 
 
-
