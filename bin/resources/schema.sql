@@ -9,6 +9,8 @@ DROP TABLE Merchant CASCADE CONSTRAINTS;
 DROP TABLE Deal CASCADE CONSTRAINTS;
 DROP TABLE Location CASCADE CONSTRAINTS;
 DROP TABLE Category CASCADE CONSTRAINTS;
+DROP TABLE Trans_Voucher_AG CASCADE CONSTRAINTS;
+
 
 DROP SEQUENCE seq_customer;
 DROP SEQUENCE seq_status;
@@ -163,19 +165,19 @@ category_ID INTEGER,
 category VARCHAR2(30),
 PRIMARY KEY (category_ID)
 );
-INSERT INTO Category VALUES (seq_category.nextval,'food & drink');
+INSERT INTO Category VALUES (seq_category.nextval,'food and drink');
 INSERT INTO Category VALUES (seq_category.nextval,'service');
 INSERT INTO Category VALUES (seq_category.nextval,'automobile');
-INSERT INTO Category VALUES (seq_category.nextval,'health & fitness');
+INSERT INTO Category VALUES (seq_category.nextval,'health and fitness');
 INSERT INTO Category VALUES (seq_category.nextval,'children');
-INSERT INTO Category VALUES (seq_category.nextval,'fun & adventure');
+INSERT INTO Category VALUES (seq_category.nextval,'fun and adventure');
 INSERT INTO Category VALUES (seq_category.nextval,'travel');
 INSERT INTO Category VALUES (seq_category.nextval,'goods');
 INSERT INTO Category VALUES (seq_category.nextval,'other');
 
 CREATE TABLE Merchant(
 merchant_ID INTEGER, 
-merchant_name VARCHAR2(30),
+merchant_name VARCHAR2(50),
 PRIMARY KEY (merchant_ID)
 );
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'McDonalds');
@@ -187,7 +189,7 @@ INSERT INTO Merchant VALUES (seq_merchant.nextval,'Zip Line Adventures');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'It''s a Small World Travel Agency');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Laura''s Boutique');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Cash for Gold');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Barnes & Noble');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Barnes and Noble');
 
 CREATE TABLE Location(
 location_ID INTEGER, 
@@ -297,5 +299,11 @@ INSERT INTO Review VALUES (seq_review.nextval,'3','Allowed to to save some money
 INSERT INTO Review VALUES (seq_review.nextval,'2','Burning your money for warmth would be a better use.','9','1');
 INSERT INTO Review VALUES (seq_review.nextval,'2','Horrible!','10','10');
 
+
+CREATE TABLE Trans_Voucher_AG AS (
+SELECT T.transaction_id, V.voucher_id
+FROM Transaction T
+INNER JOIN Voucher V
+ON T.voucher_id=V.voucher_id);
 
 
