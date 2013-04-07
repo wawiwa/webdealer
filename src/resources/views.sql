@@ -1,5 +1,4 @@
 DROP VIEW view_customer;
-DROP VIEW view_status;
 
 // CLEAR COLUMNS;
 
@@ -20,12 +19,6 @@ CREATE VIEW view_customer AS
 // COLUMN email_address FORMAT A15 HEADING 'Email';
 // COLUMN gender FORMAT A1 HEADING 'Gender';
 
-CREATE VIEW view_status AS
-	SELECT status_ID, status
-	FROM Status;
-
-// COLUMN status_ID FORMAT 9 HEADING 'Status ID';
-// COLUMN status FORMAT A10 HEADING 'Status';
 
 
 

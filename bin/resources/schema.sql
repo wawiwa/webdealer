@@ -1,19 +1,18 @@
 DROP TABLE Customer CASCADE CONSTRAINTS;
-DROP TABLE Status CASCADE CONSTRAINTS;
 DROP TABLE Payment_Method CASCADE CONSTRAINTS;
-DROP TABLE Cust_Trans CASCADE CONSTRAINTS;
 DROP TABLE Transaction CASCADE CONSTRAINTS;
 DROP TABLE Voucher CASCADE CONSTRAINTS;
 DROP TABLE Review CASCADE CONSTRAINTS;
 DROP TABLE Merchant CASCADE CONSTRAINTS;
 DROP TABLE Deal CASCADE CONSTRAINTS;
 DROP TABLE Location CASCADE CONSTRAINTS;
-DROP TABLE Category CASCADE CONSTRAINTS;
-DROP TABLE Trans_Voucher_AG CASCADE CONSTRAINTS;
+DROP TABLE Category CASCADE CONSTRAINTS;	
+DROP TABLE Purchase	 CASCADE CONSTRAINTS;
+DROP TABLE Purchase_Deal CASCADE CONSTRAINTS;
+DROP TABLE Purchase_With CASCADE CONSTRAINTS;
 
 
 DROP SEQUENCE seq_customer;
-DROP SEQUENCE seq_status;
 DROP SEQUENCE seq_payment_method;
 DROP SEQUENCE seq_transaction;
 DROP SEQUENCE seq_voucher;
@@ -24,12 +23,6 @@ DROP SEQUENCE seq_location;
 DROP SEQUENCE seq_category;
 
 CREATE SEQUENCE seq_customer
-MINVALUE 1
-START WITH 1
-INCREMENT BY 1
-CACHE 10;
-
-CREATE SEQUENCE seq_status
 MINVALUE 1
 START WITH 1
 INCREMENT BY 1
@@ -93,35 +86,15 @@ gender VARCHAR2(1),
 PRIMARY KEY (customer_ID)
 );
 INSERT INTO Customer VALUES (seq_customer.nextval,'John','Doe','30','jdoe@gmu.edu','m');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Betsy','Smith','19','bsmith@gmu.edu','f');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Eogan','Snyders','52','esnyders@gmu.edu','m');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Agnes','Haroldson','67','aharoldson@gmu.edu','f');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Heimirich','Niemec','25','hniemec@gmu.edu','m');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Gunda','Dieter','39','gdieter@gmu.edu','f');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Cezary','Rios','42','crios@gmu.edu','m');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Thekla','Araya','29','taraya@gmu.edu','f');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Ovadyah','Haugen','53','ohaugen@gmu.edu','m');
-
 INSERT INTO Customer VALUES (seq_customer.nextval,'Peggy','Ortiz','25','portiz@gmu.edu','f');
-
-CREATE TABLE Status(
-status_ID INTEGER, 
-status VARCHAR2(30),
-PRIMARY KEY (status_ID)
-);
-INSERT INTO Status VALUES (seq_status.nextval,'current');
-INSERT INTO Status VALUES (seq_status.nextval,'expired');
-INSERT INTO Status VALUES (seq_status.nextval,'used');
-INSERT INTO Status VALUES (seq_status.nextval,'refunded');
-
 
 CREATE TABLE Payment_Method(
 payment_ID INTEGER, 
@@ -129,36 +102,20 @@ cc_number VARCHAR2(16),
 cc_default_number VARCHAR2(16),
 cc_vendor VARCHAR2(30),
 customer_ID INTEGER,
+cc_default INTEGER CHECK (cc_default=0 OR cc_default=1),
 PRIMARY KEY (payment_ID,customer_ID),
 FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID)
 );
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','1111222233334444','VISA','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'5050419498932433','5050419498932433','MASTERCARD','2');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'3153616053432062','3153616053432062','AMERICAN EXPRESS','3');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6091477375001352','6091477375001352','VISA','4');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8685283959165550','8685283959165550','MASTERCARD','5');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1866781616441065','1866781616441065','AMERICAN EXPRESS','6');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'9449115585826721','9449115585826721','VISA','7');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8274378241070747','8274378241070747','MASTERCARD','8');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1968434382696178','1968434382696178','VISA','9');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6298557773260753','6298557773260753','VISA','10');
-
-CREATE TABLE Cust_Trans(
-payment_ID INTEGER, 
-customer_ID INTEGER,
-PRIMARY KEY (payment_ID),
-FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID)
-);
-INSERT INTO Cust_Trans VALUES ('1','1');
-INSERT INTO Cust_Trans VALUES ('2','2');
-INSERT INTO Cust_Trans VALUES ('3','3');
-INSERT INTO Cust_Trans VALUES ('4','4');
-INSERT INTO Cust_Trans VALUES ('5','5');
-INSERT INTO Cust_Trans VALUES ('6','6');
-INSERT INTO Cust_Trans VALUES ('7','7');
-INSERT INTO Cust_Trans VALUES ('8','8');
-INSERT INTO Cust_Trans VALUES ('9','9');
-INSERT INTO Cust_Trans VALUES ('10','10');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','1111222233334444','VISA','1','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'5050419498932433','5050419498932433','MASTERCARD','2','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'3153616053432062','3153616053432062','AMERICAN EXPRESS','3','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6091477375001352','6091477375001352','VISA','4','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8685283959165550','8685283959165550','MASTERCARD','5','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1866781616441065','1866781616441065','AMERICAN EXPRESS','6','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'9449115585826721','9449115585826721','VISA','7','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8274378241070747','8274378241070747','MASTERCARD','8','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1968434382696178','1968434382696178','VISA','9','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6298557773260753','6298557773260753','VISA','10','1');
 
 CREATE TABLE Category(
 category_ID INTEGER, 
@@ -240,54 +197,108 @@ INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Personal Dance lessons'
 
 CREATE TABLE Voucher(
 voucher_ID INTEGER, 
-deal_ID INTEGER,
-status_ID INTEGER,
-PRIMARY KEY (voucher_ID),
-FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
-FOREIGN KEY (status_ID) REFERENCES Status (status_ID)
+status VARCHAR2(30),
+PRIMARY KEY (voucher_ID)
 );
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'1','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'2','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'3','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'4','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'5','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'6','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'7','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'8','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'9','1');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'10','1');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'expired');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'refunded');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'used');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'used');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'expired');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'refunded');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'expired');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'used');
 
 CREATE TABLE Transaction(
 transaction_ID INTEGER, 
 trans_date DATE,
-payment_ID INTEGER,
 voucher_ID INTEGER,
-customer_ID INTEGER,
 PRIMARY KEY (transaction_ID),
-FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method (payment_ID,customer_ID),
 FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
 );
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1','10','1');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','2','9','2');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','3','8','3');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','4','7','4');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','5','6','5');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','6','5','6');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','7','4','7');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','8','3','8');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','9','2','9');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','10','1','10');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','2');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','3');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','4');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','5');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','6');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','7');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','8');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','9');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','10');
+
+
+CREATE TABLE Purchase(
+	transaction_ID INTEGER,
+	voucher_ID INTEGER,
+	PRIMARY KEY (voucher_ID),
+	FOREIGN KEY (transaction_ID) REFERENCES Transaction (transaction_ID),
+	FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
+);
+INSERT INTO Purchase VALUES ('1','1');
+INSERT INTO Purchase VALUES ('2','2');
+INSERT INTO Purchase VALUES ('3','3');
+INSERT INTO Purchase VALUES ('4','4');
+INSERT INTO Purchase VALUES ('5','5');
+INSERT INTO Purchase VALUES ('6','6');
+INSERT INTO Purchase VALUES ('7','7');
+INSERT INTO Purchase VALUES ('8','8');
+INSERT INTO Purchase VALUES ('9','9');
+INSERT INTO Purchase VALUES ('10','10');
+
+
+CREATE TABLE Purchase_Deal(
+	voucher_ID INTEGER,
+	deal_ID INTEGER,
+	PRIMARY KEY (voucher_ID),
+	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
+	FOREIGN KEY (deal_ID) REFERENCES Deal
+);
+INSERT INTO Purchase_Deal VALUES ('1','1');
+INSERT INTO Purchase_Deal VALUES ('2','2');
+INSERT INTO Purchase_Deal VALUES ('3','3');
+INSERT INTO Purchase_Deal VALUES ('4','4');
+INSERT INTO Purchase_Deal VALUES ('5','5');
+INSERT INTO Purchase_Deal VALUES ('6','6');
+INSERT INTO Purchase_Deal VALUES ('7','7');
+INSERT INTO Purchase_Deal VALUES ('8','8');
+INSERT INTO Purchase_Deal VALUES ('9','9');
+INSERT INTO Purchase_Deal VALUES ('10','10');
+
+
+CREATE TABLE Purchase_With(
+	voucher_ID INTEGER,
+	payment_ID INTEGER,
+	customer_ID INTEGER,
+	PRIMARY KEY (voucher_ID),
+	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
+	FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method
+);
+INSERT INTO Purchase_With VALUES ('1','1','1');
+INSERT INTO Purchase_With VALUES ('2','2','2');
+INSERT INTO Purchase_With VALUES ('3','3','3');
+INSERT INTO Purchase_With VALUES ('4','4','4');
+INSERT INTO Purchase_With VALUES ('5','5','5');
+INSERT INTO Purchase_With VALUES ('6','6','6');
+INSERT INTO Purchase_With VALUES ('7','7','7');
+INSERT INTO Purchase_With VALUES ('8','8','8');
+INSERT INTO Purchase_With VALUES ('9','9','9');
+INSERT INTO Purchase_With VALUES ('10','10','10');
+
 
 CREATE TABLE Review(
 review_ID INTEGER, 
 rating INTEGER,
 comments VARCHAR2(500),
 deal_ID INTEGER,
-transaction_ID INTEGER,
+customer_ID INTEGER,
 PRIMARY KEY (review_ID),
 FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
-FOREIGN KEY (transaction_ID) REFERENCES Transaction (transaction_ID)
+FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID)
 );
+
 INSERT INTO Review VALUES (seq_review.nextval,'5','Great deal!','1','1');
 INSERT INTO Review VALUES (seq_review.nextval,'1','Worst purchase I ever made','2','1');
 INSERT INTO Review VALUES (seq_review.nextval,'1','A bunch of crooks!','3','1');
@@ -300,11 +311,8 @@ INSERT INTO Review VALUES (seq_review.nextval,'2','Burning your money for warmth
 INSERT INTO Review VALUES (seq_review.nextval,'2','Horrible!','10','10');
 
 
-CREATE TABLE Trans_Voucher_AG AS (
-SELECT T.transaction_id, V.voucher_id
-FROM Transaction T
-INNER JOIN Voucher V
-ON T.voucher_id=V.voucher_id);
+
+
 
 
 
