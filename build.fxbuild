@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<anttasks:AntTask xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:anttasks="http://at.bestsolution.efxclipse.tooling.jdt/1.0" buildDirectory="${project}/build">
+  <deploy embedjnlp="true" extension="true" includeDT="true">
+    <application name="edu.gmu.cs.infs614.webdealer.graphics" mainclass="" version="1.0.0"/>
+    <info vendor="gmu"/>
+  </deploy>
+  <signjar/>
+</anttasks:AntTask>

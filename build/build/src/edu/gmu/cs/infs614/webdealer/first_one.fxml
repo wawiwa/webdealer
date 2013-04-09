@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?scenebuilder-stylesheet first_one.css?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml">
+	<BorderPane>
+		<center>
+			<Button text="hello f1"></Button>
+		</center>
+	</BorderPane>
+</AnchorPane>
+
