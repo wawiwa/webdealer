@@ -132,11 +132,39 @@ INSERT INTO Category VALUES (seq_category.nextval,'travel');
 INSERT INTO Category VALUES (seq_category.nextval,'goods');
 INSERT INTO Category VALUES (seq_category.nextval,'other');
 
+
+CREATE TABLE Deal(
+deal_ID INTEGER,
+expiration_date DATE,
+description VARCHAR2(500),
+quantity_limit INTEGER,
+orignal_price REAL,
+deal_price REAL,
+sale_start_time DATE,
+sale_end_time DATE,
+location_ID INTEGER,
+category_ID INTEGER,
+PRIMARY KEY (deal_ID),
+FOREIGN KEY (location_ID) REFERENCES Location (location_ID),
+FOREIGN KEY (category_ID) REFERENCES Category (category_ID),
+FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_id)
+);
+INSERT INTO Deal VALUES (seq_deal.nextval,'1-June-2013','$3 off chipotle burrito.','20','8.50','5.50','01-Apr-2013','25-Apr-2013','1','1');
+INSERT INTO Deal VALUES (seq_deal.nextval,'31-Dec-2013','Manicure and Pedicure for $25','50','35.00','25.00','01-Apr-2013','25-Apr-2013','8','2');
+INSERT INTO Deal VALUES (seq_deal.nextval,'31-Jul-2014','50% off Oil Change and Spring Tune Up','20','70.00','35.00','01-Apr-2013','25-Apr-2013','10','3');
+INSERT INTO Deal VALUES (seq_deal.nextval,'1-Oct-2013','10-pack Personal Training Sessions','100','250.00','175.00','01-Apr-2013','25-Apr-2013','9','4');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','50% off a Child''s Birthday Party','20','150.00','75.00','01-Apr-2013','25-Apr-2013','8','5');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Snorkling lessons for two!','20','500.00','125.50','01-Apr-2013','25-Apr-2013','7','6');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Spanish lessons!','20','100.00','15.00','01-Apr-2013','25-Apr-2013','6','7');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','24inch gold chain','20','75.00','45.00','01-Apr-2013','25-Apr-2013','5','8');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Free energy-efficiency home audit','20','50.00','0.00','01-Apr-2013','25-Apr-2013','4','9');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Personal Dance lessons','20','8.50','5.50','01-Apr-2013','25-Apr-2013','3','9');
+
 CREATE TABLE Merchant(
 merchant_ID INTEGER, 
 merchant_name VARCHAR2(50),
 PRIMARY KEY (merchant_ID)
-);
+FOREIGN KEY (deal_id) REFERENCES DEAL(deal_id));
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'McDonalds');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Fine Nails Nail Salon');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Jiffy Lube');
@@ -156,7 +184,7 @@ country VARCHAR2(2),
 continent VARCHAR2(2),
 merchant_ID INTEGER,
 PRIMARY KEY (location_ID),
-FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID)
+FOREIGN KEY (deal_id) REFERENCES Deal(deal_ID)
 );
 INSERT INTO Location VALUES (seq_location.nextval,'Fairfax','VA','US','NA','1');
 INSERT INTO Location VALUES (seq_location.nextval,'New York','NY','US','NA','2');
@@ -169,31 +197,6 @@ INSERT INTO Location VALUES (seq_location.nextval,'Las Vegas','NV','US','NA','8'
 INSERT INTO Location VALUES (seq_location.nextval,'Washington','DC','US','NA','9');
 INSERT INTO Location VALUES (seq_location.nextval,'Helena','MT','US','NA','10');
 
-CREATE TABLE Deal(
-deal_ID INTEGER,
-expiration_date DATE,
-description VARCHAR2(500),
-quantity_limit INTEGER,
-orignal_price REAL,
-deal_price REAL,
-sale_start_time DATE,
-sale_end_time DATE,
-location_ID INTEGER,
-category_ID INTEGER,
-PRIMARY KEY (deal_ID),
-FOREIGN KEY (location_ID) REFERENCES Location (location_ID),
-FOREIGN KEY (category_ID) REFERENCES Category (category_ID)
-);
-INSERT INTO Deal VALUES (seq_deal.nextval,'1-June-2013','$3 off chipotle burrito.','20','8.50','5.50','01-Apr-2013','25-Apr-2013','1','1');
-INSERT INTO Deal VALUES (seq_deal.nextval,'31-Dec-2013','Manicure and Pedicure for $25','50','35.00','25.00','01-Apr-2013','25-Apr-2013','8','2');
-INSERT INTO Deal VALUES (seq_deal.nextval,'31-Jul-2014','50% off Oil Change and Spring Tune Up','20','70.00','35.00','01-Apr-2013','25-Apr-2013','10','3');
-INSERT INTO Deal VALUES (seq_deal.nextval,'1-Oct-2013','10-pack Personal Training Sessions','100','250.00','175.00','01-Apr-2013','25-Apr-2013','9','4');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','50% off a Child''s Birthday Party','20','150.00','75.00','01-Apr-2013','25-Apr-2013','8','5');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Snorkling lessons for two!','20','500.00','125.50','01-Apr-2013','25-Apr-2013','7','6');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Spanish lessons!','20','100.00','15.00','01-Apr-2013','25-Apr-2013','6','7');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','24inch gold chain','20','75.00','45.00','01-Apr-2013','25-Apr-2013','5','8');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Free energy-efficiency home audit','20','50.00','0.00','01-Apr-2013','25-Apr-2013','4','9');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Personal Dance lessons','20','8.50','5.50','01-Apr-2013','25-Apr-2013','3','9');
 
 CREATE TABLE Voucher(
 voucher_ID INTEGER, 
@@ -310,7 +313,7 @@ INSERT INTO Review VALUES (seq_review.nextval,'3','Allowed to to save some money
 INSERT INTO Review VALUES (seq_review.nextval,'2','Burning your money for warmth would be a better use.','9','1');
 INSERT INTO Review VALUES (seq_review.nextval,'2','Horrible!','10','10');
 
-
+CREATE TABLE 
 
 
 
