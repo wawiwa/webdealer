@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?> 
+<?import javafx.geometry.Insets?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import fxmltableview.*?> 
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.MainController">
+  <children>
+    <SplitPane dividerPositions="0.535175879396985" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TableView fx:id="tableID" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn minWidth="20.0" prefWidth="40.0" text="ID" fx:id="tID" >
+                    <cellValueFactory><PropertyValueFactory property="tID" /></cellValueFactory>
+  				</TableColumn>
+                <TableColumn prefWidth="100.0" text="Date" fx:id="tDate" >
+                	<cellValueFactory><PropertyValueFactory property="tDate" /></cellValueFactory>
+  				</TableColumn>
+                <TableColumn prefWidth="200.0" text="Name" fx:id="tName" >
+                	<cellValueFactory><PropertyValueFactory property="tName" /></cellValueFactory>
+  				</TableColumn>
+                <TableColumn prefWidth="75.0" text="Price" fx:id="tPrice" >
+                	<cellValueFactory><PropertyValueFactory property="tPrice" /></cellValueFactory>
+  				</TableColumn>
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+      </items>
+    </SplitPane>
+  </children>
+</AnchorPane>
