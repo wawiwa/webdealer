@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<project name="edu.gmu.cs.infs614.webdealer.graphics" default="do-deploy" basedir="."  xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<project name="webdealer" default="do-deploy" basedir="."  xmlns:fx="javafx:com.sun.javafx.tools.ant">
 	<target name="init-fx-tasks">
 		<path id="fxant">
 			<filelist>
@@ -121,27 +121,27 @@
 		
 		
 		<fx:resources id="appRes">
-			<fx:fileset dir="dist" includes="edu.gmu.cs.infs614.webdealer.graphics.jar"/>
+			<fx:fileset dir="dist" includes="webdealer.jar"/>
 			<fx:fileset dir="dist" includes="libs/*"/>
 		</fx:resources> 
 		
 		<fx:application id="fxApplication"
-			name="edu.gmu.cs.infs614.webdealer.graphics"
-			mainClass="edu.gmu.cs.infs614.webdealer.first_one"
+			name="webdealer"
+			mainClass="edu.gmu.cs.infs614.webdealer.controller.MainView"
 		/>
 	
 		<mkdir dir="build/classes/META-INF" />
 		
 		
 		
-		<fx:jar destfile="dist/edu.gmu.cs.infs614.webdealer.graphics.jar">
+		<fx:jar destfile="dist/webdealer.jar">
 			<fx:application refid="fxApplication"/>
 			<fileset dir="build/classes">
 			</fileset>
 			<fx:resources refid="appRes"/>
 			
 			<manifest>
-				<attribute name="Implementation-Vendor" value="gmu"/>
+				<attribute name="Implementation-Vendor" value="ANS"/>
 				<attribute name="Implementation-Title" value=""/>
 				<attribute name="Implementation-Version" value="1.0.0"/>
 			</manifest>
