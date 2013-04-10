@@ -49,6 +49,8 @@ public class MainController implements Initializable {
 	@FXML
 	Button delete;
 	@FXML
+	Button clear;
+	@FXML
 	Label nameLabel;
 	@FXML
 	Label dateLabel;
@@ -133,5 +135,20 @@ public class MainController implements Initializable {
 		nameInput.clear();
 		dateInput.clear();
 		priceInput.clear();
+		
+		nameLabel.setText(null);
+		dateLabel.setText(null);
+		priceLabel.setText(null);
+		
+		nameInput.getStyleClass().remove("error");
+		dateInput.getStyleClass().remove("error");
+		priceInput.getStyleClass().remove("error");
+		
 	}
+	
+	public void onClearAction (ActionEvent event) {
+		
+		clearForm();
+	}
+	
 }

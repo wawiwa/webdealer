@@ -52,7 +52,7 @@
             <Button fx:id="delete" layoutX="562.0" layoutY="27.0" mnemonicParsing="false" onAction="#onDeleteItem" text="Delete" />
             <Label fx:id="nameLabel" layoutX="14.0" layoutY="55.0" prefWidth="130.0" text="" wrapText="true">
               <font>
-                <Font size="8.0" fx:id="x1" />
+                <Font size="10.0" fx:id="x1" />
               </font>
             </Label>
             <Label fx:id="dateLabel" font="$x1" layoutX="176.0" layoutY="55.0" prefWidth="130.00009999999747" text="" wrapText="true" />

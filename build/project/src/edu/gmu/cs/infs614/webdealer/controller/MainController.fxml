@@ -2,14 +2,16 @@
 
 <?import fxmltableview.*?>
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.collections.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.MainController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="658.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.MainController">
   <children>
     <SplitPane dividerPositions="0.7512562814070352" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
@@ -43,19 +45,23 @@
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
-            <HBox id="HBox" alignment="CENTER" spacing="5.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="26.0">
-              <children>
-                <TextField fx:id="nameInput" prefWidth="130.0" promptText="Name" />
-                <TextField fx:id="dateInput" prefWidth="130.0" promptText="Date" />
-                <TextField fx:id="priceInput" prefWidth="130.0" promptText="Price" />
-                <Button fx:id="submit" mnemonicParsing="false" onAction="#onAddItem" text="Submit" />
-                <Button fx:id="delete" mnemonicParsing="false" onAction="#onDeleteItem" text="Delete" />
-              </children>
-            </HBox>
-            <Label fx:id="nameLabel" layoutX="14.0" layoutY="55.0" text="" />
-            <Label fx:id="dateLabel" layoutX="149.0" layoutY="55.0" text="" />
-            <Label fx:id="priceLabel" layoutX="284.0" layoutY="55.0" text="" />
+            <TextField fx:id="nameInput" layoutX="14.0" layoutY="26.0" prefWidth="130.0" promptText="Name" />
+            <TextField fx:id="dateInput" layoutX="176.0" layoutY="26.0" prefWidth="130.0" promptText="Date" />
+            <TextField fx:id="priceInput" layoutX="328.0" layoutY="26.0" prefWidth="130.0" promptText="Price" />
+            <Button fx:id="submit" layoutX="478.0" layoutY="27.0" mnemonicParsing="false" onAction="#onAddItem" text="Submit" />
+            <Button fx:id="delete" layoutX="562.0" layoutY="27.0" mnemonicParsing="false" onAction="#onDeleteItem" text="Delete" />
+            <Label fx:id="nameLabel" layoutX="14.0" layoutY="55.0" prefWidth="130.0" text="" wrapText="true">
+              <font>
+                <Font size="10.0" fx:id="x1" />
+              </font>
+            </Label>
+            <Label fx:id="dateLabel" font="$x1" layoutX="176.0" layoutY="55.0" prefWidth="130.00009999999747" text="" wrapText="true" />
+            <Label fx:id="priceLabel" font="$x1" layoutX="328.0" layoutY="55.0" prefWidth="130.0" text="" wrapText="true" />
+            <Button fx:id="clear" layoutX="478.0" layoutY="61.0" mnemonicParsing="false" onAction="#onClearAction" prefWidth="67.0" text="Clear" />
           </children>
+          <stylesheets>
+            <URL value="@style.css" />
+          </stylesheets>
         </AnchorPane>
       </items>
     </SplitPane>

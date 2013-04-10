@@ -35,7 +35,7 @@ public class MainController implements Initializable {
 	@FXML
 	TableColumn<Table, String> tDate;
 	@FXML
-	TableColumn<Table, Integer> tPrice;
+	TableColumn<Table, Float> tPrice;
 	
 	// DEFINE FORM
 	@FXML
@@ -48,6 +48,8 @@ public class MainController implements Initializable {
 	Button submit;
 	@FXML
 	Button delete;
+	@FXML
+	Button clear;
 	@FXML
 	Label nameLabel;
 	@FXML
@@ -64,9 +66,9 @@ public class MainController implements Initializable {
 	// CREATE TABLE DATA
 	
 	final ObservableList<Table> data = FXCollections.observableArrayList(
-			new Table(tNumber++,"Name 1","10/10/13",100),
-			new Table(tNumber++,"Name 2","10/11/13",110),
-			new Table(tNumber++,"Name 3","10/12/13",123)
+			new Table(tNumber++,"Name 1","10/10/13",(float)100),
+			new Table(tNumber++,"Name 2","10/11/13",(float)110),
+			new Table(tNumber++,"Name 3","10/12/13",(float)123)
 			);
 	
 	
@@ -80,7 +82,7 @@ public class MainController implements Initializable {
 		tID.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rID"));
 		tName.setCellValueFactory(new PropertyValueFactory<Table, String>("rName"));
 		tDate.setCellValueFactory(new PropertyValueFactory<Table, String>("rDate"));
-		tPrice.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rPrice"));
+		tPrice.setCellValueFactory(new PropertyValueFactory<Table, Float>("rPrice"));
 		
 		tableID.setItems(data);
 		
@@ -97,14 +99,14 @@ public class MainController implements Initializable {
 		
 		// FORM VALIDATION
 		boolean name = FormValidation.textFieldNotEmpty(nameInput,nameLabel,"Name is required!");
-		boolean date = FormValidation.textFieldNotEmpty(dateInput,dateLabel,"Name is required!");
-		boolean price = FormValidation.textFieldNotEmpty(priceInput,priceLabel,"Name is required!");
+		boolean date = FormValidation.textFieldTypeDate(dateInput,dateLabel,"Date has to be of type mm/yy or dd/mm/yyyy.");
+		boolean price = FormValidation.textFieldTypeNumber(priceInput,priceLabel,"Price has to be a numerical value.");
 		
 		
 		if(name && date && price) {
 			
 			// add the data any time and the will be updated
-			Table entry = new Table(tNumber,nameInput.getText(),dateInput.getText(),Integer.parseInt(priceInput.getText()));
+			Table entry = new Table(tNumber,nameInput.getText(),dateInput.getText(),Float.parseFloat(priceInput.getText()));
 			tNumber++;
 			
 			// insert data in table
@@ -133,5 +135,20 @@ public class MainController implements Initializable {
 		nameInput.clear();
 		dateInput.clear();
 		priceInput.clear();
+		
+		nameLabel.setText(null);
+		dateLabel.setText(null);
+		priceLabel.setText(null);
+		
+		nameInput.getStyleClass().remove("error");
+		dateInput.getStyleClass().remove("error");
+		priceInput.getStyleClass().remove("error");
+		
 	}
+	
+	public void onClearAction (ActionEvent event) {
+		
+		clearForm();
+	}
+	
 }
