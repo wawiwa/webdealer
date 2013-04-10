@@ -49,8 +49,12 @@
                 <TextField fx:id="dateInput" prefWidth="130.0" promptText="Date" />
                 <TextField fx:id="priceInput" prefWidth="130.0" promptText="Price" />
                 <Button fx:id="submit" mnemonicParsing="false" onAction="#onAddItem" text="Submit" />
+                <Button fx:id="delete" mnemonicParsing="false" onAction="#onDeleteItem" text="Delete" />
               </children>
             </HBox>
+            <Label fx:id="nameLabel" layoutX="14.0" layoutY="55.0" text="" />
+            <Label fx:id="dateLabel" layoutX="149.0" layoutY="55.0" text="" />
+            <Label fx:id="priceLabel" layoutX="284.0" layoutY="55.0" text="" />
           </children>
         </AnchorPane>
       </items>
