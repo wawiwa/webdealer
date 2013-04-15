@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="webdealer.jnlp">
+  <information>
+    <title>webdealer</title>
+    <vendor>ANS</vendor>
+    <description>Sample JavaFX 2.0 application.</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <jfx:javafx-runtime version="2.2+" href="http://javadl.sun.com/webapps/download/GetFile/javafx-latest/windows-i586/javafx2.jnlp"/>
+  </resources>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="webdealer.jar" size="50865" download="eager" />
+    <jar href="libs/classes12.jar" size="1621582" download="eager" />
+    <jar href="libs/commons-io-2.4-javadoc.jar" size="724124" download="eager" />
+    <jar href="libs/commons-io-2.4-sources.jar" size="246635" download="eager" />
+    <jar href="libs/commons-io-2.4-test-sources.jar" size="199048" download="eager" />
+    <jar href="libs/commons-io-2.4-tests.jar" size="303024" download="eager" />
+    <jar href="libs/commons-io-2.4.jar" size="185140" download="eager" />
+  </resources>
+  <applet-desc  width="0" height="0" main-class="com.javafx.main.NoJavaFXFallback"  name="webdealer" >
+    <param name="requiredFXVersion" value="2.2+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="0" height="0" main-class="edu.gmu.cs.infs614.webdealer.controller.MainView"  name="webdealer" />
+  <update check="background"/>
+</jnlp>

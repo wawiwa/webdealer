@@ -111,4 +111,28 @@ public class FormValidation {
 		return r;
 	}
 	
+	public static boolean textFieldTypeInteger(TextField i) {
+		boolean r = false;
+
+		String val = "^[ ]*[\\d]+";
+		
+		if(i.getText().matches(val)) {
+			r=true;
+		}
+		return r;
+		
+	}
+	
+	public static boolean textFieldTypeInteger(TextField i, Label l, String sValidationText) {
+		boolean r = true;
+		String c = null;
+		i.getStyleClass().remove("error");
+		if(!textFieldTypeInteger(i)) {
+			r = false;;
+			c = sValidationText;
+			i.getStyleClass().add("error");
+		}
+		l.setText(c);
+		return r;
+	}
 }

@@ -1,10 +1,13 @@
 package edu.gmu.cs.infs614.webdealer.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import edu.gmu.cs.infs614.webdealer.model.FormValidation;
-import edu.gmu.cs.infs614.webdealer.model.Table;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -14,16 +17,38 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import edu.gmu.cs.infs614.webdealer.model.FormValidation;
+import edu.gmu.cs.infs614.webdealer.model.Table;
 
 public class MainController implements Initializable {
 
+	
+	// COMPLEX APPLICATION SEGMENTS
+	@FXML
+	ScrollPane fxScrollPane;
+	
+	@FXML
+	AnchorPane fxAnchorPane;
+	
+	@FXML
+	TextArea fxConsoleTextArea;
+	
+	// MAIN VIEWS
+	@FXML
+	Button fxCustomerButton;
+	
 	// DEFINE TABLE
 	
 	@FXML
@@ -63,6 +88,8 @@ public class MainController implements Initializable {
 	// index for delete item
 	private IntegerProperty index = new SimpleIntegerProperty();
 	
+
+	
 	// CREATE TABLE DATA
 	
 	final ObservableList<Table> data = FXCollections.observableArrayList(
@@ -74,7 +101,40 @@ public class MainController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
 		// TODO Auto-generated method stub
+		
+
+		
+		
+        
+		new Thread() { 
+			public void run() {
+				BufferedReader reader = null;
+				try {
+					PipedOutputStream pOut = new PipedOutputStream();
+					System.setOut(new PrintStream(pOut));
+					PipedInputStream pIn;
+					pIn = new PipedInputStream(pOut);
+					reader = new BufferedReader(new InputStreamReader(pIn));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				while(true) {
+				    try {
+				        String line = reader.readLine();
+				        fxConsoleTextArea.appendText(line+"\n");
+				        if(line != null) {
+				            // Write line to component
+				        }
+				    } catch (IOException ex) {
+				        // Handle ex
+				    }
+				}
+			}
+		}.start();
+
 		
 		// fix delete button working if not selecting once a table row
 		index.set(-1);
@@ -122,6 +182,7 @@ public class MainController implements Initializable {
 	}
 	
 	public void onDeleteItem(ActionEvent event) {
+		System.out.println("Deleted 1 item");
 		int i = index.get();
 		if(i > -1) {
 			data.remove(i);
@@ -149,6 +210,19 @@ public class MainController implements Initializable {
 	public void onClearAction (ActionEvent event) {
 		
 		clearForm();
+	}
+	
+	// DISPLAY CUSTOMER TABLE
+	
+	public void displayCustomerDialogue(ActionEvent event) {
+	   System.out.println("Showing Customer dialogue.");
+	   try {
+		System.out.println(fxScrollPane.idProperty());
+		fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource("CustomerView.fxml")));
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
 }

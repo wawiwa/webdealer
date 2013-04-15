@@ -18,23 +18,8 @@ public class Table {
 		this.rPrice = new SimpleFloatProperty(f);
 	}
 
-	// getters and setters
-	
-	public void setRID(Integer v) {
-		rID.set(v);
-	}
+	// getters only
 
-	public void setRName(String v) {
-		rName.set(v);
-	}
-
-	public void setRDate(String v) {
-		rDate.set(v);
-	}
-
-	public void setRPrice(Float v) {
-		rPrice.set(v);
-	}
 	
 	public Integer getRID() {
 		return rID.get();

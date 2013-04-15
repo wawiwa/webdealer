@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
@@ -19,7 +19,8 @@ public class MainView extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			AnchorPane page = (AnchorPane) FXMLLoader.load(MainView.class.getResource("MainController.fxml"));
+			//AnchorPane page = (AnchorPane) FXMLLoader.load(MainView.class.getResource("ApplicationController.fxml"));
+			VBox page = (VBox) FXMLLoader.load(MainView.class.getResource("ComplexApplication.fxml"));
 			Scene scene = new Scene(page);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Window Title");

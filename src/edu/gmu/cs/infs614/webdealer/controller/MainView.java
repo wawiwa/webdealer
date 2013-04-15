@@ -1,16 +1,23 @@
 package edu.gmu.cs.infs614.webdealer.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
 
+	
 	public static void main(String[] args) {
 		Application.launch(MainView.class, (java.lang.String[]) null);
 	}
@@ -19,7 +26,8 @@ public class MainView extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			AnchorPane page = (AnchorPane) FXMLLoader.load(MainView.class.getResource("MainController.fxml"));
+			//AnchorPane page = (AnchorPane) FXMLLoader.load(MainView.class.getResource("ApplicationController.fxml"));
+			VBox page = (VBox) FXMLLoader.load(MainView.class.getResource("ComplexApplication.fxml"));
 			Scene scene = new Scene(page);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Window Title");
@@ -28,6 +36,7 @@ public class MainView extends Application {
 		catch (Exception e) {
 			Logger.getLogger(MainView.class.getName(), null).log(Level.SEVERE, null, e);
 		};
+		
 		
 	}
 

@@ -1,3 +1,5 @@
+
+
 CREATE TABLE Trans_Voucher_AG AS(
 SELECT 	T.transaction_ID,
 		T.trans_date,

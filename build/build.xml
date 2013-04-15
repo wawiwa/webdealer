@@ -128,6 +128,7 @@
 		<fx:application id="fxApplication"
 			name="webdealer"
 			mainClass="edu.gmu.cs.infs614.webdealer.controller.MainView"
+			toolkit="fx"
 		/>
 	
 		<mkdir dir="build/classes/META-INF" />
@@ -148,6 +149,21 @@
 		</fx:jar>
 		
 	
+		<mkdir dir="deploy" />
+		<!-- Need to use ${basedir} because somehow the ant task is calculating the directory differently -->
+		<fx:deploy
+			embedJNLP="true"
+			extension="false"
+			includeDT="true"
+			offlineAllowed="true"
+			outdir="${basedir}/deploy"
+			outfile="webdealer" nativeBundles="none"
+			updatemode="background" >
+	
+			<fx:info title="webdealer" vendor="ANS"/>
+			<fx:application refId="fxApplication"/>
+			<fx:resources refid="appRes"/>
+		</fx:deploy>
 		
 		
 	</target>

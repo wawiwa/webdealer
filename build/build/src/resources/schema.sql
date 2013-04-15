@@ -10,6 +10,7 @@ DROP TABLE Category CASCADE CONSTRAINTS;
 DROP TABLE Purchase	 CASCADE CONSTRAINTS;
 DROP TABLE Purchase_Deal CASCADE CONSTRAINTS;
 DROP TABLE Purchase_With CASCADE CONSTRAINTS;
+DROP TABLE Shopping_Cart CASCADE CONSTRAINTS;
 
 
 DROP SEQUENCE seq_customer;
@@ -98,8 +99,8 @@ INSERT INTO Customer VALUES (seq_customer.nextval,'Peggy','Ortiz','25','portiz@g
 
 CREATE TABLE Payment_Method(
 payment_ID INTEGER, 
-cc_number VARCHAR2(16),
-cc_default_number VARCHAR2(16),
+cc_number VARCHAR2(18),
+cc_default_number VARCHAR2(18),
 cc_vendor VARCHAR2(30),
 customer_ID INTEGER,
 cc_default INTEGER CHECK (cc_default=0 OR cc_default=1),
@@ -132,6 +133,40 @@ INSERT INTO Category VALUES (seq_category.nextval,'travel');
 INSERT INTO Category VALUES (seq_category.nextval,'goods');
 INSERT INTO Category VALUES (seq_category.nextval,'other');
 
+CREATE TABLE Merchant(
+merchant_ID INTEGER, 
+merchant_name VARCHAR2(50),
+PRIMARY KEY (merchant_ID));
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'McDonalds');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Fine Nails Nail Salon');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Jiffy Lube');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Golds Gym');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Little Tree Children Theater');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Zip Line Adventures');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'It''s a Small World Travel Agency');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Laura''s Boutique');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Cash for Gold');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Barnes and Noble');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Home Depot');
+INSERT INTO Merchant VALUES (seq_merchant.nextval,'Salsa Shack');
+
+CREATE TABLE Location(
+location_ID INTEGER, 
+city VARCHAR2(30),
+state VARCHAR2(2),
+country VARCHAR2(2),
+continent VARCHAR2(2),
+PRIMARY KEY (location_ID));
+INSERT INTO Location VALUES (seq_location.nextval,'Fairfax','VA','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'New York','NY','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'El Paso','TX','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'San Francisco','CA','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'Juneau','AK','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'Topeka','KS','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'Seattle','WA','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'Las Vegas','NV','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'Washington','DC','US','NA');
+INSERT INTO Location VALUES (seq_location.nextval,'Helena','MT','US','NA');
 
 CREATE TABLE Deal(
 deal_ID INTEGER,
@@ -144,58 +179,23 @@ sale_start_time DATE,
 sale_end_time DATE,
 location_ID INTEGER,
 category_ID INTEGER,
+merchant_ID INTEGER,
 PRIMARY KEY (deal_ID),
 FOREIGN KEY (location_ID) REFERENCES Location (location_ID),
 FOREIGN KEY (category_ID) REFERENCES Category (category_ID),
-FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_id)
+FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID)
 );
-INSERT INTO Deal VALUES (seq_deal.nextval,'1-June-2013','$3 off chipotle burrito.','20','8.50','5.50','01-Apr-2013','25-Apr-2013','1','1');
-INSERT INTO Deal VALUES (seq_deal.nextval,'31-Dec-2013','Manicure and Pedicure for $25','50','35.00','25.00','01-Apr-2013','25-Apr-2013','8','2');
-INSERT INTO Deal VALUES (seq_deal.nextval,'31-Jul-2014','50% off Oil Change and Spring Tune Up','20','70.00','35.00','01-Apr-2013','25-Apr-2013','10','3');
-INSERT INTO Deal VALUES (seq_deal.nextval,'1-Oct-2013','10-pack Personal Training Sessions','100','250.00','175.00','01-Apr-2013','25-Apr-2013','9','4');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','50% off a Child''s Birthday Party','20','150.00','75.00','01-Apr-2013','25-Apr-2013','8','5');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Snorkling lessons for two!','20','500.00','125.50','01-Apr-2013','25-Apr-2013','7','6');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Spanish lessons!','20','100.00','15.00','01-Apr-2013','25-Apr-2013','6','7');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','24inch gold chain','20','75.00','45.00','01-Apr-2013','25-Apr-2013','5','8');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Free energy-efficiency home audit','20','50.00','0.00','01-Apr-2013','25-Apr-2013','4','9');
-INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2013','Personal Dance lessons','20','8.50','5.50','01-Apr-2013','25-Apr-2013','3','9');
+INSERT INTO Deal VALUES (seq_deal.nextval,'1-June-2013','$3 off chipotle burrito.','20','8.50','5.50','01-Apr-2013','25-Apr-2013','1','1','1');
+INSERT INTO Deal VALUES (seq_deal.nextval,'31-Dec-2013','Manicure and Pedicure for $25','50','35.00','25.00','01-Apr-2013','25-May-2013','8','2','2');
+INSERT INTO Deal VALUES (seq_deal.nextval,'31-Jul-2014','50% off Oil Change and Spring Tune Up','20','70.00','35.00','01-Apr-2013','31-July-2013','10','3','3');
+INSERT INTO Deal VALUES (seq_deal.nextval,'1-Oct-2013','10-pack Personal Training Sessions','100','250.00','175.00','01-Apr-2013','1-May-2013','9','4','4');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2014','50% off a Child''s Birthday Party','20','150.00','75.00','01-Apr-2013','31-Dec-2013','8','5','5');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Apr-2014','Snorkling lessons for two!','20','500.00','125.50','01-Apr-2013','31-July-2013','7','6','6');
+INSERT INTO Deal VALUES (seq_deal.nextval,'10-Oct-2013','Spanish lessons!','20','100.00','15.00','01-Apr-2013','02-May-2013','6','7','7');
+INSERT INTO Deal VALUES (seq_deal.nextval,'21-Apr-2014','24inch gold chain','20','75.00','45.00','01-Apr-2013','25-Apr-2013','5','8','8');
+INSERT INTO Deal VALUES (seq_deal.nextval,'28-Apr-2014','Free energy-efficiency home audit','20','50.00','0.00','01-Apr-2013','30-Apr-2013','4','9','10');
+INSERT INTO Deal VALUES (seq_deal.nextval,'30-Nov-2013','Personal Dance lessons','20','8.50','5.50','01-Apr-2013','01-May-2013','3','9','11');
 
-CREATE TABLE Merchant(
-merchant_ID INTEGER, 
-merchant_name VARCHAR2(50),
-PRIMARY KEY (merchant_ID)
-FOREIGN KEY (deal_id) REFERENCES DEAL(deal_id));
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'McDonalds');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Fine Nails Nail Salon');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Jiffy Lube');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Golds Gym');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Little Tree Children Theater');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Zip Line Adventures');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'It''s a Small World Travel Agency');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Laura''s Boutique');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Cash for Gold');
-INSERT INTO Merchant VALUES (seq_merchant.nextval,'Barnes and Noble');
-
-CREATE TABLE Location(
-location_ID INTEGER, 
-city VARCHAR2(30),
-state VARCHAR2(2),
-country VARCHAR2(2),
-continent VARCHAR2(2),
-merchant_ID INTEGER,
-PRIMARY KEY (location_ID),
-FOREIGN KEY (deal_id) REFERENCES Deal(deal_ID)
-);
-INSERT INTO Location VALUES (seq_location.nextval,'Fairfax','VA','US','NA','1');
-INSERT INTO Location VALUES (seq_location.nextval,'New York','NY','US','NA','2');
-INSERT INTO Location VALUES (seq_location.nextval,'El Paso','TX','US','NA','3');
-INSERT INTO Location VALUES (seq_location.nextval,'San Francisco','CA','US','NA','4');
-INSERT INTO Location VALUES (seq_location.nextval,'Juneau','AK','US','NA','5');
-INSERT INTO Location VALUES (seq_location.nextval,'Topeka','KS','US','NA','6');
-INSERT INTO Location VALUES (seq_location.nextval,'Seattle','WA','US','NA','7');
-INSERT INTO Location VALUES (seq_location.nextval,'Las Vegas','NV','US','NA','8');
-INSERT INTO Location VALUES (seq_location.nextval,'Washington','DC','US','NA','9');
-INSERT INTO Location VALUES (seq_location.nextval,'Helena','MT','US','NA','10');
 
 
 CREATE TABLE Voucher(
@@ -204,15 +204,20 @@ status VARCHAR2(30),
 PRIMARY KEY (voucher_ID)
 );
 INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'expired');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
 INSERT INTO Voucher VALUES (seq_voucher.nextval,'refunded');
 INSERT INTO Voucher VALUES (seq_voucher.nextval,'used');
 INSERT INTO Voucher VALUES (seq_voucher.nextval,'used');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'expired');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
 INSERT INTO Voucher VALUES (seq_voucher.nextval,'refunded');
 INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'expired');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
 INSERT INTO Voucher VALUES (seq_voucher.nextval,'used');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
 
 CREATE TABLE Transaction(
 transaction_ID INTEGER, 
@@ -222,15 +227,20 @@ PRIMARY KEY (transaction_ID),
 FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
 );
 INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','2');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','3');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','4');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','5');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','6');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','7');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','8');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','9');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','10');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'05-Apr-2013','2');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'09-Apr-2013','3');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'21-Apr-2013','4');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'22-Apr-2013','5');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'19-Apr-2013','6');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'10-Apr-2013','7');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'30-Apr-2013','8');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'19-Apr-2013','9');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'06-Apr-2013','10');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','11');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'09-Apr-2013','12');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'22-Apr-2013','14');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'10-Apr-2013','13');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'19-Apr-2013','15');
 
 
 CREATE TABLE Purchase(
@@ -250,6 +260,11 @@ INSERT INTO Purchase VALUES ('7','7');
 INSERT INTO Purchase VALUES ('8','8');
 INSERT INTO Purchase VALUES ('9','9');
 INSERT INTO Purchase VALUES ('10','10');
+INSERT INTO Purchase VALUES ('11','11');
+INSERT INTO Purchase VALUES ('12','12');
+INSERT INTO Purchase VALUES ('13','13');
+INSERT INTO Purchase VALUES ('14','14');
+INSERT INTO Purchase VALUES ('15','15');
 
 
 CREATE TABLE Purchase_Deal(
@@ -269,6 +284,11 @@ INSERT INTO Purchase_Deal VALUES ('7','7');
 INSERT INTO Purchase_Deal VALUES ('8','8');
 INSERT INTO Purchase_Deal VALUES ('9','9');
 INSERT INTO Purchase_Deal VALUES ('10','10');
+INSERT INTO Purchase_Deal VALUES ('11','1');
+INSERT INTO Purchase_Deal VALUES ('12','3');
+INSERT INTO Purchase_Deal VALUES ('13','5');
+INSERT INTO Purchase_Deal VALUES ('14','7');
+INSERT INTO Purchase_Deal VALUES ('15','9');
 
 
 CREATE TABLE Purchase_With(
@@ -289,7 +309,11 @@ INSERT INTO Purchase_With VALUES ('7','7','7');
 INSERT INTO Purchase_With VALUES ('8','8','8');
 INSERT INTO Purchase_With VALUES ('9','9','9');
 INSERT INTO Purchase_With VALUES ('10','10','10');
-
+INSERT INTO Purchase_With VALUES ('11','1','1');
+INSERT INTO Purchase_With VALUES ('12','3','3');
+INSERT INTO Purchase_With VALUES ('13','5','5');
+INSERT INTO Purchase_With VALUES ('14','7','7');
+INSERT INTO Purchase_With VALUES ('15','9','9');
 
 CREATE TABLE Review(
 review_ID INTEGER, 
@@ -313,7 +337,14 @@ INSERT INTO Review VALUES (seq_review.nextval,'3','Allowed to to save some money
 INSERT INTO Review VALUES (seq_review.nextval,'2','Burning your money for warmth would be a better use.','9','1');
 INSERT INTO Review VALUES (seq_review.nextval,'2','Horrible!','10','10');
 
-CREATE TABLE 
+
+CREATE TABLE Shopping_Cart AS(
+SELECT T.transaction_ID, T.trans_date, T.voucher_ID, PD.deal_ID,PW.payment_ID,PW.customer_ID
+FROM Transaction T
+INNER JOIN Purchase_Deal PD
+ON T.voucher_ID=PD.voucher_ID
+INNER JOIN Purchase_With PW
+ON PD.voucher_ID=PW.voucher_ID);
 
 
 

@@ -76,6 +76,7 @@ class Webdealer // Create a new class to encapsulate the program
 
 			System.out.println("Connecting   to Oracle...");
 
+			// ite10g is the server instance
 			String url = "jdbc:oracle:thin:@apollo.ite.gmu.edu:1521:ite10g";
 			Connection conn = null;
 			try {
