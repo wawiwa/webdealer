@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="webdealer.jar" size="50865" download="eager" />
+    <jar href="webdealer.jar" size="46676" download="eager" />
     <jar href="libs/classes12.jar" size="1621582" download="eager" />
     <jar href="libs/commons-io-2.4-javadoc.jar" size="724124" download="eager" />
     <jar href="libs/commons-io-2.4-sources.jar" size="246635" download="eager" />
@@ -22,6 +22,6 @@
   <applet-desc  width="0" height="0" main-class="com.javafx.main.NoJavaFXFallback"  name="webdealer" >
     <param name="requiredFXVersion" value="2.2+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="0" height="0" main-class="edu.gmu.cs.infs614.webdealer.controller.MainView"  name="webdealer" />
+  <jfx:javafx-desc  width="0" height="0" main-class="edu.gmu.cs.infs614.webdealer.WebDealerApplication"  name="webdealer" />
   <update check="background"/>
 </jnlp>

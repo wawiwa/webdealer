@@ -19,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -32,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.model.FormValidation;
 import edu.gmu.cs.infs614.webdealer.model.Schema;
 import edu.gmu.cs.infs614.webdealer.model.Table;
+import edu.gmu.cs.infs614.webdealer.model.connector.SchemaConnection;
 
 public class MainController implements Initializable {
 
@@ -106,10 +106,12 @@ public class MainController implements Initializable {
 		// TODO Auto-generated method stub
 		
 
-		Schema schema = new Schema("wward5","password");
+		
+		Schema schema = new Schema(new SchemaConnection("wward5","password").getConnection());
 		schema.loadSchema();
         
 		new Thread() { 
+			@SuppressWarnings("resource")
 			public void run() {
 				BufferedReader reader = null;
 				try {
@@ -219,7 +221,8 @@ public class MainController implements Initializable {
 	   System.out.println("Showing Customer dialogue.");
 	   try {
 		System.out.println(fxScrollPane.idProperty());
-		fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource("CustomerView.fxml")));
+		String cv = "/edu/gmu/cs/infs614/webdealer/view/CustomerView.fxml";
+		fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(cv)));
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

@@ -1,11 +1,5 @@
 package edu.gmu.cs.infs614.webdealer.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
@@ -18,9 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -31,9 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.model.Customer;
-import edu.gmu.cs.infs614.webdealer.model.CustomerConnection;
 import edu.gmu.cs.infs614.webdealer.model.FormValidation;
-import edu.gmu.cs.infs614.webdealer.model.Table;
+import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
 
 public class CustomerController implements Initializable {
 
@@ -103,68 +94,35 @@ public class CustomerController implements Initializable {
 	
 	// DEFINE VARIABLES
 	
-	private int tNumber = 1;
 	// index for delete item
 	private IntegerProperty index = new SimpleIntegerProperty();
 	
 	// DB connector
-	private Connection cc = new CustomerConnection("wward","password").getConnection();
+	public Connection conn = new CustomerConnection("wward5","password").getConnection();
 	
 	// CREATE TABLE DATA
 	
 	final ObservableList<Customer> data = FXCollections.observableArrayList(
-			new Customer(cc,"John","Doe",20,"jdoe@gmu.edu","m"),
-			new Customer(cc,"Paul","Smith",30,"psmith@gmu.edu","m"),
-			new Customer(cc,"Mary","Contrary",40,"mcontrary@gmu.edu","f")
+			new Customer(conn,"John","Doe",20,"jdoe@gmu.edu","m"),
+			new Customer(conn,"Paul","Smith",30,"psmith@gmu.edu","m"),
+			new Customer(conn,"Mary","Contrary",40,"mcontrary@gmu.edu","f")
 			);
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// TODO Auto-generated method stub
-		
-		
-		
-		
-        
-		new Thread() { 
-			public void run() {
-				BufferedReader reader = null;
-				try {
-					PipedOutputStream pOut = new PipedOutputStream();
-					System.setOut(new PrintStream(pOut));
-					PipedInputStream pIn;
-					pIn = new PipedInputStream(pOut);
-					reader = new BufferedReader(new InputStreamReader(pIn));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				while(true) {
-				    try {
-				        String line = reader.readLine();
-				        fxConsoleTextArea.appendText(line+"\n");
-				        if(line != null) {
-				            // Write line to component
-				        }
-				    } catch (IOException ex) {
-				        // Handle ex
-				    }
-				}
-			}
-		}.start();
-
-		
 		// fix delete button working if not selecting once a table row
 		index.set(-1);
 		
+		tcCustomerID.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("cID"));
 		tcFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("cFirstName"));
 		tcLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("cLastName"));
 		tcAge.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("cAge"));
 		tcEmailAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("cEmailAddress"));
 		tcGender.setCellValueFactory(new PropertyValueFactory<Customer, String>("cGender"));
 		
+		System.out.println("DATA contents: " + data);
 		tvCustomer.setItems(data);
 		
 		// get the index when clicking on table row
@@ -191,9 +149,8 @@ public class CustomerController implements Initializable {
 		if(firstName && lastName && age && email && gender) {
 			
 			// add the data any time and the will be updated
-			Customer entry = new Customer(cc,tfFirstName.getText(),tfLastName.getText(),
+			Customer entry = new Customer(conn,tfFirstName.getText(),tfLastName.getText(),
 					Integer.parseInt(tfAge.getText()),tfEmailAddress.getText(),tfGender.getText());
-			tNumber++;
 			
 			// insert data in table
 			data.add(entry);
@@ -244,17 +201,5 @@ public class CustomerController implements Initializable {
 		clearForm();
 	}
 	
-	// DISPLAY CUSTOMER TABLE
-	
-	public void displayCustomerDialogue(ActionEvent event) {
-	   System.out.println("Showing Customer dialogue.");
-	   try {
-		System.out.println(fxScrollPane.idProperty());
-		fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource("CustomerView.fxml")));
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	}
 	
 }

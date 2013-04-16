@@ -1,6 +1,5 @@
 package edu.gmu.cs.infs614.webdealer.controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
@@ -13,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,9 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.model.Customer;
-import edu.gmu.cs.infs614.webdealer.model.CustomerConnection;
 import edu.gmu.cs.infs614.webdealer.model.FormValidation;
-import edu.gmu.cs.infs614.webdealer.model.Schema;
+import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
 
 public class CustomerController implements Initializable {
 
@@ -97,18 +94,18 @@ public class CustomerController implements Initializable {
 	
 	// DEFINE VARIABLES
 	
-	private int tNumber = 1;
 	// index for delete item
 	private IntegerProperty index = new SimpleIntegerProperty();
 	
-	
+	// DB connector
+	public Connection conn = new CustomerConnection("wward5","password").getConnection();
 	
 	// CREATE TABLE DATA
 	
 	final ObservableList<Customer> data = FXCollections.observableArrayList(
-			new Customer("John","Doe",20,"jdoe@gmu.edu","m"),
-			new Customer("Paul","Smith",30,"psmith@gmu.edu","m"),
-			new Customer("Mary","Contrary",40,"mcontrary@gmu.edu","f")
+			new Customer(conn,"John","Doe",20,"jdoe@gmu.edu","m"),
+			new Customer(conn,"Paul","Smith",30,"psmith@gmu.edu","m"),
+			new Customer(conn,"Mary","Contrary",40,"mcontrary@gmu.edu","f")
 			);
 	
 	
@@ -152,7 +149,7 @@ public class CustomerController implements Initializable {
 		if(firstName && lastName && age && email && gender) {
 			
 			// add the data any time and the will be updated
-			Customer entry = new Customer(tfFirstName.getText(),tfLastName.getText(),
+			Customer entry = new Customer(conn,tfFirstName.getText(),tfLastName.getText(),
 					Integer.parseInt(tfAge.getText()),tfEmailAddress.getText(),tfGender.getText());
 			
 			// insert data in table
