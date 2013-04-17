@@ -20,39 +20,39 @@
 		<mkdir dir="externalLibs" />
 		
 		<copy todir="externalLibs">
-			<fileset dir="/Users/wward/Documents/GMU/INFS 614/webdealer/lib/commons-io-2.4 2">
-				<filename name="commons-io-2.4-sources.jar"/>	
+			<fileset dir="C:\Users\miriam\workspace\webdealer\lib\commons-io-2.4 2">
+				<filename name="commons-io-2.4-javadoc.jar"/>	
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="/Users/wward/Documents/GMU/INFS 614/webdealer/lib/commons-io-2.4 2">
-				<filename name="commons-io-2.4-test-sources.jar"/>	
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
-			<fileset dir="/Users/wward/Documents/GMU/INFS 614/webdealer/lib/commons-io-2.4 2">
+			<fileset dir="C:\Users\miriam\workspace\webdealer\lib\commons-io-2.4 2">
 				<filename name="commons-io-2.4.jar"/>	
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="/Users/wward/Documents/GMU/INFS 614/webdealer/lib/commons-io-2.4 2">
+			<fileset dir="C:\Users\miriam\workspace\webdealer\lib\commons-io-2.4 2">
+				<filename name="commons-io-2.4-test-sources.jar"/>	
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\miriam\workspace\webdealer\lib\commons-io-2.4 2">
+				<filename name="commons-io-2.4-sources.jar"/>	
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\miriam\workspace\webdealer\lib\commons-io-2.4 2">
 				<filename name="commons-io-2.4-tests.jar"/>	
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="/Users/wward/Documents/GMU/INFS 614/webdealer/lib">
+			<fileset dir="C:\Users\miriam\workspace\webdealer\lib">
 				<filename name="classes12.jar"/>	
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
-			<fileset dir="/Users/wward/Documents/GMU/INFS 614/webdealer/lib/commons-io-2.4 2">
-				<filename name="commons-io-2.4-javadoc.jar"/>	
 			</fileset>
 		</copy>
 		
 		<mkdir dir="project" />
 		<copy todir="project">
-			<fileset dir="/Users/wward/Documents/GMU/INFS 614/webdealer">
+			<fileset dir="C:\Users\miriam\workspace\webdealer">
 				<include name="src/**" />
 			</fileset>
 		</copy>
@@ -86,13 +86,13 @@
 			</fileset>
 		</copy>
 	
-		<javac includeantruntime="false" source="1.7" target="1.7" srcdir="build/src" destdir="build/classes" encoding="US-ASCII">
+		<javac includeantruntime="false" source="1.7" target="1.7" srcdir="build/src" destdir="build/classes" encoding="Cp1252">
 			<classpath>
 				<fileset dir="build/libs">
 					<include name="*"/>
 				</fileset>
 				<filelist>
-					<file name="/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/jre/lib/jfxrt.jar"/>
+					<file name="C:\Program Files\Java\jre7\lib\jfxrt.jar"/>
 				</filelist>
 			</classpath>
 		</javac>
