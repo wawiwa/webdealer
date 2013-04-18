@@ -170,8 +170,8 @@ public class CustomerController implements Initializable {
 		if(firstName && lastName && age && email && gender) {
 			
 			// add the data any time and the will be updated
-			Customer entry = new Customer(conn,null,tfFirstName.getText(),tfLastName.getText(),
-					Integer.parseInt(tfAge.getText()),tfEmailAddress.getText(),tfGender.getText());
+			Customer entry = new Customer(conn,null,tfFirstName,tfLastName,tfAge,
+					tfEmailAddress,tfGender);
 			
 			// insert data in table
 			data.add(entry);
@@ -186,9 +186,15 @@ public class CustomerController implements Initializable {
 	}
 	
 	public void displayCustomers() {
+		System.out.println("Displaying customers..");
 		ArrayList<Customer> cl =
 				Customer.retrieve(conn, tfCustomer_ID, tfFirstName, tfLastName, tfAge, tfEmailAddress, tfGender);
-		data.clear();
+		try {
+			data.clear();
+		}
+		catch(Exception e) {
+			data.clear();
+		}
 		for(Customer c : cl) {
 			data.add(c);
 		}
@@ -197,30 +203,37 @@ public class CustomerController implements Initializable {
 	}
 	
 	public void onSearchItem(ActionEvent event) {
-		
-		ArrayList<Customer> cl =
-				Customer.retrieve(conn, tfCustomer_ID, tfFirstName, tfLastName, tfAge, tfEmailAddress, tfGender);
-		data.clear();
-		for(Customer c : cl) {
-			data.add(c);
-		}
-		// clear TextFields
-		clearForm();
+		displayCustomers();
 	}
 	
+
+	
+	public void onUpdateItem(ActionEvent event) {
+		System.out.println("Updating a customer.");
+		int i = index.get();
+		Customer oldCust = data.get(i);
+		Customer newCust = new Customer(conn,tfCustomer_ID,tfFirstName,tfLastName,
+				tfAge,tfEmailAddress,tfGender);
+		if(Customer.update(oldCust,newCust)) {
+			data.set(i, newCust);
+		}
+		
+		System.out.println("INDEX: "+i);
+	}
 	
 	
 	public void onDeleteItem(ActionEvent event) {
 		System.out.println("Deleted 1 item");
 		int i = index.get();
-		if(i > -1) {
+		if(i <=-1) return;
+		Customer oldCust = data.get(i);
+		if(Customer.delete(oldCust)) {
 			data.remove(i);
+			tvCustomer.getSelectionModel().select(i);
 			tvCustomer.getSelectionModel().clearSelection();
 		}
 		
 	}
-	
-
 
 
 

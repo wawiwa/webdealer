@@ -7,7 +7,7 @@ import java.sql.SQLException;
 //import oracle.jdbc.driver.OracleDatabaseMetaData;
 
 
-// This class creates a semaphore connection to the database
+// The goal was to create a singleton, but subclassing an abstract singleton is a bit complex..
 //	Every model needs to use this connection.
 //	This cannot be instantiated. It must be extended by a model connector.
 // 		Example: Connection custConn = CustomerConnection(wward,password);

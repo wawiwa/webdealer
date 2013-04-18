@@ -79,7 +79,7 @@
             <Label id="nameLabel" fx:id="genderLabel" font="$x1_x0" layoutX="152.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
             <Button fx:id="search" layoutX="583.0" layoutY="27.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
             <TextField id="priceInput" fx:id="tfCustomer_ID" layoutX="289.0" layoutY="67.0" prefWidth="130.0" promptText="Customer ID" />
-            <Button id="clear" fx:id="update" layoutX="499.0" layoutY="62.0" mnemonicParsing="false" prefWidth="67.0" text="Update" />
+            <Button id="clear" fx:id="update" layoutX="499.0" layoutY="62.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="67.0" text="Update" />
           </children>
           <stylesheets>
             <URL value="@style.css" />
