@@ -11,7 +11,7 @@
 <?import javafx.scene.text.*?>
 <!--  Needed for PropertyValueFactory -->
 
-<VBox prefHeight="600.0" prefWidth="1197.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.ComplexApplicationController">
+<VBox prefHeight="600.0" prefWidth="1197.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.MainController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -52,11 +52,11 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.1329225352112676, 0.7552816901408451" focusTraversable="true" maxWidth="-Infinity" prefWidth="1138.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.1389121338912134, 0.7497907949790795" focusTraversable="true" prefWidth="1138.0" VBox.vgrow="ALWAYS">
       <items>
         <AnchorPane>
           <children>
-            <Label fx:id="fxMasterLabel" alignment="CENTER" layoutY="14.0" minWidth="60.0" prefWidth="110.0" style="&#10;" text="Web Dealer" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="19.0">
+            <Label fx:id="fxMasterLabel" alignment="CENTER" layoutX="31.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Web Dealer" textAlignment="CENTER" wrapText="false">
               <font>
                 <Font size="18.0" fx:id="x1" />
               </font>
@@ -64,17 +64,17 @@
                 <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
               </textFill>
             </Label>
-            <Button fx:id="fxMerchantButton" layoutY="66.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" text="Merchant" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="23.0" />
-            <Button fx:id="fxDealButton" layoutY="120.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Deal" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="23.0" />
-            <Button fx:id="fxCustomerButton" layoutY="175.0" mnemonicParsing="false" onAction="#displayCustomerDialogue" prefHeight="38.0" prefWidth="118.0" text="Customer" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="23.0" />
-            <Button fx:id="fxShoppingCartButton" layoutY="231.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Shopping Cart" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="23.0" />
-            <Label layoutY="311.0" prefWidth="76.0" text="Username" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />
-            <TextField fx:id="fxUsernameTextField" layoutY="327.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
-            <Label layoutY="357.0" prefWidth="76.0" text="Password" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />
-            <PasswordField id="fxPasswordTextField" fx:id="fxPasswordField" layoutY="373.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
-            <Label layoutY="397.0" prefWidth="45.0" text="Status" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="85.0" />
-            <Button layoutY="436.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Show &#10;Table Names" textAlignment="CENTER" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="16.0" />
-            <Button layoutY="487.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Perform &#10;Open Query" textAlignment="CENTER" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="16.0" />
+            <Button fx:id="fxMerchantButton" layoutX="22.0" layoutY="66.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" text="Merchant" />
+            <Button fx:id="fxDealButton" layoutX="21.0" layoutY="120.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Deal" />
+            <Button fx:id="fxCustomerButton" layoutX="21.0" layoutY="175.0" mnemonicParsing="false" onAction="#displayCustomerDialogue" prefHeight="38.0" prefWidth="118.0" text="Customer" />
+            <Button fx:id="fxShoppingCartButton" layoutX="21.0" layoutY="231.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Shopping Cart" />
+            <Label layoutX="13.0" layoutY="311.0" text="Username" />
+            <TextField fx:id="fxUsernameTextField" layoutX="12.0" layoutY="327.0" prefWidth="138.0" />
+            <Label layoutX="13.0" layoutY="357.0" text="Password" />
+            <PasswordField id="fxPasswordTextField" fx:id="fxPasswordField" layoutX="12.0" layoutY="373.0" prefWidth="138.0" />
+            <Label layoutX="54.0" layoutY="400.0" text="Status" />
+            <Button layoutX="21.0" layoutY="436.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Show &#10;Table Names" textAlignment="CENTER" />
+            <Button layoutX="21.0" layoutY="487.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Perform &#10;Open Query" textAlignment="CENTER" />
           </children>
         </AnchorPane>
         <ScrollPane fx:id="fxScrollPane" content="$null" fitToHeight="true" fitToWidth="true" prefHeight="555.0" prefWidth="670.0" />
@@ -86,9 +86,6 @@
           </children>
         </AnchorPane>
       </items>
-      <VBox.margin>
-        <Insets />
-      </VBox.margin>
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
       <children>

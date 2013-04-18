@@ -1,4 +1,4 @@
-package edu.gmu.cs.infs614.webdealer.model;
+package edu.gmu.cs.infs614.webdealer.view;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

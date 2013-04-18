@@ -2,6 +2,8 @@ package edu.gmu.cs.infs614.webdealer.controller;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.IntegerProperty;
@@ -21,10 +23,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.model.Customer;
-import edu.gmu.cs.infs614.webdealer.model.FormValidation;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
+import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 public class CustomerController implements Initializable {
 
@@ -62,6 +66,8 @@ public class CustomerController implements Initializable {
 	
 	// DEFINE FORM
 	@FXML
+	TextField tfCustomer_ID;
+	@FXML
 	TextField tfFirstName;
 	@FXML
 	TextField tfLastName;
@@ -79,6 +85,8 @@ public class CustomerController implements Initializable {
 	Button delete;
 	@FXML
 	Button clear;
+	@FXML
+	Button search;
 	
 	
 	@FXML
@@ -102,16 +110,18 @@ public class CustomerController implements Initializable {
 	
 	// CREATE TABLE DATA
 	
-	final ObservableList<Customer> data = FXCollections.observableArrayList(
-			new Customer(conn,"John","Doe",20,"jdoe@gmu.edu","m"),
-			new Customer(conn,"Paul","Smith",30,"psmith@gmu.edu","m"),
-			new Customer(conn,"Mary","Contrary",40,"mcontrary@gmu.edu","f")
-			);
-	
+//	final ObservableList<Customer> data = FXCollections.observableArrayList(
+//			new Customer(conn,1,"John","Doe",20,"jdoe@gmu.edu","m"),
+//			new Customer(conn,2,"Paul","Smith",30,"psmith@gmu.edu","m"),
+//			new Customer(conn,3,"Mary","Contrary",40,"mcontrary@gmu.edu","f")
+//			);
+	final ObservableList<Customer> data = FXCollections.observableArrayList();
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		displayCustomers();
+		
 		// fix delete button working if not selecting once a table row
 		index.set(-1);
 		
@@ -128,8 +138,19 @@ public class CustomerController implements Initializable {
 		// get the index when clicking on table row
 		tvCustomer.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			public void changed(ObservableValue<?> observable, Object oldvalue, Object newValue) {
+				Customer c = (Customer) newValue;
+				
+				tfCustomer_ID.setText(c.getCID().toString()); 
+				tfFirstName.setText(c.getCFirstName());
+				tfLastName.setText(c.getCLastName());
+				tfAge.setText(c.getCAge().toString());
+				tfEmailAddress.setText(c.getCEmailAddress());
+				tfGender.setText(c.getCGender());
+				
+				
 				index.set(data.indexOf(newValue));
 				System.out.println("OK index is: "+data.indexOf(newValue));
+				System.out.println(c.getCID());
 			}
 		});
 	}
@@ -149,7 +170,7 @@ public class CustomerController implements Initializable {
 		if(firstName && lastName && age && email && gender) {
 			
 			// add the data any time and the will be updated
-			Customer entry = new Customer(conn,tfFirstName.getText(),tfLastName.getText(),
+			Customer entry = new Customer(conn,null,tfFirstName.getText(),tfLastName.getText(),
 					Integer.parseInt(tfAge.getText()),tfEmailAddress.getText(),tfGender.getText());
 			
 			// insert data in table
@@ -164,6 +185,31 @@ public class CustomerController implements Initializable {
 		
 	}
 	
+	public void displayCustomers() {
+		ArrayList<Customer> cl =
+				Customer.retrieve(conn, tfCustomer_ID, tfFirstName, tfLastName, tfAge, tfEmailAddress, tfGender);
+		data.clear();
+		for(Customer c : cl) {
+			data.add(c);
+		}
+		// clear TextFields
+		clearForm();
+	}
+	
+	public void onSearchItem(ActionEvent event) {
+		
+		ArrayList<Customer> cl =
+				Customer.retrieve(conn, tfCustomer_ID, tfFirstName, tfLastName, tfAge, tfEmailAddress, tfGender);
+		data.clear();
+		for(Customer c : cl) {
+			data.add(c);
+		}
+		// clear TextFields
+		clearForm();
+	}
+	
+	
+	
 	public void onDeleteItem(ActionEvent event) {
 		System.out.println("Deleted 1 item");
 		int i = index.get();
@@ -173,20 +219,32 @@ public class CustomerController implements Initializable {
 		}
 		
 	}
+	
+
+
+
 
 	private void clearForm() {
 		// TODO Auto-generated method stub
+		tfCustomer_ID.clear();
 		tfFirstName.clear();
 		tfLastName.clear();
 		tfAge.clear();
 		tfEmailAddress.clear();
 		tfGender.clear();
 		
+		tfCustomer_ID.setText(null);
 		tfFirstName.setText(null);
 		tfLastName.setText(null);
 		tfAge.setText(null);
 		tfEmailAddress.setText(null);
 		tfGender.setText(null);
+		
+		firstNameLabel.setText(null);
+		lastNameLabel.setText(null);
+		ageLabel.setText(null);
+		emailAddressLabel.setText(null);
+		genderLabel.setText(null);
 		
 		tfFirstName.getStyleClass().remove("error");
 		tfLastName.getStyleClass().remove("error");

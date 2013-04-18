@@ -65,18 +65,18 @@
             <TextField id="priceInput" fx:id="tfAge" layoutX="289.0" layoutY="26.0" prefWidth="130.0" promptText="Age" />
             <Button fx:id="submit" layoutX="499.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAddItem" prefWidth="67.0" text="Create" />
             <Button fx:id="delete" layoutX="583.0" layoutY="62.0" mnemonicParsing="false" onAction="#onDeleteItem" prefWidth="73.0" text="Delete" />
-            <Label id="nameLabel" fx:id="firstNameLabel" layoutX="14.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true">
+            <Label id="nameLabel" fx:id="firstNameLabel" layoutX="14.0" layoutY="48.0" prefWidth="130.0" text="" wrapText="true">
               <font>
                 <Font size="10.0" fx:id="x1_x0" />
               </font>
             </Label>
-            <Label id="dateLabel" fx:id="lastNameLabel" font="$x1_x0" layoutX="151.0" layoutY="47.0" prefWidth="130.00009999999747" text="" wrapText="true" />
-            <Label id="priceLabel" fx:id="ageLabel" font="$x1_x0" layoutX="289.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true" />
+            <Label id="dateLabel" fx:id="lastNameLabel" font="$x1_x0" layoutX="176.0" layoutY="48.0" prefWidth="130.00009999999747" text="" wrapText="true" />
+            <Label id="priceLabel" fx:id="ageLabel" font="$x1_x0" layoutX="328.0" layoutY="48.0" prefWidth="130.0" text="" wrapText="true" />
             <Button fx:id="clear" layoutX="429.0" layoutY="14.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="83.0" prefWidth="58.0" rotate="0.0" text="Clear" />
             <TextField id="nameInput" fx:id="tfEmailAddress" layoutX="14.0" layoutY="67.0" prefWidth="130.0" promptText="Email Address" />
             <Label id="nameLabel" fx:id="emailAddressLabel" font="$x1_x0" layoutX="14.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
             <TextField id="nameInput" fx:id="tfGender" layoutX="151.0" layoutY="67.0" prefWidth="130.0" promptText="Gender" />
-            <Label id="nameLabel" fx:id="genderLabel" font="$x1_x0" layoutX="152.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
+            <Label id="nameLabel" fx:id="genderLabel" font="$x1_x0" layoutX="177.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
             <Button fx:id="search" layoutX="583.0" layoutY="27.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
             <TextField id="priceInput" fx:id="tfCustomer_ID" layoutX="289.0" layoutY="67.0" prefWidth="130.0" promptText="Customer ID" />
             <Button id="clear" fx:id="update" layoutX="499.0" layoutY="62.0" mnemonicParsing="false" prefWidth="67.0" text="Update" />

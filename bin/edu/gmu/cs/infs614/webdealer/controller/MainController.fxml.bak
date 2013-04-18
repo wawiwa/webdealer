@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="658.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.ComplexApplicationController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="658.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.MainController">
   <children>
     <SplitPane dividerPositions="0.7512562814070352" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
@@ -57,7 +57,6 @@
             </Label>
             <Label fx:id="dateLabel" font="$x1" layoutX="176.0" layoutY="55.0" prefWidth="130.00009999999747" text="" wrapText="true" />
             <Label fx:id="priceLabel" font="$x1" layoutX="328.0" layoutY="55.0" prefWidth="130.0" text="" wrapText="true" />
-            <Button fx:id="clear" layoutX="478.0" layoutY="61.0" mnemonicParsing="false" onAction="#onClearAction" prefWidth="67.0" text="Clear" />
           </children>
           <stylesheets>
             <URL value="@style.css" />
