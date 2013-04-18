@@ -1,2 +1,5 @@
 
 *.class
+/build
+/jarfile
+/build.fxbuild
