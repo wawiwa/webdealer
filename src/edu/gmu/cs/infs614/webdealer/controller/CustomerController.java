@@ -138,6 +138,7 @@ public class CustomerController implements Initializable {
 		// get the index when clicking on table row
 		tvCustomer.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			public void changed(ObservableValue<?> observable, Object oldvalue, Object newValue) {
+				if(newValue==null)return;
 				Customer c = (Customer) newValue;
 				
 				tfCustomer_ID.setText(c.getCID().toString()); 

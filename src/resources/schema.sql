@@ -105,7 +105,7 @@ cc_vendor VARCHAR2(30),
 customer_ID INTEGER,
 cc_default INTEGER CHECK (cc_default=0 OR cc_default=1),
 PRIMARY KEY (payment_ID,customer_ID),
-FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID)
+FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
 );
 INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','1111222233334444','VISA','1','1');
 INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'5050419498932433','5050419498932433','MASTERCARD','2','1');
@@ -297,7 +297,7 @@ CREATE TABLE Purchase_With(
 	customer_ID INTEGER,
 	PRIMARY KEY (voucher_ID),
 	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
-	FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method
+	FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method on delete cascade
 );
 INSERT INTO Purchase_With VALUES ('1','1','1');
 INSERT INTO Purchase_With VALUES ('2','2','2');
@@ -323,7 +323,7 @@ deal_ID INTEGER,
 customer_ID INTEGER,
 PRIMARY KEY (review_ID),
 FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
-FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID)
+FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
 );
 
 INSERT INTO Review VALUES (seq_review.nextval,'5','Great deal!','1','1');

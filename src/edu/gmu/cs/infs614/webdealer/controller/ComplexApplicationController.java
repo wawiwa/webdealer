@@ -85,12 +85,19 @@ public class ComplexApplicationController implements Initializable {
 			e.printStackTrace();
 		}
 	
-	      
-		new Thread() { 
-			public void run() {
-				consolePrinter(fxConsoleTextArea);
-			}
-		}.start();
+	    try {
+			new Thread() { 
+				public void run() {
+					consolePrinter(fxConsoleTextArea);
+				}
+			}.start();
+	    }catch (Exception e) {
+	    	new Thread() { 
+				public void run() {
+					consolePrinter(fxConsoleTextArea);
+				}
+			}.start();
+	    }
 		
 
 	}
