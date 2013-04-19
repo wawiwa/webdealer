@@ -11,7 +11,7 @@
 <?import javafx.scene.text.*?>
 <!--  Needed for PropertyValueFactory -->
 
-<VBox prefHeight="600.0" prefWidth="1197.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.ComplexApplicationController">
+<VBox prefHeight="600.0" prefWidth="1197.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.WebDealerApplicationController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -52,7 +52,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.1329225352112676, 0.7552816901408451" focusTraversable="true" maxWidth="-Infinity" prefWidth="1138.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.14393305439330545, 0.7531380753138075" focusTraversable="true" VBox.vgrow="ALWAYS">
       <items>
         <AnchorPane>
           <children>
@@ -68,21 +68,21 @@
             <Button fx:id="fxDealButton" layoutY="120.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Deal" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="23.0" />
             <Button fx:id="fxCustomerButton" layoutY="175.0" mnemonicParsing="false" onAction="#displayCustomerDialogue" prefHeight="38.0" prefWidth="118.0" text="Customer" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="23.0" />
             <Button fx:id="fxShoppingCartButton" layoutY="231.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" text="Shopping Cart" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="23.0" />
-            <Label layoutY="311.0" prefWidth="76.0" text="Username" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />
-            <TextField fx:id="fxUsernameTextField" layoutY="327.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
-            <Label layoutY="357.0" prefWidth="76.0" text="Password" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />
-            <PasswordField id="fxPasswordTextField" fx:id="fxPasswordField" layoutY="373.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
-            <Label layoutY="397.0" prefWidth="45.0" text="Status" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="85.0" />
+            <Label layoutY="300.0" prefWidth="76.0" text="Username" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />
+            <TextField fx:id="fxUsernameTextField" layoutY="316.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
+            <Label layoutY="346.0" prefWidth="76.0" text="Password" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />
+            <PasswordField id="fxPasswordTextField" fx:id="fxPasswordField" layoutY="362.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
             <Button layoutY="436.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Show &#10;Table Names" textAlignment="CENTER" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="16.0" />
             <Button layoutY="487.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Perform &#10;Open Query" textAlignment="CENTER" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="16.0" />
+            <Button fx:id="fxConnectButton" layoutX="18.0" layoutY="384.0" mnemonicParsing="false" onAction="#connectToDatabase" prefWidth="131.0" text="Press to Connect" />
           </children>
         </AnchorPane>
         <ScrollPane fx:id="fxScrollPane" content="$null" fitToHeight="true" fitToWidth="true" prefHeight="555.0" prefWidth="670.0" />
-        <AnchorPane prefHeight="555.0" prefWidth="71.0">
+        <AnchorPane prefHeight="-1.0" prefWidth="-1.0">
           <children>
             <Label fx:id="fxConsoleLabel" alignment="CENTER" font="$x1" layoutY="14.0" style="&#10;" text="Console" textAlignment="CENTER" textFill="$x2" wrapText="false" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="184.0" />
             <TextArea fx:id="fxConsoleTextArea" layoutY="58.0" prefHeight="378.0" prefWidth="239.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="16.0" />
-            <Button id="delete" layoutY="466.0" mnemonicParsing="false" text="Clear Screen" AnchorPane.leftAnchor="83.0" AnchorPane.rightAnchor="85.0" />
+            <Button id="delete" fx:id="fxClearConsole" layoutY="466.0" mnemonicParsing="false" onAction="#clearConsole" text="Clear Screen" AnchorPane.leftAnchor="83.0" AnchorPane.rightAnchor="85.0" />
           </children>
         </AnchorPane>
       </items>
@@ -109,6 +109,6 @@
     </HBox>
   </children>
   <stylesheets>
-    <URL value="@ComplexApplication.css" />
+    <URL value="@WebDealerApplicationStyle.css" />
   </stylesheets>
 </VBox>

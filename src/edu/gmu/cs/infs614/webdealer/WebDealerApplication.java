@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class WebDealerApplication extends Application {
-
 	
 	public static void main(String[] args) {
 		Application.launch(WebDealerApplication.class, (java.lang.String[]) null);
@@ -22,7 +21,7 @@ public class WebDealerApplication extends Application {
 		try {
 			System.out.println("Application starting...");
 			//AnchorPane page = (AnchorPane) FXMLLoader.load(MainView.class.getResource("ApplicationController.fxml"));
-			String ca = "/edu/gmu/cs/infs614/webdealer/view/ComplexApplication.fxml";
+			String ca = "/edu/gmu/cs/infs614/webdealer/view/WebDealerApplication.fxml";
 			VBox page = (VBox) FXMLLoader.load(WebDealerApplication.class.getResource(ca));
 			System.out.println("Main FXML loaded...");
 			Scene scene = new Scene(page);

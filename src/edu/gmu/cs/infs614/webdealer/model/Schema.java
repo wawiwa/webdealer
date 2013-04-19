@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 
+import edu.gmu.cs.infs614.webdealer.AppUtil;
+
 
 public final class Schema {
 
@@ -26,7 +28,7 @@ public final class Schema {
 			for(String line : si_schema) {
 				//PreparedStatement pStmt = conn.prepareStatement(line);
 				try {
-					System.out.println(line);
+					AppUtil.console(line);
 					//System.err.println("conn NPE?");
 					statement = conn.createStatement(); // Create a new statement
 					//System.err.println("statement NPE?");
@@ -36,16 +38,16 @@ public final class Schema {
 					//conn.commit();
 					statement.close();
 				} catch (NullPointerException npe) {
-					System.out.println("NPE: "+npe+" ON THIS SQL: " +line);
+					AppUtil.console("NPE: "+npe+" ON THIS SQL: " +line);
 				}
 				
 				catch (Exception e) {
-					System.err.println("Most likely a DDL error, not a problem."+e);
+					AppUtil.console("Most likely a DDL error, not a problem."+e);
 				}
 			}
 
 		} catch (Exception e) {
-			System.err.println("Schema error: "+e);
+			AppUtil.console("Schema error: "+e);
 		} // if any error occurred in the try..catch block, call the SQLError
 			// function
 
@@ -101,7 +103,7 @@ public final class Schema {
 				map.get("PURCHASE_WITH").next() &&
 				map.get("SHOPPING_CART").next()) {
 			  // All tables exists
-				System.out.println("Schema already loaded.");
+				AppUtil.console("Schema already loaded.");
 				return true;
 			}
 			else {
@@ -109,7 +111,7 @@ public final class Schema {
 				return false;
 			}
 		} catch (Exception e) {
-			System.out.println("Schema not loaded properly."+e);
+			AppUtil.console("Schema not loaded properly."+e);
 			return false;
 		}
 	}

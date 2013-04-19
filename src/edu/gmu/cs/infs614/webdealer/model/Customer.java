@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
+import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
@@ -55,7 +56,7 @@ public class Customer {
 		this.cAge = new SimpleIntegerProperty(age);
 		this.cEmailAddress = new SimpleStringProperty(email_address);
 		this.cGender = new SimpleStringProperty(gender);
-		System.out.println("Customer constructed");
+		AppUtil.console("Customer constructed");
 		
 		
 	}
@@ -69,6 +70,7 @@ public class Customer {
 			TextField tfAge, 
 			TextField tfEmailAddress, 
 			TextField tfGender ) {
+		// had to check for null before calling tfCustomer_ID.getText(), so we just copied the constructor code
 		if(tfCustomer_ID == null) {
 			this.cID = new SimpleIntegerProperty(
 					create(tfFirstName.getText(),tfLastName.getText(),
@@ -85,7 +87,7 @@ public class Customer {
 		this.cAge = new SimpleIntegerProperty(Integer.parseInt(tfAge.getText()));
 		this.cEmailAddress = new SimpleStringProperty(tfEmailAddress.getText());
 		this.cGender = new SimpleStringProperty(tfGender.getText());
-		System.out.println("Customer constructed");
+		AppUtil.console("Customer constructed");
 	}
 	
 
@@ -98,7 +100,7 @@ public class Customer {
 			Integer cAge, String cEmailAddress, String cGender) {
 		
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection("wward5","password").getConnection();
+			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
 		}
 		
 		String sql = "BEGIN INSERT INTO " +
@@ -124,10 +126,10 @@ public class Customer {
 			stmt.close();
 			
 		} catch (SQLException sqle) {
-			System.err.println("Customer insert error: "+sqle);
+			AppUtil.console("Customer insert error: "+sqle);
 		}
 		
-		System.out.println("Customer_ID: "+generatedKey);
+		AppUtil.console("Customer_ID: "+generatedKey);
 		return generatedKey;
 	}
 	
@@ -141,7 +143,7 @@ public class Customer {
 			TextField tfGender ) 
 	{
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection("wward5","password").getConnection();
+			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
 		}
 		
 		HashMap<String,TextField> map = new HashMap<String,TextField>();
@@ -201,7 +203,7 @@ public class Customer {
 			selectSQL = "SELECT * FROM CUSTOMER";
 		}
 		
-		System.out.println("Select String: "+selectSQL);
+		AppUtil.console("Select String: "+selectSQL);
  
 		ResultSet rs = null;
 		ArrayList<Customer> cl = new ArrayList<Customer>();
@@ -224,12 +226,12 @@ public class Customer {
 						rs.getString("email_address"),
 						rs.getString("gender")));
  
-				System.out.println("customer_ID : " + rs.getString("customer_ID"));
-				System.out.println("first_name : " + rs.getString("first_name"));
-				System.out.println("last_name : " + rs.getString("last_name"));
-				System.out.println("age : " + rs.getString("age"));
-				System.out.println("email_address : " + rs.getString("email_address"));
-				System.out.println("gender : " + rs.getString("gender"));
+				AppUtil.console("customer_ID : " + rs.getString("customer_ID"));
+				AppUtil.console("first_name : " + rs.getString("first_name"));
+				AppUtil.console("last_name : " + rs.getString("last_name"));
+				AppUtil.console("age : " + rs.getString("age"));
+				AppUtil.console("email_address : " + rs.getString("email_address"));
+				AppUtil.console("gender : " + rs.getString("gender"));
 				
  
 			}
@@ -240,7 +242,7 @@ public class Customer {
 			
 		} catch (SQLException e) {
  
-			System.out.println(e.getMessage());
+			AppUtil.console(e.getMessage());
 			
 		}
 		
@@ -251,11 +253,11 @@ public class Customer {
 	// TODO
 	public static boolean update(Customer oldCust, Customer newCust) {
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection("wward5","password").getConnection();
+			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
 		}
 		
 		
-		System.out.println("Modifying customer: "+oldCust.getCID());
+		AppUtil.console("Modifying customer: "+oldCust.getCID());
 		
 		String sql = "UPDATE Customer SET "+
 				"first_name = \'"+newCust.getCFirstName()+"\',"+
@@ -265,7 +267,7 @@ public class Customer {
 				"gender = \'"+newCust.getCGender()+"\'"+
 				" WHERE customer_ID = \'"+newCust.getCID()+"\'";
 		
-		System.out.println("UPDATE: "+sql);
+		AppUtil.console("UPDATE: "+sql);
 
 		PreparedStatement preparedStatement = null;
 		try {
@@ -273,7 +275,7 @@ public class Customer {
 			preparedStatement.executeQuery();
 			preparedStatement.close();
 		} catch (Exception e) {
-			System.err.println("Most likely a DDL error, not a problem."+e);
+			AppUtil.console("Most likely a DDL error, not a problem."+e);
 		}
 		return true;
 	}
@@ -281,16 +283,16 @@ public class Customer {
 	// TODO
 		public static boolean delete(Customer oldCust) {
 			if(Customer.conn==null) {
-				Customer.conn=new CustomerConnection("wward5","password").getConnection();
+				Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
 			}
 			
 			
-			System.out.println("Deleting customer: "+oldCust.getCID());
+			AppUtil.console("Deleting customer: "+oldCust.getCID());
 			
 			String sql = "DELETE FROM Customer "+ 
 					"WHERE customer_ID = \'"+oldCust.getCID()+"\'";
 			
-			System.out.println("DELETE: "+sql);
+			AppUtil.console("DELETE: "+sql);
 
 			PreparedStatement preparedStatement = null;
 			try {
@@ -298,7 +300,7 @@ public class Customer {
 				preparedStatement.executeQuery();
 				preparedStatement.close();
 			} catch (Exception e) {
-				System.err.println("Most likely a DDL error, not a problem."+e);
+				AppUtil.console("Most likely a DDL error, not a problem."+e);
 			}
 			return true;
 		}

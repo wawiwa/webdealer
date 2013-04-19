@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import edu.gmu.cs.infs614.webdealer.AppUtil;
+
 //import oracle.jdbc.driver.OracleDatabaseMetaData;
 
 
@@ -15,20 +17,23 @@ import java.sql.SQLException;
 //		Example: Customer(custConn, First, Last, Age, EmailAddress, Gender);
 public abstract class OracleConnection {
 
+	public static String user="wward5";
+	public static String pass="password";
 	protected final static String url = "jdbc:oracle:thin:@apollo.ite.gmu.edu:1521:ite10g";
 	protected Connection connection;
+	public boolean isConnected = false;
 	
 
 	//private static final String VIEWS_FILE = "views.sql";
 	//private static final String VIEW_TABLES = "view_tables.sql";
 	
 	public static void SQLError(Exception e) { // Our function for handling SQL// errors
-		System.out.println("ORACLE error detected:");
-		e.printStackTrace();
+		AppUtil.console("ORACLE error detected:");
+		AppUtil.console(e.toString());
 	}
 	
 	// Connection will be created per view
-	OracleConnection(String username, String password)  {
+	OracleConnection(String username, String password) {
 		
 		try {
 			String driverName = "oracle.jdbc.driver.OracleDriver";
@@ -36,16 +41,18 @@ public abstract class OracleConnection {
 			
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			AppUtil.console(e1.toString());
 		}
 		try {
 			
 			connection = DriverManager.getConnection(url, username, password);
 			connection.setAutoCommit(true);
-			System.out.println("Oracle connection created.");
+			isConnected = true;
+			AppUtil.console("Oracle connection created.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			AppUtil.console(e.toString());
+			isConnected = false;
 		}
 	}
 	

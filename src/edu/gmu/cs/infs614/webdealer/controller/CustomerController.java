@@ -23,6 +23,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.Customer;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
@@ -117,6 +118,8 @@ public class CustomerController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		
+		
 		displayCustomers();
 		
 		// fix delete button working if not selecting once a table row
@@ -129,7 +132,9 @@ public class CustomerController implements Initializable {
 		tcEmailAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("cEmailAddress"));
 		tcGender.setCellValueFactory(new PropertyValueFactory<Customer, String>("cGender"));
 		
-		System.out.println("DATA contents: " + data);
+
+        AppUtil.console("DATA contents: "+data);
+
 		tvCustomer.setItems(data);
 		
 		// get the index when clicking on table row
@@ -147,8 +152,8 @@ public class CustomerController implements Initializable {
 				
 				
 				index.set(data.indexOf(newValue));
-				System.out.println("OK index is: "+data.indexOf(newValue));
-				System.out.println(c.getCID());
+				AppUtil.console("OK index is: "+data.indexOf(newValue));
+				AppUtil.console(c.getCID().toString());
 			}
 		});
 	}
@@ -184,7 +189,7 @@ public class CustomerController implements Initializable {
 	}
 	
 	public void displayCustomers() {
-		System.out.println("Displaying customers..");
+		AppUtil.console("Displaying customers..");
 		ArrayList<Customer> cl =
 				Customer.retrieve(conn, tfCustomer_ID, tfFirstName, tfLastName, tfAge, tfEmailAddress, tfGender);
 		try {
@@ -207,7 +212,7 @@ public class CustomerController implements Initializable {
 
 	
 	public void onUpdateItem(ActionEvent event) {
-		System.out.println("Updating a customer.");
+		AppUtil.console("Updating a customer.");
 		int i = index.get();
 		Customer oldCust = data.get(i);
 		Customer newCust = new Customer(conn,tfCustomer_ID,tfFirstName,tfLastName,
@@ -216,14 +221,14 @@ public class CustomerController implements Initializable {
 			data.set(i, newCust);
 		}
 		
-		System.out.println("INDEX: "+i);
+		AppUtil.console("INDEX: "+i);
 	}
 	
 	
 	public void onDeleteItem(ActionEvent event) {
-		System.out.println("Deleted 1 item");
+		AppUtil.console("Attempting to delete 1 item");
 		int i = index.get();
-		if(i <=-1) return;
+		if(i <=-1 || i>=data.size()) return;
 		Customer oldCust = data.get(i);
 		if(Customer.delete(oldCust)) {
 			data.remove(i);
@@ -236,7 +241,6 @@ public class CustomerController implements Initializable {
 
 
 	private void clearForm() {
-		// TODO Auto-generated method stub
 		tfCustomer_ID.clear();
 		tfFirstName.clear();
 		tfLastName.clear();

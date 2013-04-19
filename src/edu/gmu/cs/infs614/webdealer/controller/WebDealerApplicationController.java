@@ -14,13 +14,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.Schema;
+import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.SchemaConnection;
+import edu.gmu.cs.infs614.webdealer.model.connector.TestConnection;
 
-public class ComplexApplicationController implements Initializable {
+public class WebDealerApplicationController implements Initializable {
 
 	
 	// COMPLEX APPLICATION SEGMENTS
@@ -29,9 +35,6 @@ public class ComplexApplicationController implements Initializable {
 	
 	@FXML
 	AnchorPane fxAnchorPane;
-	
-	@FXML
-	TextArea fxConsoleTextArea;
 	
 	// MAIN VIEWS
 	@FXML
@@ -46,32 +49,43 @@ public class ComplexApplicationController implements Initializable {
 	@FXML
 	Button fxShoppingCartButton;
 	
+	@FXML
+	Button fxClearConsole;
 	
+	@FXML
+	Button fxConnectButton;
+	
+	@FXML
+	public static TextArea fxConsoleTextArea;
+	
+	@FXML
+	public static TextField fxUsernameTextField;
+	
+	@FXML
+	public static PasswordField fxPasswordField;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// TODO Auto-generated method stub
-		customerDialogue();
+		
 		
 		Schema schema = new Schema(new SchemaConnection("wward5","password").getConnection());
 		if(!schema.isSchemaLoaded()) {
 			schema.loadSchema();
 		}
-	
-	    try {
-			new Thread() { 
-				public void run() {
-					consolePrinter(fxConsoleTextArea);
-				}
-			}.start();
-	    }catch (Exception e) {
-	    	new Thread() { 
-				public void run() {
-					consolePrinter(fxConsoleTextArea);
-				}
-			}.start();
-	    }
+		
+		customerDialogue();
+//	
+//	    try {
+//			new Thread() { 
+//				public void run() {
+//					consolePrinter(fxConsoleTextArea);
+//				}
+//			}.start();
+//	    }catch (Exception e) {
+//	    	System.out.println(e);
+//	    }
 		
 
 	}
@@ -107,22 +121,49 @@ public class ComplexApplicationController implements Initializable {
 		}
 	}
 
+	// CLEAR Console
+	
+	public void clearConsole (ActionEvent event) {
+		// clear didn't work
+		fxConsoleTextArea.setText("");
+	}
+	
+	// ACCEPT PASSWORD
+	
+	public void connectToDatabase(ActionEvent event) {
+		
+		OracleConnection.user = fxUsernameTextField.getText();
+		OracleConnection.pass = fxPasswordField.getText();
+		
+		TestConnection tc = new TestConnection(OracleConnection.user,OracleConnection.pass);
+		
+		if (!tc.isConnected) {
+			fxConnectButton.setText("Incorrect!");
+			fxConnectButton.setTextFill(Color.rgb(210, 39, 30));
+        } else {
+        	fxConnectButton.setText("Confirmed!");
+        	fxConnectButton.setTextFill(Color.rgb(21, 117, 84));
+        }
+		fxPasswordField.clear();
+        
+		
+	}
 	
 	// DISPLAY CUSTOMER TABLE
 	
 	public void displayCustomerDialogue(ActionEvent event) {
-	   System.out.println("Showing Customer dialogue.");
+	   AppUtil.console("Showing Customer dialogue.");
 	   customerDialogue();
 	}
 	
-	public void customerDialogue() {
+	private void customerDialogue() {
 		   try {
-				System.out.println(fxScrollPane.idProperty());
+			    AppUtil.console(fxScrollPane.idProperty().toString());
 				String cv = "/edu/gmu/cs/infs614/webdealer/view/CustomerView.fxml";
 				fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(cv)));
 		   } catch (IOException e) {
 				   // TODO Auto-generated catch block
-				   e.printStackTrace();
+			   AppUtil.console(e.toString());
 		}
 	}
 	

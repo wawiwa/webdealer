@@ -82,7 +82,7 @@
             <Button id="clear" fx:id="update" layoutX="499.0" layoutY="62.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="67.0" text="Update" />
           </children>
           <stylesheets>
-            <URL value="@style.css" />
+            <URL value="@FormValidationStyle.css" />
           </stylesheets>
         </AnchorPane>
       </items>

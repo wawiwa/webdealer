@@ -1,4 +1,4 @@
-package edu.gmu.cs.infs614.webdealer.controller;
+package edu.gmu.cs.infs614.webdealer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

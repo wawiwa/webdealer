@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import edu.gmu.cs.infs614.webdealer.AppUtil;
+
 
 public class SchemaInterpreter implements Iterable<String> // Create a new class to encapsulate the program
 {
@@ -62,7 +64,7 @@ public class SchemaInterpreter implements Iterable<String> // Create a new class
 	public void printSchema () {
 		
 		for (String line : m_formattedStatements) {
-			System.out.println("Formatted Statements: " + line);
+			AppUtil.console("Formatted Statements: " + line);
 		}
 	}
 	
