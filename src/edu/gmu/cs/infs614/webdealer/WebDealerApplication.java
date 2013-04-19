@@ -1,6 +1,5 @@
 package edu.gmu.cs.infs614.webdealer;
 
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,9 +11,6 @@ import javafx.stage.Stage;
 
 public class WebDealerApplication extends Application {
 
-    private Stack<Scene> scenes = new Stack<Scene>();
-    private int windowWidth, windowHeight;
-    private Stage primaryStage;
 	
 	public static void main(String[] args) {
 		Application.launch(WebDealerApplication.class, (java.lang.String[]) null);

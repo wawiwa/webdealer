@@ -8,31 +8,17 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.SynchronousQueue;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.model.Schema;
-import edu.gmu.cs.infs614.webdealer.model.Table;
 import edu.gmu.cs.infs614.webdealer.model.connector.SchemaConnection;
-import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 public class ComplexApplicationController implements Initializable {
 
@@ -71,18 +57,6 @@ public class ComplexApplicationController implements Initializable {
 		Schema schema = new Schema(new SchemaConnection("wward5","password").getConnection());
 		if(!schema.isSchemaLoaded()) {
 			schema.loadSchema();
-		}
-        
-		BufferedReader reader = null;
-		try {
-			PipedOutputStream pOut = new PipedOutputStream();
-			System.setOut(new PrintStream(pOut));
-			PipedInputStream pIn;
-			pIn = new PipedInputStream(pOut);
-			reader = new BufferedReader(new InputStreamReader(pIn));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	
 	    try {

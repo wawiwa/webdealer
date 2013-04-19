@@ -5,3 +5,7 @@ jarfile/
 build.fxbuild
 bin/
 
+
+bin/resources/schema.sql
+
+bin/resources/schema.sql

@@ -2,7 +2,6 @@ package edu.gmu.cs.infs614.webdealer.controller;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -23,8 +22,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.model.Customer;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
