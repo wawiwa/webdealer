@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +19,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
@@ -35,6 +38,8 @@ public class WebDealerApplicationController implements Initializable {
 	
 	@FXML
 	AnchorPane fxAnchorPane;
+	
+
 	
 	// MAIN VIEWS
 	@FXML
@@ -64,18 +69,28 @@ public class WebDealerApplicationController implements Initializable {
 	@FXML
 	public static PasswordField fxPasswordField;
 
+	
+	private TestConnection tc;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// TODO Auto-generated method stub
 		
+		displayStartSplash();
+		fxPasswordField.setOnKeyPressed(new EventHandler<KeyEvent>()
+			    {
+			        @Override
+			        public void handle(KeyEvent ke)
+			        {
+			            if (ke.getCode().equals(KeyCode.ENTER))
+			            {
+			                connectToDatabase();
+			            }
+			        }
+			    });
 		
-		Schema schema = new Schema(new SchemaConnection("wward5","password").getConnection());
-		if(!schema.isSchemaLoaded()) {
-			schema.loadSchema();
-		}
-		
-		customerDialogue();
+		//customerDialogue();
 //	
 //	    try {
 //			new Thread() { 
@@ -130,11 +145,17 @@ public class WebDealerApplicationController implements Initializable {
 	
 	// ACCEPT PASSWORD
 	
-	public void connectToDatabase(ActionEvent event) {
+	
+	public void onConnect(ActionEvent event) {
+		connectToDatabase();
+	}
+	
+	private void connectToDatabase() {
 		
 		OracleConnection.user = fxUsernameTextField.getText();
 		OracleConnection.pass = fxPasswordField.getText();
 		
+		AppUtil.console("Attempting to connect...");
 		TestConnection tc = new TestConnection(OracleConnection.user,OracleConnection.pass);
 		
 		if (!tc.isConnected) {
@@ -143,10 +164,28 @@ public class WebDealerApplicationController implements Initializable {
         } else {
         	fxConnectButton.setText("Confirmed!");
         	fxConnectButton.setTextFill(Color.rgb(21, 117, 84));
+        	customerDialogue();
         }
 		fxPasswordField.clear();
         
 		
+	}
+	
+	
+	
+	// DISPLAY SPLASH LOGIN
+	
+	public void displayStartSplash() {
+		   try {
+			   System.out.println("Start splash.");
+			   
+			    //AppUtil.console(fxScrollPane.idProperty().toString());
+				String ss = "/edu/gmu/cs/infs614/webdealer/view/Splash.fxml";
+				fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(ss)));
+		   } catch (IOException e) {
+				   // TODO Auto-generated catch block
+			   System.out.println(e.toString());
+		}
 	}
 	
 	// DISPLAY CUSTOMER TABLE

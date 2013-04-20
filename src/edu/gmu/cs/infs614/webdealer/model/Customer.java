@@ -250,6 +250,7 @@ public class Customer {
 		return cl;
  
 	}
+	
 	// TODO
 	public static boolean update(Customer oldCust, Customer newCust) {
 		if(Customer.conn==null) {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fxmltableview.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="Content" fx:id="fxSplashAnchor" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="693.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.SplashController">
+  <children>
+    <Label alignment="CENTER" layoutX="128.0" layoutY="123.0" prefWidth="438.0" style="&#10;" text="Please login to access the system." textAlignment="CENTER" textFill="BLACK" wrapText="false">
+      <font>
+        <Font size="20.0" />
+      </font>
+    </Label>
+  </children>
+</AnchorPane>

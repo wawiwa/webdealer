@@ -116,7 +116,7 @@ public class FormValidation {
 		boolean r = false;
 
 		String val = "^[ ]*[\\d]+";
-		if(i.getText() != null && i.getText().matches(val)) {
+		if(i != null && i.getText() != null && i.getText().matches(val)) {
 			r=true;
 		}
 		return r;

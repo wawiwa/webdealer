@@ -74,7 +74,7 @@
             <PasswordField id="fxPasswordTextField" fx:id="fxPasswordField" layoutY="362.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
             <Button layoutY="436.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Show &#10;Table Names" textAlignment="CENTER" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="16.0" />
             <Button layoutY="487.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Perform &#10;Open Query" textAlignment="CENTER" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="16.0" />
-            <Button fx:id="fxConnectButton" layoutX="18.0" layoutY="384.0" mnemonicParsing="false" onAction="#connectToDatabase" prefWidth="131.0" text="Press to Connect" />
+            <Button fx:id="fxConnectButton" layoutX="18.0" layoutY="384.0" mnemonicParsing="false" onAction="#onConnect" prefWidth="131.0" text="Press to Connect" />
           </children>
         </AnchorPane>
         <ScrollPane fx:id="fxScrollPane" content="$null" fitToHeight="true" fitToWidth="true" prefHeight="555.0" prefWidth="670.0" />
