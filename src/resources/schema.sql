@@ -139,6 +139,8 @@ CREATE TABLE Merchant(
 merchant_ID INTEGER, 
 merchant_name VARCHAR2(50),
 PRIMARY KEY (merchant_ID));
+ALTER TABLE Merchant
+add constraint Merchant_name UNIQUE (merchant_name);
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'McDonalds');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Fine Nails Nail Salon');
 INSERT INTO Merchant VALUES (seq_merchant.nextval,'Jiffy Lube');
@@ -159,6 +161,8 @@ state VARCHAR2(2),
 country VARCHAR2(2),
 continent VARCHAR2(2),
 PRIMARY KEY (location_ID));
+ALTER TABLE Location
+add constraint Location_name UNIQUE (city, state);
 INSERT INTO Location VALUES (seq_location.nextval,'Fairfax','VA','US','NA');
 INSERT INTO Location VALUES (seq_location.nextval,'New York','NY','US','NA');
 INSERT INTO Location VALUES (seq_location.nextval,'El Paso','TX','US','NA');
