@@ -175,7 +175,7 @@ public class CustomerController implements Initializable {
 			// add the data any time and the will be updated
 			Customer entry = new Customer(conn,null,tfFirstName,tfLastName,tfAge,
 					tfEmailAddress,tfGender);
-			
+			if(!entry.isInDatabase) return;
 			// insert data in table
 			data.add(entry);
 			

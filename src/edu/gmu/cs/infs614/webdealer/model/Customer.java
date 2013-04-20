@@ -30,6 +30,7 @@ INSERT INTO Customer VALUES (seq_customer.nextval,'John','Doe','30','jdoe@gmu.ed
 // Immutable tuple
 public class Customer {
 
+	public boolean isInDatabase = false;
 	private SimpleIntegerProperty cID; 
 	private SimpleStringProperty cFirstName;
 	private SimpleStringProperty cLastName;
@@ -41,12 +42,28 @@ public class Customer {
 	
 	public Customer(Connection conn, Integer customer_ID, String first_name, String last_name,
 			Integer age, String email_address, String gender) {
+		this.cID = null;
+		this.cFirstName = null;
+		this.cLastName = null;
+		this.cAge = null;
+		this.cEmailAddress = null;
+		this.cGender = null;
+		// create a new customer in the database
 		if(customer_ID == null) {
-			this.cID = new SimpleIntegerProperty(
-					create(first_name,last_name,
-							age,email_address,gender)
-					);
+			int result = create(first_name,last_name,
+					age,email_address,gender);
+			if(result == -1) {
+				isInDatabase = false;
+				return;
 			}
+			else {
+				isInDatabase = true;
+			}
+			
+			this.cID = new SimpleIntegerProperty(result);
+					
+			}
+		// create just a customer view
 		else {
 			this.cID = new SimpleIntegerProperty(customer_ID);
 		}
@@ -83,7 +100,13 @@ public class Customer {
 			int result = create(tfFirstName.getText(),tfLastName.getText(),
 					Integer.parseInt(tfAge.getText()),
 					tfEmailAddress.getText(),tfGender.getText());
-			if(result == -1) return;
+			if(result == -1) {
+				isInDatabase = false;
+				return;
+			}
+			else {
+				isInDatabase = true;
+			}
 			this.cID = new SimpleIntegerProperty(
 					
 					);
@@ -287,7 +310,10 @@ public class Customer {
 			preparedStatement.executeQuery();
 			preparedStatement.close();
 		} catch (Exception e) {
+			
 			AppUtil.console("Most likely a DDL error, not a problem."+e);
+			return false;
+			
 		}
 		return true;
 	}
