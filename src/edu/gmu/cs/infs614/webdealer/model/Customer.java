@@ -107,9 +107,7 @@ public class Customer {
 			else {
 				isInDatabase = true;
 			}
-			this.cID = new SimpleIntegerProperty(
-					
-					);
+			this.cID = new SimpleIntegerProperty(result);
 			}
 		else {
 			this.cID = new SimpleIntegerProperty(Integer.parseInt(tfCustomer_ID.getText()));

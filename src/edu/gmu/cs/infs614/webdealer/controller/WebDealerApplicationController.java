@@ -207,4 +207,22 @@ public class WebDealerApplicationController implements Initializable {
 		}
 	}
 	
+	// DISPLAY MERCHANT TABLE
+	
+	public void displayMerchantDialogue(ActionEvent event) {
+	   AppUtil.console("Showing Merchant dialogue.");
+	   merchantDialogue();
+	}
+	
+	private void merchantDialogue() {
+		   try {
+			    AppUtil.console(fxScrollPane.idProperty().toString());
+				String mv = "/edu/gmu/cs/infs614/webdealer/view/MerchantView.fxml";
+				fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(mv)));
+		   } catch (IOException e) {
+				   // TODO Auto-generated catch block
+			   AppUtil.console(e.toString());
+		}
+	}
+	
 }

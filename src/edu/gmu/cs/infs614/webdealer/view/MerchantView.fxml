@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fxmltableview.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="Content" fx:id="fxAnchorPane" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="693.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.MerchantController">
+  <children>
+    <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="View" textAlignment="CENTER" textFill="BLACK" wrapText="false">
+      <font>
+        <Font size="13.0" />
+      </font>
+    </Label>
+    <SplitPane dividerPositions="0.7920433996383364" focusTraversable="true" orientation="VERTICAL" prefHeight="555.0" prefWidth="766.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TableView id="tableID" fx:id="tvMerchant" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="ID" fx:id="tcMerchant_ID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="300.0" text="Merchant Name" fx:id="tcMerchantName">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TextField id="nameInput" fx:id="tfMerchantName" layoutX="14.0" layoutY="26.0" prefWidth="130.0" promptText="Merchant Name" />
+            <Button fx:id="submit" layoutX="499.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAddItem" prefWidth="67.0" text="Create" />
+            <Button fx:id="delete" layoutX="583.0" layoutY="62.0" mnemonicParsing="false" onAction="#onDeleteItem" prefWidth="73.0" text="Delete" />
+            <Label id="nameLabel" fx:id="merchantNameLabel" layoutX="14.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true">
+              <font>
+                <Font size="10.0" fx:id="x1_x0" />
+              </font>
+            </Label>
+            <Button fx:id="clear" layoutX="429.0" layoutY="14.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="83.0" prefWidth="58.0" rotate="0.0" text="Clear" />
+            <Button fx:id="search" layoutX="583.0" layoutY="27.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
+            <TextField id="priceInput" fx:id="tfMerchant_ID" layoutX="157.0" layoutY="27.0" prefWidth="130.0" promptText="Merchant ID" />
+            <Button id="clear" fx:id="update" layoutX="499.0" layoutY="62.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="67.0" text="Update" />
+          </children>
+          <stylesheets>
+            <URL value="@FormValidationStyle.css" />
+          </stylesheets>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </children>
+</AnchorPane>
