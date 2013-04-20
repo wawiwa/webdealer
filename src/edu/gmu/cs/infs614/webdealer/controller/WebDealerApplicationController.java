@@ -69,9 +69,6 @@ public class WebDealerApplicationController implements Initializable {
 	@FXML
 	public static PasswordField fxPasswordField;
 
-	
-	private TestConnection tc;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -164,6 +161,10 @@ public class WebDealerApplicationController implements Initializable {
         } else {
         	fxConnectButton.setText("Confirmed!");
         	fxConnectButton.setTextFill(Color.rgb(21, 117, 84));
+        	Schema schema = new Schema(new SchemaConnection("wward5","password").getConnection());
+        	if(!schema.isSchemaLoaded()) {
+        		schema.loadSchema();
+        	}
         	customerDialogue();
         }
 		fxPasswordField.clear();
