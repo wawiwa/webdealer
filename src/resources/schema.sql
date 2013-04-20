@@ -86,6 +86,8 @@ email_address VARCHAR2(100),
 gender VARCHAR2(1), 
 PRIMARY KEY (customer_id,email_address)
 );
+ALTER TABLE Customer
+add constraint Customer_email_unique (email_address);
 INSERT INTO Customer VALUES (seq_customer.nextval,'John','Doe','30','jdoe@gmu.edu','m');
 INSERT INTO Customer VALUES (seq_customer.nextval,'Betsy','Smith','19','bsmith@gmu.edu','f');
 INSERT INTO Customer VALUES (seq_customer.nextval,'Eogan','Snyders','52','esnyders@gmu.edu','m');
