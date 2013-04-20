@@ -84,10 +84,10 @@ last_name VARCHAR2(30),
 age INTEGER, 
 email_address VARCHAR2(100), 
 gender VARCHAR2(1), 
-PRIMARY KEY (customer_id,email_address)
+PRIMARY KEY (customer_id)
 );
 ALTER TABLE Customer
-add constraint Customer_email_unique (email_address);
+add constraint Customer_email UNIQUE (email_address);
 INSERT INTO Customer VALUES (seq_customer.nextval,'John','Doe','30','jdoe@gmu.edu','m');
 INSERT INTO Customer VALUES (seq_customer.nextval,'Betsy','Smith','19','bsmith@gmu.edu','f');
 INSERT INTO Customer VALUES (seq_customer.nextval,'Eogan','Snyders','52','esnyders@gmu.edu','m');
@@ -106,9 +106,8 @@ cc_default_number VARCHAR2(18),
 cc_vendor VARCHAR2(30),
 customer_ID INTEGER,
 cc_default INTEGER CHECK (cc_default=0 OR cc_default=1),
-PRIMARY KEY (payment_ID,customer_ID,email_address),
-FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade,
-FOREIGN KEY (email_address) REFERENCES Customer (email_address) on delete cascade
+PRIMARY KEY (payment_ID,customer_ID),
+FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
 );
 INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','1111222233334444','VISA','1','1');
 INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'5050419498932433','5050419498932433','MASTERCARD','2','1');
@@ -300,7 +299,7 @@ CREATE TABLE Purchase_With(
 	customer_ID INTEGER,
 	PRIMARY KEY (voucher_ID),
 	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
-	FOREIGN KEY (payment_ID,customer_ID,email_address) REFERENCES Payment_Method on delete cascade
+	FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method on delete cascade
 );
 INSERT INTO Purchase_With VALUES ('1','1','1');
 INSERT INTO Purchase_With VALUES ('2','2','2');
@@ -327,7 +326,6 @@ customer_ID INTEGER,
 PRIMARY KEY (review_ID),
 FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
 FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
-FOREIGN KEY (email_address) REFERENCES Customer (email_address) on delete cascade
 );
 
 INSERT INTO Review VALUES (seq_review.nextval,'5','Great deal!','1','1');
