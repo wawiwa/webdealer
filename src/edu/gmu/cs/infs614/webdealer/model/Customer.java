@@ -30,12 +30,12 @@ INSERT INTO Customer VALUES (seq_customer.nextval,'John','Doe','30','jdoe@gmu.ed
 // Immutable tuple
 public class Customer {
 
-	private final SimpleIntegerProperty cID; 
-	private final SimpleStringProperty cFirstName;
-	private final SimpleStringProperty cLastName;
-	private final SimpleIntegerProperty cAge;
-	private final SimpleStringProperty cEmailAddress;
-	private final SimpleStringProperty cGender;
+	private SimpleIntegerProperty cID; 
+	private SimpleStringProperty cFirstName;
+	private SimpleStringProperty cLastName;
+	private SimpleIntegerProperty cAge;
+	private SimpleStringProperty cEmailAddress;
+	private SimpleStringProperty cGender;
 	private static Connection conn;
 
 	
@@ -71,11 +71,21 @@ public class Customer {
 			TextField tfEmailAddress, 
 			TextField tfGender ) {
 		// had to check for null before calling tfCustomer_ID.getText(), so we just copied the constructor code
+		this.cID = null;
+		this.cFirstName = null;
+		this.cLastName = null;
+		this.cAge = null;
+		this.cEmailAddress = null;
+		this.cGender = null;
+		
+		
 		if(tfCustomer_ID == null) {
+			int result = create(tfFirstName.getText(),tfLastName.getText(),
+					Integer.parseInt(tfAge.getText()),
+					tfEmailAddress.getText(),tfGender.getText());
+			if(result == -1) return;
 			this.cID = new SimpleIntegerProperty(
-					create(tfFirstName.getText(),tfLastName.getText(),
-							Integer.parseInt(tfAge.getText()),
-							tfEmailAddress.getText(),tfGender.getText())
+					
 					);
 			}
 		else {
@@ -127,6 +137,7 @@ public class Customer {
 			
 		} catch (SQLException sqle) {
 			AppUtil.console("Customer insert error: "+sqle);
+			return -1;
 		}
 		
 		AppUtil.console("Customer_ID: "+generatedKey);
