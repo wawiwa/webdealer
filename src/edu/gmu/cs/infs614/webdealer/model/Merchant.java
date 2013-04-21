@@ -28,7 +28,7 @@ public class Merchant {
 		this.mID = null;
 		this.mName = null;
 		Merchant.conn = conn;
-		// create a new customer in the database
+		// create a new merchant in the database
 		if(merchant_ID == null) {
 			int result = create(name);
 			if(result == -1) {
