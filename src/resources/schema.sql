@@ -102,23 +102,22 @@ INSERT INTO Customer VALUES (seq_customer.nextval,'Peggy','Ortiz','25','portiz@g
 CREATE TABLE Payment_Method(
 payment_ID INTEGER, 
 cc_number VARCHAR2(18),
-cc_default_number VARCHAR2(18),
 cc_vendor VARCHAR2(30),
 customer_ID INTEGER,
 cc_default INTEGER CHECK (cc_default=0 OR cc_default=1),
 PRIMARY KEY (payment_ID,customer_ID),
 FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
 );
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','1111222233334444','VISA','1','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'5050419498932433','5050419498932433','MASTERCARD','2','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'3153616053432062','3153616053432062','AMERICAN EXPRESS','3','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6091477375001352','6091477375001352','VISA','4','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8685283959165550','8685283959165550','MASTERCARD','5','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1866781616441065','1866781616441065','AMERICAN EXPRESS','6','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'9449115585826721','9449115585826721','VISA','7','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8274378241070747','8274378241070747','MASTERCARD','8','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1968434382696178','1968434382696178','VISA','9','1');
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6298557773260753','6298557773260753','VISA','10','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','VISA','1','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'5050419498932433','MASTERCARD','2','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'3153616053432062','AMERICAN EXPRESS','3','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6091477375001352','VISA','4','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8685283959165550','MASTERCARD','5','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1866781616441065','AMERICAN EXPRESS','6','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'9449115585826721','VISA','7','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'8274378241070747','MASTERCARD','8','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1968434382696178','VISA','9','1');
+INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'6298557773260753','VISA','10','1');
 
 CREATE TABLE Category(
 category_ID INTEGER, 

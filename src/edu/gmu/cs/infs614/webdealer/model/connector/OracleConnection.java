@@ -44,7 +44,6 @@ public abstract class OracleConnection {
 			AppUtil.console(e1.toString());
 		}
 		try {
-			
 			connection = DriverManager.getConnection(url, username, password);
 			connection.setAutoCommit(true);
 			isConnected = true;

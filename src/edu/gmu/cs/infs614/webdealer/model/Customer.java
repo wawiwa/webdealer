@@ -165,6 +165,53 @@ public class Customer {
 		return generatedKey;
 	}
 	
+	public static boolean exists(Connection conn, Integer customer_id, String email_address)
+	{
+		
+		if(Customer.conn==null) {
+			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+		}
+		
+		String selectSql;
+		if(customer_id == null || customer_id < 0) {
+			selectSql = "SELECT * FROM CUSTOMER WHERE email_address=\'"+email_address+"\'";
+		}
+		else {
+			selectSql = "SELECT * FROM CUSTOMER WHERE customer_id=\'"+customer_id+"\'";
+		}
+		
+		AppUtil.console("Select String: "+selectSql);
+		
+		ResultSet rs = null;		
+		PreparedStatement preparedStatement = null;
+		
+		try {
+
+			preparedStatement = conn.prepareStatement(selectSql);
+					
+		 
+			// execute select SQL
+			rs = preparedStatement.executeQuery();
+		 
+			
+			
+			if(!rs.next()) {
+				AppUtil.console(email_address+" not found.");
+				return false;
+			}
+			AppUtil.console(email_address+" found");	
+					
+			preparedStatement.close();
+			
+		} catch (SQLException e) {
+		 
+			AppUtil.console(e.getMessage());
+			return false;
+		}
+		
+		return true;
+	}
+			
 	public static ArrayList<Customer> retrieve(
 			Connection conn,
 			TextField tfCustomer_ID,

@@ -24,10 +24,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
+import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
+import edu.gmu.cs.infs614.webdealer.model.Customer;
 import edu.gmu.cs.infs614.webdealer.model.Schema;
+import edu.gmu.cs.infs614.webdealer.model.connector.MainConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.SchemaConnection;
-import edu.gmu.cs.infs614.webdealer.model.connector.TestConnection;
 
 public class WebDealerApplicationController implements Initializable {
 
@@ -63,18 +65,47 @@ public class WebDealerApplicationController implements Initializable {
 	@FXML
 	public static TextArea fxConsoleTextArea;
 	
+	// USER INFO
+	
+	@FXML 
+	public static TextField fxCustomerUsernameTextField;
+	
+	@FXML
+	public static Button fxCustomerUsernameLoginButton;
+	
+	
 	@FXML
 	public static TextField fxUsernameTextField;
 	
 	@FXML
 	public static PasswordField fxPasswordField;
+	
+	
+	// vars
+	
+	public static UserCreds customerUsername = null;
+	
+	public static MainConnection oracleConn = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// TODO Auto-generated method stub
 		
-		displayStartSplash();
+		startSplash();
+		
+		fxCustomerUsernameTextField.setOnKeyPressed(new EventHandler<KeyEvent>()
+			    {
+			        @Override
+			        public void handle(KeyEvent ke)
+			        {
+			            if (ke.getCode().equals(KeyCode.ENTER))
+			            {
+			                connectToDatabase();
+			            }
+			        }
+			    });
+		
 		fxPasswordField.setOnKeyPressed(new EventHandler<KeyEvent>()
 			    {
 			        @Override
@@ -86,6 +117,9 @@ public class WebDealerApplicationController implements Initializable {
 			            }
 			        }
 			    });
+		
+		//initPasswordFieldEnterKey(fxPasswordField);
+		//initTextFieldEnterKey(fxCustomerUsernameTextField);
 		
 		//customerDialogue();
 //	
@@ -102,6 +136,43 @@ public class WebDealerApplicationController implements Initializable {
 
 	}
 
+	public void initTextFieldEnterKey(Object o) {
+		TextField tf;
+		if(o.getClass() == TextField.class.getClass()) {
+			tf = (TextField) o;
+			tf.setOnKeyPressed(new EventHandler<KeyEvent>()
+				    {
+				        @Override
+				        public void handle(KeyEvent ke)
+				        {
+				            if (ke.getCode().equals(KeyCode.ENTER))
+				            {
+				                connectToDatabase();
+				            }
+				        }
+				    });
+		}
+	}
+	
+	public void initPasswordFieldEnterKey(Object o) {
+		PasswordField pf;
+		if(o.getClass() == PasswordField.class.getClass()) {
+			pf = (PasswordField) o;
+			pf.setOnKeyPressed(new EventHandler<KeyEvent>()
+				    {
+		        		//@Override
+				        public void handle(KeyEvent ke)
+				        {
+				            if (ke.getCode().equals(KeyCode.ENTER))
+				            {
+				                connectToDatabase();
+				            }
+				        }
+				    });
+		}
+			
+	}
+	
 	@SuppressWarnings("resource")
 	public void consolePrinter (TextArea ta) {
 		synchronized (this) {
@@ -132,7 +203,47 @@ public class WebDealerApplicationController implements Initializable {
 			}
 		}
 	}
+	
+	// Customer login
+	public void onCustomerUsernameLogin (ActionEvent event) {
+		customerUsernameLogin();
+	}
+	
+	public void customerUsernameLogin() {
+		customerUsername = new UserCreds(fxCustomerUsernameTextField.getText());
+		if((oracleConn != null && !oracleConn.isConnected) || oracleConn == null) {
+			AppUtil.console("Need to login to the Oracle system.");
+			startSplash();
+			return;
+		}
+		
+		boolean c = Customer.exists(oracleConn.getConnection(),new Integer(-1), customerUsername.getLogin());
+		if (c) {
+			customerDialogue();
+			return;
+		}
+		else if (oracleConn.isConnected){
+			customerUsernameLoginSplash();
+			return;
+		}
+		//default for now
+		startSplash();
+	}
+	
+	public void customerUsernameLoginSplash() {
+		try {
+			AppUtil.console("Customer Username splash.");
+			String ss = "/edu/gmu/cs/infs614/webdealer/view/CustomerUsernameView.fxml";
+			fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(ss)));
+		} catch (IOException e) {
+				   // TODO Auto-generated catch block
+			  System.out.println(e.toString());
+		}
+		
+	}
+	
 
+	
 	// CLEAR Console
 	
 	public void clearConsole (ActionEvent event) {
@@ -153,9 +264,9 @@ public class WebDealerApplicationController implements Initializable {
 		OracleConnection.pass = fxPasswordField.getText();
 		
 		AppUtil.console("Attempting to connect...");
-		TestConnection tc = new TestConnection(OracleConnection.user,OracleConnection.pass);
+		oracleConn = new MainConnection(OracleConnection.user,OracleConnection.pass);
 		
-		if (!tc.isConnected) {
+		if (!oracleConn.isConnected) {
 			fxConnectButton.setText("Incorrect!");
 			fxConnectButton.setTextFill(Color.rgb(210, 39, 30));
         } else {
@@ -165,10 +276,11 @@ public class WebDealerApplicationController implements Initializable {
         	if(!schema.isSchemaLoaded()) {
         		schema.loadSchema();
         	}
-        	customerDialogue();
+        	customerUsernameLoginSplash();
         }
 		fxPasswordField.clear();
         
+		customerUsernameLogin();
 		
 	}
 	
@@ -176,7 +288,7 @@ public class WebDealerApplicationController implements Initializable {
 	
 	// DISPLAY SPLASH LOGIN
 	
-	public void displayStartSplash() {
+	public void startSplash() {
 		   try {
 			   System.out.println("Start splash.");
 			   
@@ -193,6 +305,7 @@ public class WebDealerApplicationController implements Initializable {
 	
 	public void displayCustomerDialogue(ActionEvent event) {
 	   AppUtil.console("Showing Customer dialogue.");
+	   //if()
 	   customerDialogue();
 	}
 	

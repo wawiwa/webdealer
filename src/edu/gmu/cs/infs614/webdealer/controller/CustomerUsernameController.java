@@ -7,12 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 
-public class SplashController implements Initializable {
+public class CustomerUsernameController implements Initializable {
 
 	
 	// COMPLEX APPLICATION SEGMENTS
 	@FXML
-	AnchorPane fxCustomerUsernameAnchor;
+	AnchorPane fxSplashAnchor;
 	
 	
 	@Override

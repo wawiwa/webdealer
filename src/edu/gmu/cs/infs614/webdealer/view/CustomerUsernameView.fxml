@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fxmltableview.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="Content" fx:id="fxCustomerUsernameAnchor" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="693.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.CustomerUsernameController">
+  <children>
+    <Label alignment="CENTER" layoutX="75.0" layoutY="121.0" prefHeight="71.0" prefWidth="543.0" style="&#10;" text="Welcome! &#10;We have no record of your username: " textAlignment="CENTER" textFill="BLACK" wrapText="false">
+      <font>
+        <Font size="20.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="262.0" prefHeight="71.0" prefWidth="666.0" style="&#10;" text="Try again or please select 'CUSTOMER' to create a new account." textAlignment="CENTER" textFill="BLACK" wrapText="false" />
+    <Label fx:id="fxUsernameLabel" alignment="CENTER" layoutX="75.0" layoutY="199.0" prefHeight="71.0" prefWidth="543.0" style="&#10;" text="Username" textAlignment="CENTER" textFill="GREY" wrapText="false">
+      <font>
+        <Font size="30.0" />
+      </font>
+    </Label>
+  </children>
+</AnchorPane>

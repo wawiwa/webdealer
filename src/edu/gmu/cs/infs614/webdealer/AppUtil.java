@@ -10,6 +10,7 @@ public class AppUtil {
 	private static String nl = "\n";
 	
 	public static void console(String stuff) {
+		if(ta==null)return;
 		ta.appendText(stuff+nl);
 	}
 
