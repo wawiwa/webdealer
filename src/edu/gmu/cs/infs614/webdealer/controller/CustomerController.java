@@ -1,5 +1,6 @@
 package edu.gmu.cs.infs614.webdealer.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -13,13 +14,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -30,16 +30,6 @@ import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 public class CustomerController implements Initializable {
 
-	
-	// COMPLEX APPLICATION SEGMENTS
-	@FXML
-	ScrollPane fxScrollPane;
-	
-	@FXML
-	AnchorPane fxAnchorPane;
-	
-	@FXML
-	TextArea fxConsoleTextArea;
 	
 	// MAIN VIEWS
 	@FXML
@@ -64,16 +54,22 @@ public class CustomerController implements Initializable {
 	
 	// DEFINE FORM
 	@FXML
+	static
 	TextField tfCustomer_ID;
 	@FXML
+	static
 	TextField tfFirstName;
 	@FXML
+	static
 	TextField tfLastName;
 	@FXML
+	static
 	TextField tfAge;
 	@FXML
+	static
 	TextField tfEmailAddress;
 	@FXML
+	static
 	TextField tfGender;
 	
 	
@@ -104,7 +100,7 @@ public class CustomerController implements Initializable {
 	private IntegerProperty index = new SimpleIntegerProperty();
 	
 	// DB connector
-	public Connection conn = new CustomerConnection("wward5","password").getConnection();
+	public static Connection conn = new CustomerConnection("wward5","password").getConnection();
 	
 	// CREATE TABLE DATA
 	
@@ -237,7 +233,34 @@ public class CustomerController implements Initializable {
 		}
 		
 	}
+	
+	public void onEditPaymentMethod(ActionEvent event) {
+		AppUtil.console("Loading payment method..");
+		displayPaymentMethod();
+		
+	}
 
+	public void displayPaymentMethod() {
+		try {
+			String mv = "/edu/gmu/cs/infs614/webdealer/view/PaymentMethodView.fxml";
+			WebDealerApplicationController.fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(mv)));
+		} catch (IOException e) {
+			AppUtil.console(e.toString());
+		}
+	}
+		
+	public static Integer getCurrentCustomerID() {
+		AppUtil.console("Getting currently selected customer..");
+		ArrayList<Customer> cl =
+				Customer.retrieve(conn, tfCustomer_ID, tfFirstName, tfLastName, tfAge, tfEmailAddress, tfGender);
+		
+		// get first customer
+		for(Customer c : cl) {
+			if(c.getCID() == null) return -1;
+			return c.getCID();
+		}
+		return -1;
+	}
 
 
 	private void clearForm() {

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fxmltableview.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="Content" fx:id="fxAnchorPane" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="597.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.PaymentMethodController">
+  <children>
+    <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="View" textAlignment="CENTER" textFill="BLACK" wrapText="false">
+      <font>
+        <Font size="13.0" fx:id="x1" />
+      </font>
+    </Label>
+    <SplitPane dividerPositions="0.7920433996383364" focusTraversable="true" orientation="VERTICAL" prefHeight="555.0" prefWidth="597.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TableView id="tableID" fx:id="fxtvPaymentMethod" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="ID" fx:id="fxtcPaymentID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="150.0" text="Vendor Name" fx:id="fxtcVendorName">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="150.0" text="Card Number" fx:id="fxtcCardNumber">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="150.0" text="Primary &#10;(1=yes)" fx:id="fxtcPrimary">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TextField id="nameInput" fx:id="fxtfVendorName" layoutX="151.0" layoutY="62.0" prefWidth="130.0" promptText="Vendor Name" />
+            <Button fx:id="submit" layoutX="499.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAddItem" prefWidth="67.0" text="Create" />
+            <Button fx:id="delete" layoutX="499.0" layoutY="77.0" mnemonicParsing="false" onAction="#onDeleteItem" prefWidth="68.0" text="Delete" />
+            <Label id="nameLabel" fx:id="fxlVendorName" layoutX="151.0" layoutY="83.0" prefWidth="130.0" text="" wrapText="true">
+              <font>
+                <Font size="10.0" fx:id="x1_x0" />
+              </font>
+            </Label>
+            <Button fx:id="clear" layoutX="429.0" layoutY="14.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="83.0" prefWidth="58.0" rotate="0.0" text="Clear" />
+            <TextField id="priceInput" fx:id="fxtfCardNumber" layoutX="287.0" layoutY="62.0" prefWidth="130.0" promptText="Card Number" />
+            <Button id="clear" fx:id="update" layoutX="499.0" layoutY="47.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="67.0" text="Update" />
+            <Label id="nameLabel" fx:id="fxlCustomerInfo" font="$x1" layoutX="14.0" layoutY="15.0" prefHeight="33.0" prefWidth="267.0" text="" wrapText="true">
+              <effect>
+                <Bloom />
+              </effect>
+            </Label>
+            <Label id="nameLabel" fx:id="fxlCardNumber" font="$x1_x0" layoutX="288.0" layoutY="84.0" prefWidth="130.0" text="" wrapText="true" />
+            <RadioButton fx:id="fxrbPrimary" layoutX="287.0" layoutY="15.0" mnemonicParsing="false" prefWidth="130.0" text="Make this your &#10;primary card ?" />
+            <TextField id="nameInput" fx:id="fxtfPaymentID" layoutX="14.0" layoutY="62.0" prefWidth="130.0" promptText="Card ID" />
+          </children>
+          <stylesheets>
+            <URL value="@FormValidationStyle.css" />
+          </stylesheets>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </children>
+</AnchorPane>

@@ -211,6 +211,43 @@ public class Customer {
 		
 		return true;
 	}
+	
+	// convenience method to get a customer info in string (toString() eventually)
+	public static String retrieve(Integer customer_id) {
+		if(Customer.conn==null) {
+			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+		}
+		
+		ResultSet rs = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+
+			preparedStatement = conn.prepareStatement(
+					"SELECT customer_ID,first_name,last_name FROM " +
+					"CUSTOMER WHERE customer_id=\'"+customer_id+"\'");
+			
+ 
+			// execute select SQL
+			rs = preparedStatement.executeQuery();
+ 
+			while (rs.next()) {
+				
+				return rs.getInt("customer_ID")+" "+rs.getString("first_name")+" "+rs.getString("last_name");	
+
+			}
+ 
+			preparedStatement.close();
+			//rs.first(); // It seems this non-scrollable result set resets to first automagically
+			
+			
+		} catch (SQLException e) {
+ 
+			AppUtil.console(e.getMessage());
+			
+		}
+		return "Not found.";
+	}
 			
 	public static ArrayList<Customer> retrieve(
 			Connection conn,
