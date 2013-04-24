@@ -19,12 +19,43 @@ public class SchemaInterpreter implements Iterable<String> // Create a new class
 		ingestSchema(RESOURCE_DIR+sql_file);
 	}
 	
+	public SchemaInterpreter() {
+	}
+	
 	
 	@Override
 	public Iterator<String> iterator() {
 		Iterator<String> fs = m_formattedStatements.iterator();
         return fs;
 	}
+	
+	public String processLargeStatement(String sql_file) {
+		String resource = RESOURCE_DIR+sql_file;
+		String line;
+		InputStreamReader isr;
+		BufferedReader sql;
+		String statement = "";
+
+
+		isr = new InputStreamReader(getClass().getResourceAsStream(resource));
+		sql = new BufferedReader(isr);
+
+		try {
+			while ((line = sql.readLine()) != null) {
+						
+				if(line.contains("//")) continue;
+
+				statement = (statement+" "+line).trim();
+			  	
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return statement;
+
+	}
+	
 	
 	private void ingestSchema(String sql_file) {
 		String resource = sql_file;

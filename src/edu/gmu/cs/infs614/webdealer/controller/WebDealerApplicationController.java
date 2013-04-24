@@ -273,8 +273,13 @@ public class WebDealerApplicationController implements Initializable {
         	fxConnectButton.setText("Confirmed!");
         	fxConnectButton.setTextFill(Color.rgb(21, 117, 84));
         	Schema schema = new Schema(new SchemaConnection(OracleConnection.user,OracleConnection.pass).getConnection());
+        	
         	if(!schema.isSchemaLoaded()) {
+        		
         		schema.loadSchema();
+        		schema.loadVoucherTrigger();
+        		schema.loadInserts();
+     
         	}
         	customerUsernameLoginSplash();
         }

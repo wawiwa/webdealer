@@ -26,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.Merchant;
 import edu.gmu.cs.infs614.webdealer.model.connector.MerchantConnection;
+import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 public class MerchantController implements Initializable {
@@ -86,7 +87,7 @@ public class MerchantController implements Initializable {
 	private IntegerProperty index = new SimpleIntegerProperty();
 	
 	// DB connector
-	public Connection conn = new MerchantConnection("wward5","password").getConnection();
+	public Connection conn = new MerchantConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 	
 	
 	final ObservableList<Merchant> data = FXCollections.observableArrayList();

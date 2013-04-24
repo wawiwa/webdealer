@@ -26,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.Customer;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
+import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 public class CustomerController implements Initializable {
@@ -100,7 +101,7 @@ public class CustomerController implements Initializable {
 	private IntegerProperty index = new SimpleIntegerProperty();
 	
 	// DB connector
-	public static Connection conn = new CustomerConnection("wward5","password").getConnection();
+	public static Connection conn = new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 	
 	// CREATE TABLE DATA
 	

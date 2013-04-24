@@ -3,6 +3,7 @@ package edu.gmu.cs.infs614.webdealer.model;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
@@ -18,6 +19,55 @@ public final class Schema {
 		this.conn = conn;
 	}
 	
+	public void loadVoucherTrigger() {
+		
+		String line=null;
+		SchemaInterpreter si = new SchemaInterpreter();
+		try { 
+			
+			Statement statement = null;
+			
+			line = si.processLargeStatement("voucherTrigger.sql");
+			System.out.println (line);
+			statement = conn.createStatement();
+			statement.execute(line);
+			statement.close();
+		} catch (NullPointerException | SQLException e) {
+			System.out.println("NPE: "+e+" ON THIS SQL: " +line);
+		}
+
+	}
+	
+	
+	public void loadInserts() {
+
+		try { 
+	
+			SchemaInterpreter si_schema = new SchemaInterpreter("inserts.sql");
+			Statement statement = null;
+			
+			for(String line : si_schema) {
+				//PreparedStatement pStmt = conn.prepareStatement(line);
+				try {
+					System.out.println(line);
+					statement = conn.createStatement(); // Create a new statement
+					statement.addBatch(line);
+					statement.executeBatch();
+					statement.close();
+				} catch (NullPointerException npe) {
+					System.out.println("NPE: "+npe+" ON THIS SQL: " +line);
+				}
+				
+				catch (Exception e) {
+					System.out.println("Most likely a DDL error, not a problem."+e);
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Insert error: "+e);
+		} // if any error occurred in the try..catch block, call the SQLError
+			// function
+	}
 	public void loadSchema() {
 		
 		try { 
@@ -28,26 +78,28 @@ public final class Schema {
 			for(String line : si_schema) {
 				//PreparedStatement pStmt = conn.prepareStatement(line);
 				try {
-					AppUtil.console(line);
-					//System.err.println("conn NPE?");
+					System.out.println(line);
 					statement = conn.createStatement(); // Create a new statement
-					//System.err.println("statement NPE?");
 					statement.addBatch(line);
-					
 					statement.executeBatch();
-					//conn.commit();
+					if(line.contains("CREATE TABLE Deal")) {
+						line = si_schema.processLargeStatement("voucherTrigger.sql");
+						statement.close();
+						statement = conn.createStatement();
+						statement.execute(line);
+					}
 					statement.close();
 				} catch (NullPointerException npe) {
-					AppUtil.console("NPE: "+npe+" ON THIS SQL: " +line);
+					System.out.println("NPE: "+npe+" ON THIS SQL: " +line);
 				}
 				
 				catch (Exception e) {
-					AppUtil.console("Most likely a DDL error, not a problem."+e);
+					System.out.println("Most likely a DDL error, not a problem."+e);
 				}
 			}
 
 		} catch (Exception e) {
-			AppUtil.console("Schema error: "+e);
+			System.out.println("Schema error: "+e);
 		} // if any error occurred in the try..catch block, call the SQLError
 			// function
 
@@ -103,7 +155,7 @@ public final class Schema {
 				map.get("PURCHASE_WITH").next() &&
 				map.get("SHOPPING_CART").next()) {
 			  // All tables exists
-				AppUtil.console("Schema already loaded.");
+				System.out.println("Schema already loaded.");
 				return true;
 			}
 			else {
@@ -111,7 +163,7 @@ public final class Schema {
 				return false;
 			}
 		} catch (Exception e) {
-			AppUtil.console("Schema not loaded properly."+e);
+			System.out.println("Schema not loaded properly."+e);
 			return false;
 		}
 	}

@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
+import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 /* Customer model
@@ -131,7 +132,7 @@ public class Customer {
 			Integer cAge, String cEmailAddress, String cGender) {
 		
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+			Customer.conn=new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 		}
 		
 		String sql = "BEGIN INSERT INTO " +
@@ -169,7 +170,7 @@ public class Customer {
 	{
 		
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+			Customer.conn=new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 		}
 		
 		String selectSql;
@@ -215,7 +216,7 @@ public class Customer {
 	// convenience method to get a customer info in string (toString() eventually)
 	public static String retrieve(Integer customer_id) {
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+			Customer.conn=new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 		}
 		
 		ResultSet rs = null;
@@ -259,7 +260,7 @@ public class Customer {
 			TextField tfGender ) 
 	{
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+			Customer.conn=new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 		}
 		
 		HashMap<String,TextField> map = new HashMap<String,TextField>();
@@ -370,7 +371,7 @@ public class Customer {
 	// TODO
 	public static boolean update(Customer oldCust, Customer newCust) {
 		if(Customer.conn==null) {
-			Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+			Customer.conn=new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 		}
 		
 		
@@ -403,7 +404,7 @@ public class Customer {
 	// TODO
 		public static boolean delete(Customer oldCust) {
 			if(Customer.conn==null) {
-				Customer.conn=new CustomerConnection(CustomerConnection.user,CustomerConnection.pass).getConnection();
+				Customer.conn=new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 			}
 			
 			

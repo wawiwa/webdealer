@@ -24,34 +24,34 @@
           <children>
             <TableView id="tableID" fx:id="tvCustomer" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                <TableColumn minWidth="20.0" prefWidth="75.0" text="ID" fx:id="tcCustomerID">
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="Customer">
                   <cellValueFactory>
                     <PropertyValueFactory property="tID" />
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="100.0" text="First Name" fx:id="tcFirstName">
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="Voucher&#10;ID" fx:id="tcCustomerID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="100.0" text="Purchase &#10;Date" fx:id="tcFirstName">
                   <cellValueFactory>
                     <PropertyValueFactory property="tDate" />
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="100.0" text="Last Name" fx:id="tcLastName">
+                <TableColumn prefWidth="75.0" text="Merchant" fx:id="tcAge">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tPrice" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="153.0" text="Deal&#10;Description" fx:id="tcEmailAddress">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tPrice" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="100.0" text="Status" fx:id="tcLastName">
                   <cellValueFactory>
                     <PropertyValueFactory property="tName" />
-                  </cellValueFactory>
-                </TableColumn>
-                <TableColumn prefWidth="75.0" text="Age" fx:id="tcAge">
-                  <cellValueFactory>
-                    <PropertyValueFactory property="tPrice" />
-                  </cellValueFactory>
-                </TableColumn>
-                <TableColumn prefWidth="200.0" text="Email" fx:id="tcEmailAddress">
-                  <cellValueFactory>
-                    <PropertyValueFactory property="tPrice" />
-                  </cellValueFactory>
-                </TableColumn>
-                <TableColumn prefWidth="75.0" text="Gender" fx:id="tcGender">
-                  <cellValueFactory>
-                    <PropertyValueFactory property="tPrice" />
                   </cellValueFactory>
                 </TableColumn>
               </columns>
@@ -60,31 +60,17 @@
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
-            <TextField id="nameInput" fx:id="tfFirstName" layoutX="14.0" layoutY="26.0" prefWidth="130.0" promptText="First Name" />
-            <TextField id="dateInput" fx:id="tfLastName" layoutX="151.0" layoutY="25.0" prefWidth="130.0" promptText="Last Name" />
-            <TextField id="priceInput" fx:id="tfAge" layoutX="289.0" layoutY="26.0" prefWidth="130.0" promptText="Age" />
-            <Button fx:id="submit" layoutX="499.0" layoutY="16.0" mnemonicParsing="false" onAction="#onAddItem" prefWidth="67.0" text="Create" />
-            <Button fx:id="delete" layoutX="583.0" layoutY="46.0" mnemonicParsing="false" onAction="#onDeleteItem" prefWidth="73.0" text="Delete" />
-            <Label id="nameLabel" fx:id="firstNameLabel" layoutX="14.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true">
+            <TextField id="nameInput" fx:id="tfFirstName" layoutX="14.0" layoutY="26.0" prefWidth="130.0" promptText="Customer email" />
+            <TextField id="dateInput" fx:id="tfLastName" layoutX="151.0" layoutY="25.0" prefWidth="130.0" promptText="Merchant" />
+            <TextField id="priceInput" fx:id="tfAge" layoutX="289.0" layoutY="25.0" prefWidth="130.0" promptText="Status" />
+            <Label id="priceLabel" fx:id="ageLabel" layoutX="289.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true">
               <font>
                 <Font size="10.0" fx:id="x1_x0" />
               </font>
             </Label>
-            <Label id="dateLabel" fx:id="lastNameLabel" font="$x1_x0" layoutX="151.0" layoutY="47.0" prefWidth="130.00009999999747" text="" wrapText="true" />
-            <Label id="priceLabel" fx:id="ageLabel" font="$x1_x0" layoutX="289.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true" />
-            <Button fx:id="clear" layoutX="429.0" layoutY="14.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="83.0" prefWidth="58.0" rotate="0.0" text="Clear" />
-            <TextField id="nameInput" fx:id="tfEmailAddress" layoutX="14.0" layoutY="67.0" prefWidth="130.0" promptText="Email Address" />
-            <Label id="nameLabel" fx:id="emailAddressLabel" font="$x1_x0" layoutX="14.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
-            <TextField id="nameInput" fx:id="tfGender" layoutX="151.0" layoutY="67.0" prefWidth="130.0" promptText="Gender" />
-            <Label id="nameLabel" fx:id="genderLabel" font="$x1_x0" layoutX="152.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
-            <Button fx:id="search" layoutX="583.0" layoutY="16.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
-            <TextField id="priceInput" fx:id="tfCustomer_ID" layoutX="289.0" layoutY="67.0" prefWidth="130.0" promptText="Customer ID" />
-            <Button id="clear" fx:id="update" layoutX="499.0" layoutY="46.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="67.0" text="Update" />
-            <Button id="clear" fx:id="fxPurchaseHistoryButton" layoutX="499.0" layoutY="76.0" mnemonicParsing="false" prefWidth="157.0" text="View Purchase History">
-              <font>
-                <Font size="12.0" />
-              </font>
-            </Button>
+            <Button fx:id="clear" layoutX="429.0" layoutY="14.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="82.0" prefWidth="58.0" rotate="0.0" text="Clear" />
+            <Button fx:id="search" layoutX="499.0" layoutY="29.0" mnemonicParsing="false" onAction="#onSearchItem" prefWidth="160.0" text="Retrieve" />
+            <Button id="clear" fx:id="update" layoutX="499.0" layoutY="59.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="160.0" text="Update Status" />
           </children>
           <stylesheets>
             <URL value="@FormValidationStyle.css" />

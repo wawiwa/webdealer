@@ -14,20 +14,66 @@ import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.PaymentMethodConnection;
 
 /*
-CREATE TABLE Payment_Method(
-payment_ID INTEGER, 
-cc_number VARCHAR2(18),
-cc_vendor VARCHAR2(30),
-customer_ID INTEGER,
-cc_default INTEGER CHECK (cc_default=0 OR cc_default=1),
-PRIMARY KEY (payment_ID,customer_ID),
-FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
+ * 
+ * 
+ * 
+ * 
+CREATE TABLE Voucher(
+voucher_ID INTEGER, 
+status VARCHAR2(30),
+PRIMARY KEY (voucher_ID)
 );
-INSERT INTO Payment_Method VALUES (seq_payment_method.nextval,'1111222233334444','VISA','1','1');
+INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
+
+CREATE TABLE Transaction(
+transaction_ID INTEGER, 
+trans_date DATE,
+voucher_ID INTEGER,
+PRIMARY KEY (transaction_ID),
+FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
+);
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1');
+
+
+CREATE TABLE Purchase(
+	transaction_ID INTEGER,
+	voucher_ID INTEGER,
+	PRIMARY KEY (voucher_ID),
+	FOREIGN KEY (transaction_ID) REFERENCES Transaction (transaction_ID),
+	FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
+);
+INSERT INTO Purchase VALUES ('1','1');
+
+CREATE TABLE Purchase_Deal(
+	voucher_ID INTEGER,
+	deal_ID INTEGER,
+	PRIMARY KEY (voucher_ID),
+	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
+	FOREIGN KEY (deal_ID) REFERENCES Deal
+);
+INSERT INTO Purchase_Deal VALUES ('1','1');
+
+CREATE TABLE Purchase_With(
+	voucher_ID INTEGER,
+	payment_ID INTEGER,
+	customer_ID INTEGER,
+	PRIMARY KEY (voucher_ID),
+	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
+	FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method on delete cascade
+);
+INSERT INTO Purchase_With VALUES ('1','1','1');
+
+CREATE TABLE Shopping_Cart AS(
+SELECT T.transaction_ID, T.trans_date, T.voucher_ID, PD.deal_ID,PW.payment_ID,PW.customer_ID
+FROM Transaction T
+INNER JOIN Purchase_Deal PD
+ON T.voucher_ID=PD.voucher_ID
+INNER JOIN Purchase_With PW
+ON PD.voucher_ID=PW.voucher_ID);
 */
 
 // Immutable tuple
-public class PaymentMethod {
+public class Purchase {
 
 	public boolean isInDatabase = false;
 	private SimpleIntegerProperty pmPaymentID = null; 
@@ -38,13 +84,13 @@ public class PaymentMethod {
 	private static Connection conn = null;
 
 	
-	public PaymentMethod(Connection conn, 
+	public Purchase(Connection conn, 
 			Integer payment_id, 
 			String cc_vendor, 
 			String cc_number, 
 			Integer cc_default,
 			Integer customer_id) {
-		PaymentMethod.conn = conn;
+		Purchase.conn = conn;
 		// create a new payment in the database
 		if( payment_id == null) {
 			int result = create(cc_vendor,cc_number,cc_default,customer_id);
@@ -76,13 +122,13 @@ public class PaymentMethod {
 		
 	}
 	
-	public PaymentMethod(Connection conn, 
+	public Purchase(Connection conn, 
 			TextField payment_id, 
 			TextField cc_vendor, 
 			TextField cc_number, 
 			Integer cc_default,
 			Integer customer_id) {
-		PaymentMethod.conn = conn;
+		Purchase.conn = conn;
 		// create a new payment in the database
 		if( payment_id == null) {
 			int result = create(cc_vendor.getText(),cc_number.getText(),
@@ -161,7 +207,7 @@ public class PaymentMethod {
 	}
 	
 	// retrieves cards based on customer id
-	public static ArrayList<PaymentMethod> retrieve(
+	public static ArrayList<Purchase> retrieve(
 			Connection conn,
 			Integer customer_id) 
 	{
@@ -174,7 +220,7 @@ public class PaymentMethod {
 		AppUtil.console("Select String: "+selectSQL);
  
 		ResultSet rs = null;
-		ArrayList<PaymentMethod> pml = new ArrayList<PaymentMethod>();
+		ArrayList<Purchase> pml = new ArrayList<Purchase>();
 		
 		try {
 
@@ -186,7 +232,7 @@ public class PaymentMethod {
  
 			while (rs.next()) {
 				
-				pml.add(new PaymentMethod(PaymentMethod.conn,
+				pml.add(new Purchase(Purchase.conn,
 						rs.getInt("payment_ID"),
 						rs.getString("cc_vendor"),
 						rs.getString("cc_number"),
@@ -217,7 +263,7 @@ public class PaymentMethod {
  
 	}
 	
-	public static boolean update(PaymentMethod oldPayment, PaymentMethod newPayment) {
+	public static boolean update(Purchase oldPayment, Purchase newPayment) {
 		if(!connect()) AppUtil.console("Not able to connect to database!");
 		
 		
@@ -244,7 +290,7 @@ public class PaymentMethod {
 		return true;
 	}
 	
-		public static boolean delete(PaymentMethod oldPayment) {
+		public static boolean delete(Purchase oldPayment) {
 			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
 			
@@ -271,8 +317,8 @@ public class PaymentMethod {
 
 
 	private static boolean connect() {
-		if(PaymentMethod.conn==null) {
-			PaymentMethod.conn=new PaymentMethodConnection(OracleConnection.user,OracleConnection.pass).getConnection();
+		if(Purchase.conn==null) {
+			Purchase.conn=new PaymentMethodConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 			return true;
 		}
 		return true;
