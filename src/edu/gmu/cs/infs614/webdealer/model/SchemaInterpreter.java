@@ -111,10 +111,7 @@ public class SchemaInterpreter implements Iterable<String> // Create a new class
 			System.out.println("out: "+line);
 		}
 		
-		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
-		   //get current date time with Date()
-		   Date date = new Date();
-		   System.out.println(dateFormat.format(date));
+
 		   
 	}
 

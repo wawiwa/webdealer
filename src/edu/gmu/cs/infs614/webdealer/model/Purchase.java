@@ -96,9 +96,18 @@ public class Purchase {
 			TextField transaction_id,
 			TextField email_address, 
 			TextField deal_id,
-			TextField quantity) {
+			TextField quantity,
+			TextField voucher_id) {
 		Purchase.conn = conn;
-		// create a new payment in the database
+		
+		// if voucher id not included, set to 0
+		if(voucher_id == null || voucher_id.getText() == null) {
+			voucher_id.setText("0");
+		}else {
+			this.pVoucher_ID = new SimpleIntegerProperty(Integer.parseInt(voucher_id.getText()));
+		}
+		
+		// create a new purchase in the database
 		if( transaction_id == null) {
 			int result = create(email_address.getText(),
 					Integer.parseInt(deal_id.getText()),
@@ -181,8 +190,9 @@ public class Purchase {
 		
 	}
 	
-	private boolean setProperties(String email_address, Integer deal_id, Integer quantity) {
-		
+	private boolean setProperties(String email_address, Integer deal_id, 
+			Integer quantity) {
+				
 		for(int i=1;i<=quantity;i++) {
 			vl.add(new SimpleIntegerProperty(Purchase.getUnsoldVoucherID(deal_id)));
 		}
@@ -191,6 +201,8 @@ public class Purchase {
 		this.pEmailAddress = new SimpleStringProperty(email_address);
 		this.pDeal_ID = new SimpleIntegerProperty(deal_id);
 		this.pStatus = new SimpleStringProperty("current");
+		this.pQuantity = new SimpleIntegerProperty(quantity);
+		
 		
 		Integer customerID = Customer.getCustomerID(email_address);
 		this.pCustomer_ID = new SimpleIntegerProperty(customerID);
@@ -238,7 +250,7 @@ public class Purchase {
 				stmt.setString(1, this.getPTrans_date());
 				stmt.setInt(2, voucher.get());
 				stmt.setInt(3, this.getPPayment_ID()); 
-				stmt.setInt(4, this.getpCustomer_ID());
+				stmt.setInt(4, this.getPCustomer_ID());
 				
 				stmt.registerOutParameter(5, java.sql.Types.INTEGER);	
 				stmt.execute();
@@ -349,6 +361,7 @@ public class Purchase {
 			TextField tfTransactionID = new TextField(); 
 			TextField tfEmailAddress = new TextField();
 			TextField tfQuantity = new TextField();
+			TextField tfVoucherID = new TextField();
 			
 			while (rs.next()) {
 				
@@ -356,12 +369,14 @@ public class Purchase {
 				tfEmailAddress.setText(rs.getString("email_address"));
 				tfDealID.setText( ((Integer) rs.getInt("deal_ID")).toString());
 				tfQuantity.setText("1");
+				tfVoucherID.setText( ((Integer) rs.getInt("voucher_ID")).toString() );
 				
 				pl.add(new Purchase(Purchase.conn,
 						tfTransactionID,
 						tfEmailAddress,
 						tfDealID,
-						tfQuantity));			
+						tfQuantity,
+						tfVoucherID));			
  
 			}
  
@@ -510,12 +525,16 @@ public class Purchase {
 		return pPayment_ID.get();
 	}
 
-	public Integer getpCustomer_ID() {
+	public Integer getPCustomer_ID() {
 		return pCustomer_ID.get();
 	}
 
 	public String getPEmailAddress() {
 		return pEmailAddress.get();
+	}
+	
+	public Integer getPQuantity() {
+		return pQuantity.get();
 	}
 	
 
