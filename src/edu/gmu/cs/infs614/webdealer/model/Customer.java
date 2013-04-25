@@ -428,6 +428,26 @@ public class Customer {
 	
 	
 	// getters 
+		
+	public static Integer getCustomerID(String email_address) {
+		String getCustomerIDsql = "SELECT customer_ID FROM Customer WHERE email_address=\'"+ email_address +"\'";
+		Integer id = -1;
+		if(Customer.conn==null) {
+			Customer.conn=new CustomerConnection(OracleConnection.user,OracleConnection.pass).getConnection();
+		}
+		ResultSet rs = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = conn.prepareStatement(getCustomerIDsql);
+			rs = preparedStatement.executeQuery();
+			rs.next();
+			id = rs.getInt("customer_ID");
+			preparedStatement.close();
+		} catch (Exception e) {
+			AppUtil.console("Most likely a DDL error, not a problem."+e);
+		}
+		return id;
+	}
 	
 	public Integer getCID() {
 		return cID.get();

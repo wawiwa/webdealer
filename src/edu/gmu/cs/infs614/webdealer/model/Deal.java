@@ -1,20 +1,13 @@
 package edu.gmu.cs.infs614.webdealer.model;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
-import javafx.beans.property.SimpleDoubleProperty;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.connector.DealConnection;
-import edu.gmu.cs.infs614.webdealer.model.connector.MerchantConnection;
-import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 
 //Immutable tuple (aka primary key)

@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
+import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.PaymentMethodConnection;
 
@@ -270,6 +271,32 @@ public class PaymentMethod {
 	// getters 
 
 
+		public static Integer getPaymentID(Integer customer_id) {
+			String getPaymentIDsql = "SELECT payment_ID FROM Payment_Method WHERE customer_ID=\'"+customer_id+"\'";
+			Integer id = 0;
+			connect();
+			ResultSet rs = null;
+			PreparedStatement preparedStatement = null;
+			try {
+				preparedStatement = conn.prepareStatement(getPaymentIDsql);
+				rs = preparedStatement.executeQuery();
+				
+				// deal with getting default id
+				while(rs.next()) {
+					id = rs.getInt("payment_ID");
+					if(rs.getInt("cc_default") == 1) {
+						return id;
+					}
+					
+				}
+				
+				preparedStatement.close();
+			} catch (Exception e) {
+				AppUtil.console("Most likely a DDL error, not a problem."+e);
+			}
+			return id;
+		}
+		
 	private static boolean connect() {
 		if(PaymentMethod.conn==null) {
 			PaymentMethod.conn=new PaymentMethodConnection(OracleConnection.user,OracleConnection.pass).getConnection();
@@ -287,7 +314,6 @@ public class PaymentMethod {
 	}
 
 	public String getPmCardNumber() {
-		System.out.println("getPMCard working??");
 		return pmCardNumber.get();
 	}
 

@@ -1,4 +1,4 @@
-
+select transaction_id,trans_date,voucher_id,payment_id,customer_id,email_address,payment_id,deal_id from deal,voucher,transaction,customer;
 
 CREATE TABLE Trans_Voucher_AG AS(
 SELECT 	T.transaction_ID,
@@ -7,7 +7,7 @@ SELECT 	T.transaction_ID,
 		T.customer_ID,
 		V.voucher_ID, 
 		V.deal_ID,
-		V.status_ID
+		V.status
 FROM Transaction T
 INNER JOIN Voucher V
 ON T.voucher_ID=V.voucher_ID)

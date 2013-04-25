@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-import edu.gmu.cs.infs614.webdealer.AppUtil;
-
 
 public final class Schema {
 

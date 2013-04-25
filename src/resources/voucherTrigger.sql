@@ -11,8 +11,7 @@ BEGIN
 	FOR counter IN 1..:new.quantity_limit
 	LOOP 
 		INSERT INTO VOUCHER VALUES
-		(seq_voucher.nextval,'current',:new.deal_ID);
-		
+		(seq_voucher.nextval,'current',:new.deal_ID,'0');
 	END LOOP;
 
 END;

@@ -11,6 +11,7 @@ DROP TABLE Merchant CASCADE CONSTRAINTS;
 DROP TABLE Deal CASCADE CONSTRAINTS;
 DROP TABLE Location CASCADE CONSTRAINTS;
 DROP TABLE Category CASCADE CONSTRAINTS;	
+DROP VIEW Purchase;
 
 
 DROP SEQUENCE seq_customer;
@@ -145,10 +146,12 @@ FOREIGN KEY (category_ID) REFERENCES Category (category_ID),
 FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID)
 );
 
+// status=used,current,expired,refunded,sold
 CREATE TABLE Voucher(
 voucher_ID INTEGER, 
 status VARCHAR2(30),
 deal_ID INTEGER,
+sold INTEGER,
 PRIMARY KEY (voucher_ID),
 FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID) on delete cascade
 );
@@ -159,10 +162,12 @@ trans_date DATE,
 voucher_ID INTEGER,
 payment_ID INTEGER,
 customer_ID INTEGER,
-PRIMARY KEY (transaction_ID),
+PRIMARY KEY (transaction_ID,voucher_ID),
 FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID),
 FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method (payment_ID,customer_ID) on delete cascade
 );
+
+
 
 CREATE TABLE Review(
 review_ID INTEGER, 
@@ -175,13 +180,20 @@ FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
 FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
 );
 
-//CREATE TABLE Shopping_Cart AS(
-//SELECT T.transaction_ID, T.trans_date, T.voucher_ID, PD.deal_ID,PW.payment_ID,PW.customer_ID
-//FROM Transaction T
-//INNER JOIN Purchase_Deal PD
-//ON T.voucher_ID=PD.voucher_ID
-//INNER JOIN Purchase_With PW
-//ON PD.voucher_ID=PW.voucher_ID);
+CREATE VIEW Purchase AS(
+SELECT  T.transaction_ID, 
+		T.trans_date, 
+		T.voucher_ID, 
+		T.payment_ID, 
+		T.customer_ID,
+		V.status,
+		V.deal_ID,
+		C.email_address
+FROM Transaction T
+INNER JOIN Voucher V
+ON T.voucher_ID=V.voucher_ID
+INNER JOIN Customer C
+ON T.customer_ID=C.customer_ID);
 
 
 

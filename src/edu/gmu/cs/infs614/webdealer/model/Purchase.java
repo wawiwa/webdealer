@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,90 +15,96 @@ import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.PaymentMethodConnection;
+import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 /*
  * 
  * 
  * 
- * 
+
+CREATE TABLE Deal(
+deal_ID INTEGER,
+expiration_date DATE,
+description VARCHAR2(500),
+quantity_limit INTEGER,
+original_price REAL,
+deal_price REAL,
+sale_start_time DATE,
+sale_end_time DATE,
+location_ID INTEGER,
+category_ID INTEGER,
+merchant_ID INTEGER,
+PRIMARY KEY (deal_ID),
+FOREIGN KEY (location_ID) REFERENCES Location (location_ID),
+FOREIGN KEY (category_ID) REFERENCES Category (category_ID),
+FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID)
+);
+
+
 CREATE TABLE Voucher(
 voucher_ID INTEGER, 
 status VARCHAR2(30),
-PRIMARY KEY (voucher_ID)
+deal_ID INTEGER,
+PRIMARY KEY (voucher_ID),
+FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID) on delete cascade
 );
-INSERT INTO Voucher VALUES (seq_voucher.nextval,'current');
 
 CREATE TABLE Transaction(
 transaction_ID INTEGER, 
 trans_date DATE,
 voucher_ID INTEGER,
+payment_ID INTEGER,
+customer_ID INTEGER,
 PRIMARY KEY (transaction_ID),
-FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
+FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID),
+FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method (payment_ID,customer_ID) on delete cascade
 );
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1');
 
-
-CREATE TABLE Purchase(
-	transaction_ID INTEGER,
-	voucher_ID INTEGER,
-	PRIMARY KEY (voucher_ID),
-	FOREIGN KEY (transaction_ID) REFERENCES Transaction (transaction_ID),
-	FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID)
+CREATE TABLE Payment_Method(
+payment_ID INTEGER, 
+cc_number VARCHAR2(18),
+cc_vendor VARCHAR2(30),
+customer_ID INTEGER,
+cc_default INTEGER CHECK (cc_default=0 OR cc_default=1),
+PRIMARY KEY (payment_ID,customer_ID),
+FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
 );
-INSERT INTO Purchase VALUES ('1','1');
-
-CREATE TABLE Purchase_Deal(
-	voucher_ID INTEGER,
-	deal_ID INTEGER,
-	PRIMARY KEY (voucher_ID),
-	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
-	FOREIGN KEY (deal_ID) REFERENCES Deal
-);
-INSERT INTO Purchase_Deal VALUES ('1','1');
-
-CREATE TABLE Purchase_With(
-	voucher_ID INTEGER,
-	payment_ID INTEGER,
-	customer_ID INTEGER,
-	PRIMARY KEY (voucher_ID),
-	FOREIGN KEY (voucher_ID) REFERENCES Purchase,
-	FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method on delete cascade
-);
-INSERT INTO Purchase_With VALUES ('1','1','1');
-
-CREATE TABLE Shopping_Cart AS(
-SELECT T.transaction_ID, T.trans_date, T.voucher_ID, PD.deal_ID,PW.payment_ID,PW.customer_ID
-FROM Transaction T
-INNER JOIN Purchase_Deal PD
-ON T.voucher_ID=PD.voucher_ID
-INNER JOIN Purchase_With PW
-ON PD.voucher_ID=PW.voucher_ID);
+*
+*
 */
 
 // Immutable tuple
 public class Purchase {
 
 	public boolean isInDatabase = false;
-	private SimpleIntegerProperty pmPaymentID = null; 
-	private SimpleStringProperty pmVendorName = null;
-	private SimpleStringProperty pmCardNumber = null;
-	private SimpleIntegerProperty pmPrimary = null;
-	private SimpleIntegerProperty pmCustomerID = null;
+	
+	private SimpleIntegerProperty pVoucher_ID = null;
+	private SimpleStringProperty pStatus = null;
+	private SimpleIntegerProperty pDeal_ID = null;
+	private SimpleIntegerProperty pTransaction_ID = null;
+	private SimpleStringProperty pTrans_date = null;
+	private SimpleIntegerProperty pPayment_ID = null;
+	private SimpleIntegerProperty pCustomer_ID = null;
+	private SimpleStringProperty pEmailAddress = null;
+	private SimpleIntegerProperty pQuantity = null;
+	
+	private ArrayList<SimpleIntegerProperty> vl = new ArrayList<SimpleIntegerProperty>();
+
 	private static Connection conn = null;
-
 	
 	public Purchase(Connection conn, 
-			Integer payment_id, 
-			String cc_vendor, 
-			String cc_number, 
-			Integer cc_default,
-			Integer customer_id) {
+			TextField transaction_id,
+			TextField email_address, 
+			TextField deal_id,
+			TextField quantity) {
 		Purchase.conn = conn;
 		// create a new payment in the database
-		if( payment_id == null) {
-			int result = create(cc_vendor,cc_number,cc_default,customer_id);
+		if( transaction_id == null) {
+			int result = create(email_address.getText(),
+					Integer.parseInt(deal_id.getText()),
+					Integer.parseInt(quantity.getText()));
 			//couldn't be created
-			if(result == -1) {
+			if(result == 0) {
 				isInDatabase = false;
 				return;
 			}
@@ -103,125 +112,49 @@ public class Purchase {
 			else {
 				isInDatabase = true;
 			}
-			//set the oracle index
-			this.pmPaymentID = new SimpleIntegerProperty(result);
 					
-			}
+		}
 		// already in db, just create for view purposes
 		else {
-			this.pmPaymentID = new SimpleIntegerProperty(payment_id);
+			setProperties(email_address.getText(),
+					Integer.parseInt(deal_id.getText()),
+					Integer.parseInt(quantity.getText()));
+			isInDatabase = true;
 		}
-		
-		this.pmVendorName = new SimpleStringProperty(cc_vendor);
-		this.pmCardNumber = new SimpleStringProperty(cc_number);
-		this.pmPrimary = new SimpleIntegerProperty(cc_default);
-		this.pmCustomerID = new SimpleIntegerProperty(customer_id);
 		
 		AppUtil.console("Payment Method constructed");
 		
 		
 	}
 	
-	public Purchase(Connection conn, 
-			TextField payment_id, 
-			TextField cc_vendor, 
-			TextField cc_number, 
-			Integer cc_default,
-			Integer customer_id) {
-		Purchase.conn = conn;
-		// create a new payment in the database
-		if( payment_id == null) {
-			int result = create(cc_vendor.getText(),cc_number.getText(),
-					cc_default,customer_id);
-			//couldn't be created
-			if(result == -1) {
-				isInDatabase = false;
-				return;
-			}
-			//created
-			else {
-				isInDatabase = true;
-			}
-			//set the oracle index
-			this.pmPaymentID = new SimpleIntegerProperty(result);
-					
-			}
-		// already in db, just create for view purposes
-		else {
-			this.pmPaymentID = new SimpleIntegerProperty(Integer.parseInt(payment_id.getText()));
+	public ArrayList<Purchase> getPurchaseViews() {
+
+		ArrayList<Purchase> pl = new ArrayList<Purchase>();
+		
+			TextField vid = new TextField();
+			TextField sts = new TextField();
+			TextField did = new TextField();
+			TextField tid = new TextField();
+			TextField tdt = new TextField();
+			TextField pid = new TextField();
+			TextField cid = new TextField();
+			TextField eml = new TextField();
+
+		for(SimpleIntegerProperty voucher : vl) {
+			vid.setText( ((Integer) voucher.get()).toString());
+			tid.setText( ((Integer) getPTransaction_ID()).toString());
+			pl.addAll(Purchase.retrieve(conn,vid,sts,did,tid,tdt,pid,cid,eml));
 		}
-		
-		this.pmVendorName = new SimpleStringProperty(cc_vendor.getText());
-		this.pmCardNumber = new SimpleStringProperty(cc_number.getText());
-		this.pmPrimary = new SimpleIntegerProperty(cc_default);
-		this.pmCustomerID = new SimpleIntegerProperty(customer_id);
-		
-		AppUtil.console("Payment Method constructed");
-		
-		
+		return pl;
 	}
 	
-
-	
-
-	
-
-
-	// CRUD
-	private int create( 
-			String cc_vendor,
-			String cc_number, 
-			Integer cc_default,
-			Integer customer_id) {
+	private boolean isValidDeal(Integer deal_id) {
 		
-		if(!connect()) AppUtil.console("Not able to connect to database!");
-		
-		String sql = "BEGIN INSERT INTO " +
-						"Payment_Method (payment_ID,cc_vendor,cc_number,cc_default,customer_ID) " +
-						"VALUES (seq_payment_method.nextval, ?,?,?,?) RETURNING payment_ID INTO ?; END;";
-		
-		java.sql.CallableStatement stmt = null;
-		
-		
-		int generatedKey = 0;
-		
-		try {
-			stmt = conn.prepareCall(sql);
-			stmt.setString(1, cc_vendor);
-			stmt.setString(2, cc_number);
-			stmt.setInt(3, cc_default); 
-			stmt.setInt(4, customer_id);
-			
-			stmt.registerOutParameter(5, java.sql.Types.INTEGER);	
-			stmt.execute();
-			generatedKey = stmt.getInt(5);
-			stmt.close();
-			
-		} catch (SQLException sqle) {
-			AppUtil.console("Payment insert error: "+sqle);
-			return -1;
-		}
-		
-		AppUtil.console("Payment_ID: "+generatedKey);
-		return generatedKey;
-	}
-	
-	// retrieves cards based on customer id
-	public static ArrayList<Purchase> retrieve(
-			Connection conn,
-			Integer customer_id) 
-	{
-		if(!connect()) AppUtil.console("Not able to connect to database!");
+		String selectSQL = "SELECT * FROM Deal WHERE deal_ID=\'"+deal_id+"\' AND sale_end_time>=\'"+this.getPTrans_date()+"\'";
 		
 		PreparedStatement preparedStatement = null;
- 
-		String selectSQL = "SELECT * FROM PAYMENT_METHOD WHERE customer_id=\'"+customer_id+"\'";
-		
-		AppUtil.console("Select String: "+selectSQL);
- 
 		ResultSet rs = null;
-		ArrayList<Purchase> pml = new ArrayList<Purchase>();
-		
+		boolean is = false;
 		try {
 
 			preparedStatement = conn.prepareStatement(selectSQL);
@@ -230,21 +163,205 @@ public class Purchase {
 			// execute select SQL
 			rs = preparedStatement.executeQuery();
  
+			if(rs.next()) {
+				is = true;
+			}
+ 
+			preparedStatement.close();
+			//rs.first(); // It seems this non-scrollable result set resets to first automagically
+			
+			
+		} catch (SQLException e) {
+ 
+			AppUtil.console(e.getMessage());
+			
+		}
+
+		return is;
+		
+	}
+	
+	private boolean setProperties(String email_address, Integer deal_id, Integer quantity) {
+		
+		for(int i=1;i<=quantity;i++) {
+			vl.add(new SimpleIntegerProperty(Purchase.getUnsoldVoucherID(deal_id)));
+		}
+		if(vl.size() < quantity) return false;
+		
+		this.pEmailAddress = new SimpleStringProperty(email_address);
+		this.pDeal_ID = new SimpleIntegerProperty(deal_id);
+		this.pStatus = new SimpleStringProperty("current");
+		
+		Integer customerID = Customer.getCustomerID(email_address);
+		this.pCustomer_ID = new SimpleIntegerProperty(customerID);
+		
+		Integer paymentID = PaymentMethod.getPaymentID(customerID);
+		this.pPayment_ID = new SimpleIntegerProperty(paymentID);
+		
+		
+		
+		// 1-Jun-2013
+		//java.sql.Date sqlDate;
+		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
+		//get current date time with Date()
+		Date date = new Date();
+		
+		String currDate = dateFormat.format(date);
+		this.pTrans_date = new SimpleStringProperty(currDate);
+		return true;
+	}
+
+	// CRUD
+	private int create( String email_address, Integer deal_id, Integer quantity) {
+		
+		
+		if(!connect()) AppUtil.console("Not able to connect to database!");
+		
+		if(!isValidDeal(deal_id)) return 0;
+		
+		// not enough vouchers :(
+		if(!setProperties(email_address,deal_id,quantity)) return 0;
+		
+		int transaction_id = 0;
+		
+		for(SimpleIntegerProperty voucher : vl) {
+			
+			//   INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1','1','1');
+			String setTransactionSql = "BEGIN INSERT INTO " +
+					"Transaction (transaction_ID,trans_date,voucher_ID,payment_ID,customer_ID) " +
+					"VALUES (seq_transaction.nextval, ?,?,?,?) RETURNING transaction_ID INTO ?; END;";
+			
+			java.sql.CallableStatement stmt = null;
+			
+			try {
+				stmt = conn.prepareCall(setTransactionSql);
+				stmt.setString(1, this.getPTrans_date());
+				stmt.setInt(2, voucher.get());
+				stmt.setInt(3, this.getPPayment_ID()); 
+				stmt.setInt(4, this.getpCustomer_ID());
+				
+				stmt.registerOutParameter(5, java.sql.Types.INTEGER);	
+				stmt.execute();
+				transaction_id = stmt.getInt(5);
+				this.pTransaction_ID = new SimpleIntegerProperty(transaction_id);
+				stmt.close();
+				
+			} catch (SQLException sqle) {
+				AppUtil.console("Purchase insert error: "+sqle);
+				return -1;
+			}
+			
+			AppUtil.console("Purchase_ID: "+transaction_id);
+		}
+		return transaction_id;
+	}
+	
+
+	
+	public static ArrayList<Purchase> retrieve(
+			Connection conn,
+			TextField fxtfVoucherID,
+			TextField fxtfStatus, 
+			TextField fxtfDealID, 
+			TextField fxtfTransactionID, 
+			TextField fxtfTransDate, 
+			TextField fxtfPaymentID,
+			TextField fxtfCustomerID,
+			TextField fxtfEmailAddress) 
+	{
+		connect();
+		
+		int start = 0;
+		String sqlWhere = " WHERE ";
+		if(FormValidation.textFieldTypeInteger(fxtfVoucherID)) {
+			String voucher_ID = "voucher_ID = "+"\'"+fxtfVoucherID.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+voucher_ID;
+			sqlWhere += voucher_ID;
+			start++;
+		}
+		if(FormValidation.textFieldNotEmpty(fxtfStatus)) {
+			String status = "status = "+"\'"+fxtfStatus.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+status;
+			else sqlWhere += status;
+			start++;
+		}
+		if(FormValidation.textFieldTypeInteger(fxtfDealID)) {
+			String deal_ID = "deal_ID = "+"\'"+fxtfDealID.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+deal_ID;
+			else sqlWhere += deal_ID;
+			start++;
+		}
+		if(FormValidation.textFieldTypeInteger(fxtfTransactionID)) {
+			String transaction_ID = "transaction_ID = "+"\'"+fxtfTransactionID.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+transaction_ID;
+			else sqlWhere += transaction_ID;
+			start++;
+		}
+		if(FormValidation.textFieldNotEmpty(fxtfTransDate)) {
+			String trans_date = "trans_date = "+"\'"+fxtfTransDate.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+trans_date;
+			else sqlWhere += trans_date;
+			start++;
+		}
+		if(FormValidation.textFieldTypeInteger(fxtfPaymentID)) {
+			String payment_ID = "payment_ID = "+"\'"+fxtfPaymentID.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+payment_ID;
+			else sqlWhere += payment_ID;
+			start++;
+		}
+		if(FormValidation.textFieldTypeInteger(fxtfCustomerID)) {
+			String customer_ID = "customer_ID = "+"\'"+fxtfCustomerID.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+customer_ID;
+			else sqlWhere += customer_ID;
+			start++;
+		}
+		if(FormValidation.textFieldNotEmpty(fxtfEmailAddress)) {
+			String email_address = "email_address = "+"\'"+fxtfEmailAddress.getText()+"\'";
+			if(start>0) sqlWhere+=" AND "+email_address;
+			else sqlWhere += email_address;
+			start++;
+		}
+		
+		
+		PreparedStatement preparedStatement = null;
+ 
+		String selectSQL;
+		if(start>0) {
+			selectSQL = "SELECT * FROM Purchase "+sqlWhere;
+		}else {
+			selectSQL = "SELECT * FROM Purchase";
+		}
+		
+		AppUtil.console("Select String: "+selectSQL);
+ 
+		ResultSet rs = null;
+		ArrayList<Purchase> pl = new ArrayList<Purchase>();
+		
+		try {
+
+			preparedStatement = conn.prepareStatement(selectSQL);
+			
+ 
+			// execute select SQL
+			rs = preparedStatement.executeQuery();
+
+			TextField tfDealID = new TextField();
+			TextField tfTransactionID = new TextField(); 
+			TextField tfEmailAddress = new TextField();
+			TextField tfQuantity = new TextField();
+			
 			while (rs.next()) {
 				
-				pml.add(new Purchase(Purchase.conn,
-						rs.getInt("payment_ID"),
-						rs.getString("cc_vendor"),
-						rs.getString("cc_number"),
-						rs.getInt("cc_default"),
-						rs.getInt("customer_ID")));
- 
-				AppUtil.console("payment_ID : " + rs.getString("payment_ID"));
-				AppUtil.console("cc_vendor : " + rs.getString("cc_vendor"));
-				AppUtil.console("cc_number : " + rs.getString("cc_number"));
-				AppUtil.console("cc_default : " + rs.getString("cc_default"));
-				AppUtil.console("customer_ID : " + rs.getString("customer_ID"));
+				tfTransactionID.setText( ((Integer) rs.getInt("transaction_ID")).toString());
+				tfEmailAddress.setText(rs.getString("email_address"));
+				tfDealID.setText( ((Integer) rs.getInt("deal_ID")).toString());
+				tfQuantity.setText("1");
 				
+				pl.add(new Purchase(Purchase.conn,
+						tfTransactionID,
+						tfEmailAddress,
+						tfDealID,
+						tfQuantity));			
  
 			}
  
@@ -259,20 +376,19 @@ public class Purchase {
 		}
 		
 		
-		return pml;
+		return pl;
  
 	}
 	
-	public static boolean update(Purchase oldPayment, Purchase newPayment) {
+	public static boolean update(Purchase oldPurchase, Purchase newPurchase) {
 		if(!connect()) AppUtil.console("Not able to connect to database!");
 		
 		
-		AppUtil.console("Modifying payment: "+oldPayment.getPmPaymentID());
+		AppUtil.console("Modifying voucher status: "+oldPurchase.getPVoucher_ID());
 		
-		String sql = "UPDATE Payment_Method SET "+
-				"cc_vendor= \'"+newPayment.getPmVendorName()+"\',"+
-				"cc_number= \'"+newPayment.getPmCardNumber()+"\'"+
-				" WHERE payment_ID = \'"+newPayment.getPmPaymentID()+"\'";
+		String sql = "UPDATE Voucher SET "+
+				"status= \'"+newPurchase.getPStatus()+"\',"+
+				" WHERE voucher_ID = \'"+newPurchase.getPVoucher_ID()+"\'";
 		
 		AppUtil.console("UPDATE: "+sql);
 
@@ -290,14 +406,14 @@ public class Purchase {
 		return true;
 	}
 	
-		public static boolean delete(Purchase oldPayment) {
+		public static boolean delete(Purchase oldPurchase) {
 			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
 			
-			AppUtil.console("Deleting payment: "+oldPayment.getPmPaymentID());
+			AppUtil.console("Deleting purchase: "+oldPurchase.getPTransaction_ID());
 			
-			String sql = "DELETE FROM Payment_Method "+ 
-					"WHERE payment_ID = \'"+oldPayment.getPmPaymentID()+"\'";
+			String sql = "DELETE FROM Transaction "+ 
+					"WHERE transaction_ID = \'"+oldPurchase.getPTransaction_ID()+"\'";
 			
 			AppUtil.console("DELETE: "+sql);
 
@@ -314,7 +430,52 @@ public class Purchase {
 	
 	
 	// getters 
+		
+	public static boolean sellVoucher(Integer voucher_id) {
+		if(!connect()) AppUtil.console("Not able to connect to database!");
+		
+		
+		AppUtil.console("Updating voucher status. ");
+		
+		String sql = "UPDATE Voucher SET "+
+				"status= \'1\',"+
+				" WHERE voucher_ID = \'"+voucher_id+"\'";
+		
+		AppUtil.console("UPDATE: "+sql);
 
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.executeQuery();
+			preparedStatement.close();
+		} catch (Exception e) {
+			
+			AppUtil.console("Update error: "+e);
+			return false;
+			
+		}
+		return true;
+	}
+
+		public static Integer getUnsoldVoucherID(Integer deal_id) {
+			String getVoucherIDsql = "SELECT voucher_ID FROM Voucher WHERE deal_ID=\'"+deal_id+"\'"+
+					" AND sold=\'0\'";
+			
+			Integer id = 0;
+			connect();
+			ResultSet rs = null;
+			PreparedStatement preparedStatement = null;
+			try {
+				preparedStatement = conn.prepareStatement(getVoucherIDsql);
+				rs = preparedStatement.executeQuery();
+				rs.next();
+				id = rs.getInt("voucher_ID");
+				preparedStatement.close();
+			} catch (Exception e) {
+				AppUtil.console("Most likely a DDL error, not a problem."+e);
+			}
+			return id;
+		}
 
 	private static boolean connect() {
 		if(Purchase.conn==null) {
@@ -323,26 +484,40 @@ public class Purchase {
 		}
 		return true;
 	}
-
-	public Integer getPmPaymentID() {
-		return pmPaymentID.get();
+	
+	
+	public Integer getPVoucher_ID() {
+		return pVoucher_ID.get();
 	}
 
-	public String getPmVendorName() {
-		return pmVendorName.get();
+	public String getPStatus() {
+		return pStatus.get();
 	}
 
-	public String getPmCardNumber() {
-		System.out.println("getPMCard working??");
-		return pmCardNumber.get();
+	public Integer getPDeal_ID() {
+		return pDeal_ID.get();
 	}
 
-	public Integer getPmPrimary() {
-		return pmPrimary.get();
+	public Integer getPTransaction_ID() {
+		return pTransaction_ID.get();
 	}
 
-	public Integer getPmCustomerID() {
-		return pmCustomerID.get();
+	public String getPTrans_date() {
+		return pTrans_date.get();
 	}
 
+	public Integer getPPayment_ID() {
+		return pPayment_ID.get();
+	}
+
+	public Integer getpCustomer_ID() {
+		return pCustomer_ID.get();
+	}
+
+	public String getPEmailAddress() {
+		return pEmailAddress.get();
+	}
+	
+
+	
 }
