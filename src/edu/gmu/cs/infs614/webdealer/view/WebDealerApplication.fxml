@@ -71,7 +71,7 @@
                 <Font size="13.0" />
               </font>
             </Button>
-            <Button fx:id="fxShoppingCartButton" layoutY="235.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="124.0" text="PURCHASES" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0" />
+            <Button id="fxShoppingCartButton" fx:id="fxPurchaseButton" layoutY="235.0" mnemonicParsing="false" onAction="#displayPurchaseDialogue" prefHeight="24.0" prefWidth="124.0" text="PURCHASES" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0" />
             <Label layoutY="319.0" prefWidth="124.0" text="Oracle Username" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="31.0" />
             <TextField fx:id="fxUsernameTextField" layoutY="335.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
             <Label layoutY="357.0" prefWidth="76.0" text="Password" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />

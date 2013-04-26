@@ -14,7 +14,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
-import edu.gmu.cs.infs614.webdealer.model.connector.PaymentMethodConnection;
+import edu.gmu.cs.infs614.webdealer.model.connector.PurchaseConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 /*
@@ -98,17 +98,22 @@ public class Purchase {
 			TextField deal_id,
 			TextField quantity,
 			TextField voucher_id) {
+		AppUtil.console("P constr..");
 		Purchase.conn = conn;
 		
 		// if voucher id not included, set to 0
 		if(voucher_id == null || voucher_id.getText() == null) {
+			voucher_id = new TextField();
 			voucher_id.setText("0");
-		}else {
+		}else if (!voucher_id.getText().isEmpty()){ // voucher id included in textfield
+			
 			this.pVoucher_ID = new SimpleIntegerProperty(Integer.parseInt(voucher_id.getText()));
+			vl.add(this.pVoucher_ID);
 		}
+
 		
 		// create a new purchase in the database
-		if( transaction_id == null) {
+		if( transaction_id == null || transaction_id.getText().isEmpty()) {
 			int result = create(email_address.getText(),
 					Integer.parseInt(deal_id.getText()),
 					Integer.parseInt(quantity.getText()));
@@ -125,19 +130,21 @@ public class Purchase {
 		}
 		// already in db, just create for view purposes
 		else {
+			this.pTransaction_ID = 
+					new SimpleIntegerProperty(Integer.parseInt(transaction_id.getText()));
 			setProperties(email_address.getText(),
 					Integer.parseInt(deal_id.getText()),
 					Integer.parseInt(quantity.getText()));
 			isInDatabase = true;
 		}
 		
-		AppUtil.console("Payment Method constructed");
+		AppUtil.console("Purchase constructed");
 		
 		
 	}
 	
 	public ArrayList<Purchase> getPurchaseViews() {
-
+		AppUtil.console("P getPurchaseViews..");
 		ArrayList<Purchase> pl = new ArrayList<Purchase>();
 		
 			TextField vid = new TextField();
@@ -150,6 +157,7 @@ public class Purchase {
 			TextField eml = new TextField();
 
 		for(SimpleIntegerProperty voucher : vl) {
+			System.out.println("Purchase voucher id: "+voucher.get());
 			vid.setText( ((Integer) voucher.get()).toString());
 			tid.setText( ((Integer) getPTransaction_ID()).toString());
 			pl.addAll(Purchase.retrieve(conn,vid,sts,did,tid,tdt,pid,cid,eml));
@@ -158,6 +166,7 @@ public class Purchase {
 	}
 	
 	private boolean isValidDeal(Integer deal_id) {
+		AppUtil.console("P isValidDeal..");
 		
 		String selectSQL = "SELECT * FROM Deal WHERE deal_ID=\'"+deal_id+"\' AND sale_end_time>=\'"+this.getPTrans_date()+"\'";
 		
@@ -182,7 +191,8 @@ public class Purchase {
 			
 		} catch (SQLException e) {
  
-			AppUtil.console(e.getMessage());
+			
+			AppUtil.console(selectSQL + e.getMessage());
 			
 		}
 
@@ -192,11 +202,9 @@ public class Purchase {
 	
 	private boolean setProperties(String email_address, Integer deal_id, 
 			Integer quantity) {
-				
-		for(int i=1;i<=quantity;i++) {
-			vl.add(new SimpleIntegerProperty(Purchase.getUnsoldVoucherID(deal_id)));
-		}
-		if(vl.size() < quantity) return false;
+		
+		AppUtil.console("P setProperties..");
+
 		
 		this.pEmailAddress = new SimpleStringProperty(email_address);
 		this.pDeal_ID = new SimpleIntegerProperty(deal_id);
@@ -225,16 +233,26 @@ public class Purchase {
 
 	// CRUD
 	private int create( String email_address, Integer deal_id, Integer quantity) {
-		
+		AppUtil.console("P create..");
 		
 		if(!connect()) AppUtil.console("Not able to connect to database!");
 		
 		if(!isValidDeal(deal_id)) return 0;
 		
-		// not enough vouchers :(
+		
 		if(!setProperties(email_address,deal_id,quantity)) return 0;
 		
+		for(int i=1;i<=quantity;i++) {
+			vl.add(new SimpleIntegerProperty(Purchase.getUnsoldVoucherID(deal_id)));
+		}
+		
+		// not enough vouchers :(
+		if(vl.size() < quantity) return 0;
+		
 		int transaction_id = 0;
+		
+		
+		
 		
 		for(SimpleIntegerProperty voucher : vl) {
 			
@@ -259,7 +277,7 @@ public class Purchase {
 				stmt.close();
 				
 			} catch (SQLException sqle) {
-				AppUtil.console("Purchase insert error: "+sqle);
+				AppUtil.console("Purchase insert error: "+setTransactionSql+"\n"+sqle);
 				return -1;
 			}
 			
@@ -281,6 +299,7 @@ public class Purchase {
 			TextField fxtfCustomerID,
 			TextField fxtfEmailAddress) 
 	{
+		AppUtil.console("P retrieve..");
 		connect();
 		
 		int start = 0;
@@ -386,7 +405,7 @@ public class Purchase {
 			
 		} catch (SQLException e) {
  
-			AppUtil.console(e.getMessage());
+			AppUtil.console(selectSQL+e.getMessage());
 			
 		}
 		
@@ -396,6 +415,7 @@ public class Purchase {
 	}
 	
 	public static boolean update(Purchase oldPurchase, Purchase newPurchase) {
+		AppUtil.console("P update..");
 		if(!connect()) AppUtil.console("Not able to connect to database!");
 		
 		
@@ -414,7 +434,7 @@ public class Purchase {
 			preparedStatement.close();
 		} catch (Exception e) {
 			
-			AppUtil.console("Update error: "+e);
+			AppUtil.console("Update error: "+sql+e);
 			return false;
 			
 		}
@@ -422,6 +442,7 @@ public class Purchase {
 	}
 	
 		public static boolean delete(Purchase oldPurchase) {
+			AppUtil.console("P delete..");
 			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
 			
@@ -438,7 +459,7 @@ public class Purchase {
 				preparedStatement.executeQuery();
 				preparedStatement.close();
 			} catch (Exception e) {
-				AppUtil.console("Deletion error: "+e);
+				AppUtil.console("Deletion error: "+sql+e);
 			}
 			return true;
 		}
@@ -447,6 +468,7 @@ public class Purchase {
 	// getters 
 		
 	public static boolean sellVoucher(Integer voucher_id) {
+		AppUtil.console("P sellVoucher..");
 		if(!connect()) AppUtil.console("Not able to connect to database!");
 		
 		
@@ -465,7 +487,7 @@ public class Purchase {
 			preparedStatement.close();
 		} catch (Exception e) {
 			
-			AppUtil.console("Update error: "+e);
+			AppUtil.console("Update error: "+sql+e);
 			return false;
 			
 		}
@@ -473,6 +495,7 @@ public class Purchase {
 	}
 
 		public static Integer getUnsoldVoucherID(Integer deal_id) {
+			AppUtil.console("P getUnsoldVoucher..");
 			String getVoucherIDsql = "SELECT voucher_ID FROM Voucher WHERE deal_ID=\'"+deal_id+"\'"+
 					" AND sold=\'0\'";
 			
@@ -487,17 +510,18 @@ public class Purchase {
 				id = rs.getInt("voucher_ID");
 				preparedStatement.close();
 			} catch (Exception e) {
-				AppUtil.console("Most likely a DDL error, not a problem."+e);
+				AppUtil.console("Error getting unsold voucher."+getVoucherIDsql+e);
 			}
 			return id;
 		}
 
 	private static boolean connect() {
+		AppUtil.console("P connect..");
 		if(Purchase.conn==null) {
-			Purchase.conn=new PaymentMethodConnection(OracleConnection.user,OracleConnection.pass).getConnection();
+			Purchase.conn=new PurchaseConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	

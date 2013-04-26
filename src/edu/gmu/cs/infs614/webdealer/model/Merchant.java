@@ -211,7 +211,7 @@ public class Merchant {
 			preparedStatement.close();
 		} catch (Exception e) {
 			
-			AppUtil.console("Most likely a DDL error, not a problem."+e);
+			AppUtil.console("M: Most likely a DDL error, not a problem."+e);
 			return false;
 			
 		}
@@ -235,7 +235,7 @@ public class Merchant {
 				preparedStatement.executeQuery();
 				preparedStatement.close();
 			} catch (Exception e) {
-				AppUtil.console("Most likely a DDL error, not a problem."+e);
+				AppUtil.console("M: Most likely a DDL error, not a problem."+e);
 			}
 			return true;
 		}

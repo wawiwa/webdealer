@@ -16,17 +16,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
-import edu.gmu.cs.infs614.webdealer.model.Customer;
-import edu.gmu.cs.infs614.webdealer.model.PaymentMethod;
+import edu.gmu.cs.infs614.webdealer.model.Purchase;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
-import edu.gmu.cs.infs614.webdealer.model.connector.PaymentMethodConnection;
-import edu.gmu.cs.infs614.webdealer.view.FormValidation;
+import edu.gmu.cs.infs614.webdealer.model.connector.PurchaseConnection;
 
 public class PurchaseController implements Initializable {
 
@@ -36,43 +33,56 @@ public class PurchaseController implements Initializable {
 	// DEFINE TABLE
 	
 	@FXML
-	TableView<PaymentMethod> fxtvPaymentMethod;
+	TableView<Purchase> fxtvPurchase;
 	@FXML
-	TableColumn<PaymentMethod, Integer> fxtcPaymentID;
+	TableColumn<Purchase, Integer> fxtcPurchaseID;
 	@FXML
-	TableColumn<PaymentMethod, String> fxtcVendorName;
+	TableColumn<Purchase, String> fxtcPurchaseDate;
 	@FXML
-	TableColumn<PaymentMethod, String> fxtcCardNumber;
+	TableColumn<Purchase, String> fxtcCustomerEmail;
 	@FXML
-	TableColumn<PaymentMethod, Integer> fxtcPrimary;
+	TableColumn<Purchase, Integer> fxtcVoucherID;
+	@FXML
+	TableColumn<Purchase, String> fxtcStatus;
+	@FXML
+	TableColumn<Purchase, Integer> fxtcDealID;
+	@FXML
+	TableColumn<Purchase, Integer> fxtcPaymentID;
 
 	
 	// DEFINE FORM
 	@FXML
+	TextField fxtfPurchaseID;
+	@FXML
+	TextField fxtfPurchaseDate;
+	@FXML
+	TextField fxtfCustomerEmail;
+	@FXML
+	TextField fxtfVoucherID;
+	@FXML
+	TextField fxtfStatus;
+	@FXML
+	TextField fxtfDealID;
+	@FXML
 	TextField fxtfPaymentID;
 	@FXML
-	TextField fxtfVendorName;
+	TextField fxtfCustomerID;
 	@FXML
-	TextField fxtfCardNumber;
+	TextField fxtfQuantity;
 	
 	@FXML
-	Label fxlCustomerInfo;
+	Label fxlVoucherID;
 	@FXML
-	Label fxlVendorName;
+	Label fxlStatus;
+
 	@FXML
-	Label fxlCardNumber;
-	
-	
+	Button fxbRetrieve;
 	@FXML
-	RadioButton fxrbPrimary;
+	Button fxbClear;
 	@FXML
-	Button submit;
+	Button fxbStatus;
 	@FXML
-	Button delete;
-	@FXML
-	Button clear;
-	@FXML
-	Button search;
+	Button fxbBuy;
 	
 	
 	// DEFINE VARIABLES
@@ -82,94 +92,98 @@ public class PurchaseController implements Initializable {
 	
 	// DB connector
 	
-	public Connection conn = new PaymentMethodConnection(OracleConnection.user,OracleConnection.pass).getConnection();
+	public Connection conn = new PurchaseConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 	
-	final ObservableList<PaymentMethod> data = FXCollections.observableArrayList();
+	final ObservableList<Purchase> data = FXCollections.observableArrayList();
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		AppUtil.console("PC initialize..");
 		
 		
-		displayCards();
+		displayPurchases();
 		
 		// fix delete button working if not selecting once a table row
 		index.set(-1);
 		
-		fxtcPaymentID.setCellValueFactory(new PropertyValueFactory<PaymentMethod, Integer>("pmPaymentID"));
-		fxtcVendorName.setCellValueFactory(new PropertyValueFactory<PaymentMethod, String>("pmVendorName"));
-		fxtcCardNumber.setCellValueFactory(new PropertyValueFactory<PaymentMethod, String>("pmCardNumber"));
-		fxtcPrimary.setCellValueFactory(new PropertyValueFactory<PaymentMethod, Integer>("pmPrimary"));
-
+		fxtcPurchaseID.setCellValueFactory(new PropertyValueFactory<Purchase, Integer>("pTransaction_ID"));
+		fxtcPurchaseDate.setCellValueFactory(new PropertyValueFactory<Purchase, String>("pTrans_date"));
+		fxtcVoucherID.setCellValueFactory(new PropertyValueFactory<Purchase, Integer>("pVoucher_ID"));
+		fxtcStatus.setCellValueFactory(new PropertyValueFactory<Purchase, String>("pStatus"));
+		fxtcDealID.setCellValueFactory(new PropertyValueFactory<Purchase, Integer>("pDeal_ID"));
+		fxtcCustomerEmail.setCellValueFactory(new PropertyValueFactory<Purchase, String>("pEmailAddress"));
+		fxtcPaymentID.setCellValueFactory(new PropertyValueFactory<Purchase, Integer>("pPayment_ID"));
 		
 
         AppUtil.console("DATA contents: "+data);
 
-		fxtvPaymentMethod.setItems(data);
+		fxtvPurchase.setItems(data);
 		
 		// get the index when clicking on table row
-		fxtvPaymentMethod.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+		fxtvPurchase.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			public void changed(ObservableValue<?> observable, Object oldvalue, Object newValue) {
 				if(newValue==null)return;
-				PaymentMethod pm = (PaymentMethod) newValue;
+				Purchase p = (Purchase) newValue;
 				
-				
-				fxtfPaymentID.setText(pm.getPmPaymentID().toString()); 
-				fxtfVendorName.setText(pm.getPmVendorName());
-				fxtfCardNumber.setText(pm.getPmCardNumber());
-				
+				fxtfPurchaseID.setText(p.getPTransaction_ID().toString());
+				fxtfPurchaseDate.setText(p.getPTrans_date());
+				fxtfCustomerEmail.setText(p.getPEmailAddress());
+				fxtfVoucherID.setText(p.getPVoucher_ID().toString());
+				fxtfStatus.setText(p.getPStatus());
+				fxtfDealID.setText(p.getPDeal_ID().toString());
+				fxtfPaymentID.setText(p.getPPayment_ID().toString());
+				fxtfCustomerID.setText(p.getPCustomer_ID().toString());
 				
 				index.set(data.indexOf(newValue));
 				AppUtil.console("OK index is: "+data.indexOf(newValue));
-				AppUtil.console(pm.getPmPaymentID().toString());
+				AppUtil.console(p.getPTransaction_ID().toString());
 			}
 		});
 	}
 
 	public void onAddItem(ActionEvent event) {
+		AppUtil.console("PC onAddItem..");
+		Purchase entry = new Purchase(conn,null,fxtfCustomerEmail,fxtfDealID,fxtfQuantity,null);
+	
+		if(!entry.isInDatabase) return;
 		
-		// FORM VALIDATION
-		boolean vendorName = FormValidation.textFieldNotEmpty(fxtfVendorName,fxlVendorName,"Vendor name is required!");
-		boolean cardNumber = FormValidation.textFieldNotEmpty(fxtfCardNumber,fxlCardNumber,"Card number is required!");
-		
-		if(vendorName && cardNumber) {
+		// insert multiple purchased vouchers into table
+		data.addAll(entry.getPurchaseViews());
 			
-			Integer selected = 0;
-			if(fxrbPrimary.isSelected()) {
-				selected = 1;
-			}
+		// clear TextFields
+		clearForm();
 			
-			// add the data any time and the will be updated
-			PaymentMethod entry = new PaymentMethod(conn,null,fxtfVendorName,
-					fxtfCardNumber,selected,
-					CustomerController.getCurrentCustomerID());
-			if(!entry.isInDatabase) return;
-			// insert data in table
-			data.add(entry);
-			
-			// clear TextFields
-			clearForm();
-			
-		}
-		
-		
-		
 	}
 	
-	public void displayCards() {
-		AppUtil.console("Display cards..");
-		fxlCustomerInfo.setText(Customer.retrieve(CustomerController.getCurrentCustomerID()));
-		ArrayList<PaymentMethod> pml =
-				PaymentMethod.retrieve(conn, CustomerController.getCurrentCustomerID());
+	public void onSearchItem(ActionEvent event) {
+		AppUtil.console("PC onSearchItem..");
+		displayPurchases();
+	}
+		
+	public void displayPurchases() {
+		AppUtil.console("Display purchases..");
+
+		ArrayList<Purchase> pl =
+				Purchase.retrieve(conn, 
+						fxtfVoucherID,
+						fxtfStatus, 
+						fxtfDealID, 
+						fxtfPurchaseID, 
+						fxtfPurchaseDate, 
+						fxtfPaymentID,
+						fxtfCustomerID,
+						fxtfCustomerEmail);
+		
 		try {
 			data.clear();
 		}
 		catch(Exception e) {
 			data.clear();
 		}
-		for(PaymentMethod pm : pml) {
-			AppUtil.console("Adding cards to view..");
-			data.add(pm);
+		for(Purchase p : pl) {
+			AppUtil.console("PC: Adding purchases to view..");
+			AppUtil.console("PC: Purchase voucher_id="+p.getPVoucher_ID());
+			data.addAll(p.getPurchaseViews());
 		}
 		// clear TextFields
 		clearForm();
@@ -177,54 +191,44 @@ public class PurchaseController implements Initializable {
 
 	
 	public void onUpdateItem(ActionEvent event) {
-		AppUtil.console("Updating card.");
+		AppUtil.console("Updating purchase status.");
 		int i = index.get();
-		PaymentMethod oldPayment = data.get(i);
-		int selected = 0;
-		if(fxrbPrimary.isSelected()) {
-			selected = 1;
-		}
-		PaymentMethod newPayment = new PaymentMethod(conn,fxtfPaymentID,fxtfVendorName,fxtfCardNumber,
-				selected,CustomerController.getCurrentCustomerID());
-		if(PaymentMethod.update(oldPayment,newPayment)) {
-			data.set(i, newPayment);
+		Purchase oldPurchase = data.get(i);
+
+		Purchase newPurchase = new Purchase(conn,fxtfPurchaseID,fxtfCustomerEmail,
+				fxtfDealID,fxtfQuantity,fxtfVoucherID);
+		if(Purchase.update(oldPurchase,newPurchase)) {
+			data.set(i, newPurchase);
 		}
 		
 		AppUtil.console("INDEX: "+i);
 	}
-	
-	
-	public void onDeleteItem(ActionEvent event) {
-		AppUtil.console("Attempting to delete 1 item");
-		int i = index.get();
-		if(i <=-1 || i>=data.size()) return;
-		PaymentMethod oldPayment = data.get(i);
-		if(PaymentMethod.delete(oldPayment)) {
-			data.remove(i);
-			fxtvPaymentMethod.getSelectionModel().select(i);
-			fxtvPaymentMethod.getSelectionModel().clearSelection();
-		}
-		
-	}
-
-
 
 	private void clearForm() {
 
-		fxtfCardNumber.clear();
-		fxtfVendorName.clear();
+		fxtfVoucherID.clear();
+		fxtfStatus.clear();
+		fxtfDealID.clear();
+		fxtfPurchaseID.clear(); 
+		fxtfPurchaseDate.clear();
 		fxtfPaymentID.clear();
+		fxtfCustomerID.clear();
+		fxtfCustomerEmail.clear();
 		
-		fxtfCardNumber.setText(null);
-		fxtfVendorName.setText(null);
+		fxtfVoucherID.setText(null);
+		fxtfStatus.setText(null);
+		fxtfDealID.setText(null);
+		fxtfPurchaseID.setText(null); 
+		fxtfPurchaseDate.setText(null);
 		fxtfPaymentID.setText(null);
+		fxtfCustomerID.setText(null);
+		fxtfCustomerEmail.setText(null);
 		
-		fxlCardNumber.setText(null);
-		fxlVendorName.setText(null);
+		fxlVoucherID.setText(null);
+		fxlStatus.setText(null);
 		
-		fxtfCardNumber.getStyleClass().remove("error");
-		fxtfVendorName.getStyleClass().remove("error");
-		fxtfPaymentID.getStyleClass().remove("error");
+		fxtfVoucherID.getStyleClass().remove("error");
+		fxlStatus.getStyleClass().remove("error");
 		
 	}
 	

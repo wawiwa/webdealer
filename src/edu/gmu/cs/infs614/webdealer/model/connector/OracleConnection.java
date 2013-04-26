@@ -18,7 +18,7 @@ import edu.gmu.cs.infs614.webdealer.AppUtil;
 public abstract class OracleConnection {
 
 	public static String user="wward5";
-	public static String pass="password";
+	public static String pass="sqlplus";
 	protected final static String url = "jdbc:oracle:thin:@apollo.ite.gmu.edu:1521:ite10g";
 	protected Connection connection;
 	public boolean isConnected = false;

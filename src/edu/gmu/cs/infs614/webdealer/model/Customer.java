@@ -394,7 +394,7 @@ public class Customer {
 			preparedStatement.close();
 		} catch (Exception e) {
 			
-			AppUtil.console("Most likely a DDL error, not a problem."+e);
+			AppUtil.console("C: Most likely a DDL error, not a problem."+e);
 			return false;
 			
 		}
@@ -421,7 +421,7 @@ public class Customer {
 				preparedStatement.executeQuery();
 				preparedStatement.close();
 			} catch (Exception e) {
-				AppUtil.console("Most likely a DDL error, not a problem."+e);
+				AppUtil.console("C: Most likely a DDL error, not a problem."+e);
 			}
 			return true;
 		}
@@ -444,7 +444,7 @@ public class Customer {
 			id = rs.getInt("customer_ID");
 			preparedStatement.close();
 		} catch (Exception e) {
-			AppUtil.console("Most likely a DDL error, not a problem."+e);
+			AppUtil.console("C: Most likely a DDL error, not a problem."+e);
 		}
 		return id;
 	}

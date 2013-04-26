@@ -54,7 +54,7 @@ public class WebDealerApplicationController implements Initializable {
 	Button fxDealButton;
 	
 	@FXML
-	Button fxShoppingCartButton;
+	Button fxPurchaseButton;
 	
 	@FXML
 	Button fxClearConsole;
@@ -91,6 +91,10 @@ public class WebDealerApplicationController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// TODO Auto-generated method stub
+		
+		fxCustomerUsernameTextField.setText("portiz@gmu.edu");
+		fxUsernameTextField.setText("wward5");
+		fxPasswordField.setText("sqlplus");
 		
 		startSplash();
 		
@@ -337,6 +341,25 @@ public class WebDealerApplicationController implements Initializable {
 			    AppUtil.console(fxScrollPane.idProperty().toString());
 				String mv = "/edu/gmu/cs/infs614/webdealer/view/MerchantView.fxml";
 				fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(mv)));
+		   } catch (IOException e) {
+				   // TODO Auto-generated catch block
+			   AppUtil.console(e.toString());
+		}
+	}
+	
+	// DISPLAY PURCHASE TABLE
+	
+	public void displayPurchaseDialogue(ActionEvent event) {
+	   AppUtil.console("Showing Purchase dialogue.");
+	   //if()
+	   purchaseDialogue();
+	}
+	
+	private void purchaseDialogue() {
+		   try {
+			    AppUtil.console(fxScrollPane.idProperty().toString());
+				String pv = "/edu/gmu/cs/infs614/webdealer/view/PurchaseView.fxml";
+				fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(pv)));
 		   } catch (IOException e) {
 				   // TODO Auto-generated catch block
 			   AppUtil.console(e.toString());

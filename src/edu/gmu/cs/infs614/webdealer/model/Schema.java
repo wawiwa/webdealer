@@ -57,7 +57,7 @@ public final class Schema {
 				}
 				
 				catch (Exception e) {
-					System.out.println("Most likely a DDL error, not a problem."+e);
+					System.out.println("S: Most likely a DDL error, not a problem."+e);
 				}
 			}
 
@@ -92,7 +92,7 @@ public final class Schema {
 				}
 				
 				catch (Exception e) {
-					System.out.println("Most likely a DDL error, not a problem."+e);
+					System.out.println("S: Most likely a DDL error, not a problem."+e);
 				}
 			}
 
@@ -135,9 +135,6 @@ public final class Schema {
 			map.put("LOCATION", dbm.getTables(null, null, "LOCATION", null));
 			map.put("CATEGORY", dbm.getTables(null, null, "CATEGORY", null));
 			map.put("PURCHASE", dbm.getTables(null, null, "PURCHASE", null));
-			map.put("PURCHASE_DEAL", dbm.getTables(null, null, "PURCHASE_DEAL", null));
-			map.put("PURCHASE_WITH", dbm.getTables(null, null, "PURCHASE_WITH", null));
-			map.put("SHOPPING_CART", dbm.getTables(null, null, "SHOPPING_CART", null));
 			
 			if (map.get("CUSTOMER").next() &&
 				map.get("PAYMENT_METHOD").next() &&
@@ -148,10 +145,7 @@ public final class Schema {
 				map.get("DEAL").next() &&
 				map.get("LOCATION").next() &&
 				map.get("CATEGORY").next() &&
-				map.get("PURCHASE").next() &&
-				map.get("PURCHASE_DEAL").next() &&
-				map.get("PURCHASE_WITH").next() &&
-				map.get("SHOPPING_CART").next()) {
+				map.get("PURCHASE").next()) {
 			  // All tables exists
 				System.out.println("Schema already loaded.");
 				return true;

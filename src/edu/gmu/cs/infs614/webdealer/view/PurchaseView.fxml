@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="Content" fx:id="fxAnchorPane" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="693.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.CustomerController">
+<AnchorPane id="Content" fx:id="fxAnchorPane" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="693.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.PurchaseController">
   <children>
     <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="View" textAlignment="CENTER" textFill="BLACK" wrapText="false">
       <font>
@@ -22,55 +22,72 @@
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
-            <TableView id="tableID" fx:id="tvCustomer" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TableView id="tableID" fx:id="fxtvPurchase" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                <TableColumn minWidth="20.0" prefWidth="75.0" text="Customer">
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="Purchase&#10;ID" fx:id="fxtcPurchaseID">
                   <cellValueFactory>
                     <PropertyValueFactory property="tID" />
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn minWidth="20.0" prefWidth="75.0" text="Voucher&#10;ID" fx:id="tcCustomerID">
-                  <cellValueFactory>
-                    <PropertyValueFactory property="tID" />
-                  </cellValueFactory>
-                </TableColumn>
-                <TableColumn prefWidth="100.0" text="Purchase &#10;Date" fx:id="tcFirstName">
+                <TableColumn prefWidth="100.0" text="Purchase &#10;Date" fx:id="fxtcPurchaseDate">
                   <cellValueFactory>
                     <PropertyValueFactory property="tDate" />
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="75.0" text="Merchant" fx:id="tcAge">
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="Customer" fx:id="fxtcCustomerEmail">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="Voucher&#10;ID" fx:id="fxtcVoucherID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="88.0" text="Status" fx:id="fxtcStatus">
                   <cellValueFactory>
                     <PropertyValueFactory property="tPrice" />
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="153.0" text="Deal&#10;Description" fx:id="tcEmailAddress">
+                <TableColumn prefWidth="75.0" text="Deal ID" fx:id="fxtcDealID">
                   <cellValueFactory>
                     <PropertyValueFactory property="tPrice" />
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="100.0" text="Status" fx:id="tcLastName">
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="88.0" text="Payment ID&#10;ID" fx:id="fxtcPaymentID">
                   <cellValueFactory>
-                    <PropertyValueFactory property="tName" />
+                    <PropertyValueFactory property="tPrice" />
                   </cellValueFactory>
                 </TableColumn>
               </columns>
             </TableView>
           </children>
         </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="106.0" prefWidth="691.0">
           <children>
-            <TextField id="nameInput" fx:id="tfFirstName" layoutX="14.0" layoutY="26.0" prefWidth="130.0" promptText="Customer email" />
-            <TextField id="dateInput" fx:id="tfLastName" layoutX="151.0" layoutY="25.0" prefWidth="130.0" promptText="Merchant" />
-            <TextField id="priceInput" fx:id="tfAge" layoutX="289.0" layoutY="25.0" prefWidth="130.0" promptText="Status" />
-            <Label id="priceLabel" fx:id="ageLabel" layoutX="289.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true">
+            <TextField id="nameInput" fx:id="fxtfCustomerEmail" layoutX="14.0" layoutY="25.0" prefWidth="130.0" promptText="Customer email" />
+            <TextField id="dateInput" fx:id="fxtfPaymentID" layoutX="151.0" layoutY="25.0" prefWidth="130.0" promptText="Payment ID" />
+            <TextField id="priceInput" fx:id="fxtfPurchaseDate" layoutX="289.0" layoutY="25.0" prefWidth="130.0" promptText="Transaction Date" />
+            <Button id="clear" fx:id="fxbClear" layoutX="585.0" layoutY="45.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="22.0" prefWidth="85.0" rotate="0.0" text="Clear" />
+            <Button id="search" fx:id="fxbRetrieve" layoutX="585.0" layoutY="16.0" mnemonicParsing="false" onAction="#onSearchItem" prefWidth="85.0" text="Retrieve" />
+            <Button id="clear" fx:id="fxbStatus" layoutX="578.0" layoutY="78.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="99.0" text="Update Status">
               <font>
-                <Font size="10.0" fx:id="x1_x0" />
+                <Font size="11.0" />
+              </font>
+            </Button>
+            <TextField id="nameInput" fx:id="fxtfVoucherID" layoutX="427.0" layoutY="62.0" prefWidth="130.0" promptText="Voucher ID" />
+            <TextField id="priceInput" fx:id="fxtfStatus" layoutX="427.0" layoutY="25.0" prefWidth="130.0" promptText="Status" />
+            <TextField id="nameInput" fx:id="fxtfPurchaseID" layoutX="151.0" layoutY="63.0" prefWidth="130.0" promptText="Transaction ID" />
+            <TextField id="nameInput" fx:id="fxtfDealID" layoutX="289.0" layoutY="63.0" prefWidth="130.0" promptText="Deal ID" />
+            <Label id="priceLabel" fx:id="fxlStatus" layoutX="430.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true">
+              <font>
+                <Font size="10.0" fx:id="x1" />
               </font>
             </Label>
-            <Button fx:id="clear" layoutX="429.0" layoutY="14.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="82.0" prefWidth="58.0" rotate="0.0" text="Clear" />
-            <Button fx:id="search" layoutX="499.0" layoutY="29.0" mnemonicParsing="false" onAction="#onSearchItem" prefWidth="160.0" text="Retrieve" />
-            <Button id="clear" fx:id="update" layoutX="499.0" layoutY="59.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="160.0" text="Update Status" />
+            <Label id="priceLabel" fx:id="fxlVoucherID" font="$x1" layoutX="430.0" layoutY="85.0" prefWidth="130.0" text="" wrapText="true" />
+            <Button id="search" fx:id="fxbBuy" layoutX="334.0" layoutY="85.0" minHeight="16.0" mnemonicParsing="false" onAction="#onAddItem" prefHeight="22.0" prefWidth="85.0" text="Buy" />
+            <TextField id="nameInput" fx:id="fxtfCustomerID" layoutX="14.0" layoutY="63.0" prefWidth="130.0" promptText="Customer ID" />
+            <TextField id="nameInput" fx:id="fxtfQuantity" layoutX="289.0" layoutY="85.0" prefWidth="37.0" promptText="qty" />
           </children>
           <stylesheets>
             <URL value="@FormValidationStyle.css" />

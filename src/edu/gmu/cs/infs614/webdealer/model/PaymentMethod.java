@@ -272,7 +272,7 @@ public class PaymentMethod {
 
 
 		public static Integer getPaymentID(Integer customer_id) {
-			String getPaymentIDsql = "SELECT payment_ID FROM Payment_Method WHERE customer_ID=\'"+customer_id+"\'";
+			String getPaymentIDsql = "SELECT payment_ID,cc_default FROM Payment_Method WHERE customer_ID=\'"+customer_id+"\'";
 			Integer id = 0;
 			connect();
 			ResultSet rs = null;
@@ -284,7 +284,11 @@ public class PaymentMethod {
 				// deal with getting default id
 				while(rs.next()) {
 					id = rs.getInt("payment_ID");
-					if(rs.getInt("cc_default") == 1) {
+					AppUtil.console("PM id: "+id);
+					// having trouble with cc_default, using column number
+					//AppUtil.console(((Integer)rs.getMetaData().getColumnCount()).toString());
+					if( rs.getInt("cc_default")== 1) {
+						AppUtil.console("PM default");
 						return id;
 					}
 					
@@ -292,7 +296,7 @@ public class PaymentMethod {
 				
 				preparedStatement.close();
 			} catch (Exception e) {
-				AppUtil.console("Most likely a DDL error, not a problem."+e);
+				AppUtil.console("PM: Most likely a DDL error, not a problem."+e);
 			}
 			return id;
 		}
