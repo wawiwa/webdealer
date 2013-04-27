@@ -94,7 +94,7 @@ public class PurchaseController implements Initializable {
 	
 	public Connection conn = new PurchaseConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 	
-	final ObservableList<Purchase> data = FXCollections.observableArrayList();
+	public static final ObservableList<Purchase> data = FXCollections.observableArrayList();
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

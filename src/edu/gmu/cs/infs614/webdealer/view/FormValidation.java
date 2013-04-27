@@ -12,6 +12,7 @@ public class FormValidation {
 	public static boolean textFieldNotEmpty(TextField i) {
 		boolean r = false;
 		
+		if(i==null) return r;
 		if(i.getText() != null && !i.getText().isEmpty()) {
 			r = true;
 		}
@@ -35,6 +36,7 @@ public class FormValidation {
 	public static boolean textFieldTypeDate(TextField i) {
 		boolean r = false;
 		// dd/mm/yyyy
+		if(i==null) return r;
 		if(i.getText() == null) return r;
 		try {
 			getDate(i.getText());
@@ -87,6 +89,7 @@ public class FormValidation {
 		String currency1 = "^[ ]*[\\d]+[.][\\d]";
 		String currency0 = "^[ ]*[\\d]+";
 		
+		if(i==null) return r;
 		if(i.getText() != null && i.getText().matches(currency2)) {
 			r=true;
 		} else if(i.getText().matches(currency1)) {

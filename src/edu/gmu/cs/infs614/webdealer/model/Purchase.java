@@ -153,6 +153,7 @@ public class Purchase {
 		
 		// create a new purchase in the database
 		if( transaction_id == null || transaction_id.getText().isEmpty()) {
+			if (quantity.getText().isEmpty()) quantity.setText("1");
 			int result = create(email_address.getText(),
 					Integer.parseInt(deal_id.getText()),
 					Integer.parseInt(quantity.getText()));
@@ -182,6 +183,26 @@ public class Purchase {
 		AppUtil.console("Purchase constructed");
 		
 		
+	}
+
+	public static ArrayList<Purchase> getPurchaseViews(Connection conn, 
+			TextField fxtfCustomerID, String email_address) {
+		AppUtil.console("P getPurchaseViews..");
+
+		TextField fxtfEmailAddress = new TextField();
+		
+		if(fxtfCustomerID == null || fxtfCustomerID.getText()
+				== null || fxtfCustomerID.getText().isEmpty()) {
+			
+			fxtfEmailAddress.setText(email_address);
+		}
+		else {
+			fxtfEmailAddress = null;
+		}
+		
+		return Purchase.retrieve(conn, null, null, null, 
+				null, null, null, fxtfCustomerID, fxtfEmailAddress);
+
 	}
 	
 	public ArrayList<Purchase> getPurchaseViews() {
