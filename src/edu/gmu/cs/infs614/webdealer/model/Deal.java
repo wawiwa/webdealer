@@ -2,12 +2,30 @@ package edu.gmu.cs.infs614.webdealer.model;
 
 import java.sql.Connection;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+//import java.util.Calendar;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+
+
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.connector.DealConnection;
+
+
+import edu.gmu.cs.infs614.webdealer.view.FormValidation;
+
+
+
 
 
 //Immutable tuple (aka primary key)
@@ -26,6 +44,10 @@ merchant_ID INTEGER
 */
 
 public class Deal {
+	
+	java.sql.Date sqlDate;
+	DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
+	
 	public boolean isInDatabase = false;
 	private SimpleIntegerProperty dID; 
 	private SimpleStringProperty dExpDate;
@@ -119,8 +141,8 @@ public class Deal {
 			
 			
 			if(tfDeal_ID == null) {
-				int result = create(tfexpiration_date.getText(),tfdescription.getText(),tfquantity_limit.getText(),tforiginal_price.getText(),tfdeal_price.getText(),
-						tfsale_start_time.getText(),tfsale_end_time.getText(),tflocation_ID.getText(),tfcategory_ID.getText(),tfmerchant_ID.getText());
+				int result = create(tfexpiration_date.getText(),tfdescription.getText(),Integer.parseInt(tfquantity_limit.getText()),Double.parseDouble(tforiginal_price.getText()),Double.parseDouble(tfdeal_price.getText()),
+						tfsale_start_time.getText(),tfsale_end_time.getText(),Integer.parseInt(tflocation_ID.getText()),Integer.parseInt(tfcategory_ID.getText()),Integer.parseInt(tfmerchant_ID.getText()));
 				if(result == -1) {
 					isInDatabase = false;
 					return;
@@ -131,21 +153,20 @@ public class Deal {
 				this.dID = new SimpleIntegerProperty(result);
 				}
 			else {
-				this.dID = new SimpleIntegerProperty(Integer.parseInt(tfexpiration_date.getText(),tfdescription.getText(),tfquantity_limit.getText(),tforiginal_price.getText(),tfdeal_price.getText(),
-						tfsale_start_time.getText(),tfsale_end_time.getText(),tflocation_ID.getText(),tfcategory_ID.getText(),tfmerchant_ID.getText()));
+				this.dID = new SimpleIntegerProperty(Integer.parseInt(tfDeal_ID.getText()));
 			}
 			
 			
 			this.dExpDate=new SimpleStringProperty(tfexpiration_date.getText());
 			this.dDescription=new SimpleStringProperty(tfdescription.getText());
-			this.dQuantity=new SimpleIntegerProperty(tfquantity_limit.getText());
-			this.dOrigPrice=new SimpleDoubleProperty(tforiginal_price.getText());
-			this.dDealPrice=new SimpleDoubleProperty(tfdeal_price.getText());
+			this.dQuantity=new SimpleIntegerProperty(Integer.parseInt(tfquantity_limit.getText()));
+			this.dOrigPrice=new SimpleDoubleProperty(Double.parseDouble(tforiginal_price.getText()));
+			this.dDealPrice=new SimpleDoubleProperty(Double.parseDouble(tfdeal_price.getText()));
 			this.dSaleStart=new SimpleStringProperty(tfsale_start_time.getText());
 			this.dSaleEnd=new SimpleStringProperty(tfsale_end_time.getText());
-			this.lID=new SimpleIntegerProperty(tflocation_ID.getText());
-			this.catID=new SimpleIntegerProperty(tfcategory_ID.getText());
-			this.mID=new SimpleIntegerProperty(tfmerchant_ID.getText());
+			this.lID=new SimpleIntegerProperty(Integer.parseInt(tflocation_ID.getText()));
+			this.catID=new SimpleIntegerProperty(Integer.parseInt(tfcategory_ID.getText()));
+			this.mID=new SimpleIntegerProperty(Integer.parseInt(tfmerchant_ID.getText()));
 
 			AppUtil.console("Deal constructed");
 		}	
@@ -159,17 +180,26 @@ public class Deal {
 			String sql = "BEGIN INSERT INTO " +
 							"Deal (deal_ID,expiration_date,description,quantity_limit,original_price,deal_price,sale_start_name," +
 							"sale_end_time,location_ID,category_ID,merchant_ID) " +
-							"VALUES (seq_customer.nextval, ?) RETURNING deal_ID INTO ?; END;";
+							"VALUES (seq_customer.nextval, ?,?,?,?,?,?,?,?,?,?,?) RETURNING deal_ID INTO ?; END;";
 			
 			java.sql.CallableStatement stmt = null;
 			
 			
 			int generatedKey = 0;
 			
-			/*try {
+			try {
 				stmt = conn.prepareCall(sql);
-				stmt.setString(1, dDescription);
-				
+				stmt.setString(1, expiration_date);
+				stmt.setString(2, description);
+				stmt.setInt(3, quantity_limit);
+				stmt.setDouble(4, original_price);
+				stmt.setDouble(5, deal_price);
+				stmt.setString(6, sale_start_time);
+				stmt.setString(7, sale_end_time);
+				stmt.setInt(8, location_ID);
+				stmt.setInt(9, category_ID);
+				stmt.setInt(10, merchant_ID);
+								
 				stmt.registerOutParameter(2, java.sql.Types.INTEGER);	
 				stmt.execute();
 				generatedKey = stmt.getInt(2);
@@ -179,9 +209,7 @@ public class Deal {
 				AppUtil.console("Deal insert error: "+sqle);
 				return -1;
 			}
-			//not sure how to do this try/catch
-			 * 
-			 */
+			
 			AppUtil.console("Deal_ID: "+generatedKey);
 			return generatedKey;
 		}
@@ -196,31 +224,31 @@ public Integer getDID() {
 }
 
 
-public String getDEXPDATE() {
+public String getDExpDate() {
 	return dExpDate.get();
 }
 
-public String getDDESCRIPTION() {
+public String getDDescription() {
 	return dDescription.get();
 }
 
-public Integer getDQUANTITY() {
+public Integer getDQuantity() {
 	return dQuantity.get();
 }
 
-public Double getDORIGPRICE() {
+public Double getDOrigPrice() {
 	return dOrigPrice.get();
 }
 
-public Double getDDEALPRICE() {
+public Double getDDealPrice() {
 	return dDealPrice.get();
 }
 
-public String getDSALESTART() {
+public String getDSaleStart() {
 	return dSaleStart.get();
 }
 
-public String getDSALEEND() {
+public String getDSaleEnd() {
 	return dSaleEnd.get();
 }
 
@@ -229,7 +257,7 @@ public Integer getLID() {
 	return lID.get();
 }
 
-public Integer getCATID() {
+public Integer getCatID() {
 	return catID.get();
 }
 
