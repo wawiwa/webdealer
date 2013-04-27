@@ -74,16 +74,16 @@ INSERT INTO Deal VALUES (seq_deal.nextval,'30-Nov-2013','Personal Dance lessons'
 // VOUCHER
 
 // TRANSACTION
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1','1','1');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'05-Apr-2013','2','2','2');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'09-Apr-2013','3','3','3');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'21-Apr-2013','4','4','4');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'22-Apr-2013','5','5','5');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'19-Apr-2013','6','6','6');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'10-Apr-2013','7','7','7');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'30-Apr-2013','8','8','8');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'19-Apr-2013','9','9','9');
-INSERT INTO Transaction VALUES (seq_transaction.nextval,'06-Apr-2013','10','10','10');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','10','1','1');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'05-Apr-2013','20','2','2');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'09-Apr-2013','30','3','3');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'21-Apr-2013','40','4','4');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'22-Apr-2013','50','5','5');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'19-Apr-2013','60','6','6');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'10-Apr-2013','70','7','7');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'30-Apr-2013','80','8','8');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'19-Apr-2013','90','9','9');
+INSERT INTO Transaction VALUES (seq_transaction.nextval,'06-Apr-2013','100','10','10');
 
 
 // REVIEW

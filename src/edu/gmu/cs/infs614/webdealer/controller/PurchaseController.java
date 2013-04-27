@@ -143,12 +143,16 @@ public class PurchaseController implements Initializable {
 
 	public void onAddItem(ActionEvent event) {
 		AppUtil.console("PC onAddItem..");
-		Purchase entry = new Purchase(conn,null,fxtfCustomerEmail,fxtfDealID,fxtfQuantity,null);
+		// need a trans id and voucher id hence two nulls
+		Purchase entry = new Purchase(conn,null,fxtfCustomerEmail,
+				fxtfDealID,fxtfQuantity,null,null,null);
 	
 		if(!entry.isInDatabase) return;
 		
 		// insert multiple purchased vouchers into table
-		data.addAll(entry.getPurchaseViews());
+		ArrayList<Purchase> pl = entry.getPurchaseViews();
+		AppUtil.console("PURCHASE LIST SIZE: "+pl.size());
+		data.addAll(pl);
 			
 		// clear TextFields
 		clearForm();
@@ -182,6 +186,7 @@ public class PurchaseController implements Initializable {
 		}
 		for(Purchase p : pl) {
 			AppUtil.console("PC: Adding purchases to view..");
+			AppUtil.console("Purchase "+p.getPTransaction_ID()+" with deal "+p.getPDeal_ID());
 			AppUtil.console("PC: Purchase voucher_id="+p.getPVoucher_ID());
 			data.addAll(p.getPurchaseViews());
 		}
@@ -196,7 +201,7 @@ public class PurchaseController implements Initializable {
 		Purchase oldPurchase = data.get(i);
 
 		Purchase newPurchase = new Purchase(conn,fxtfPurchaseID,fxtfCustomerEmail,
-				fxtfDealID,fxtfQuantity,fxtfVoucherID);
+				fxtfDealID,fxtfQuantity,fxtfVoucherID,fxtfPurchaseDate,fxtfStatus);
 		if(Purchase.update(oldPurchase,newPurchase)) {
 			data.set(i, newPurchase);
 		}

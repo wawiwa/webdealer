@@ -2,14 +2,14 @@ package edu.gmu.cs.infs614.webdealer.controller.access;
 
 public class UserCreds {
 
-	private final String login;
+	private static String login;
 	
 	public UserCreds(String login) {
-		this.login = login;
+		UserCreds.login = login;
 	}
 	
 	// getters
-	public String getLogin() {
+	public static String getLogin() {
 		return login;
 	}
 	

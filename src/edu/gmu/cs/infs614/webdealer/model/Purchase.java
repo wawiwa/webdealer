@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
+import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.PurchaseConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
@@ -97,9 +98,21 @@ public class Purchase {
 			TextField email_address, 
 			TextField deal_id,
 			TextField quantity,
-			TextField voucher_id) {
+			TextField voucher_id,
+			TextField date,
+			TextField status) {
 		AppUtil.console("P constr..");
 		Purchase.conn = conn;
+		
+		// if email address is not selected
+		if(email_address == null || email_address.getText() == null) {
+			email_address = new TextField();
+			email_address.setText(UserCreds.getLogin());
+		}else if (!email_address.getText().isEmpty()){ // voucher id included in textfield
+			
+			this.pEmailAddress = new SimpleStringProperty(email_address.getText());
+			
+		}
 		
 		// if voucher id not included, set to 0
 		if(voucher_id == null || voucher_id.getText() == null) {
@@ -110,6 +123,32 @@ public class Purchase {
 			this.pVoucher_ID = new SimpleIntegerProperty(Integer.parseInt(voucher_id.getText()));
 			vl.add(this.pVoucher_ID);
 		}
+		
+		// if status not included, set to current
+		if(status == null || status.getText().isEmpty()) {
+				status = new TextField();
+				status.setText("unknown");
+		}else if (!status.getText().isEmpty()){ // voucher id included in textfield
+					
+			this.pStatus = new SimpleStringProperty(status.getText());
+		}
+		
+		
+		// if date not set, set to current (new purchase in db)
+		if(date == null || date.getText().isEmpty()){
+		
+			// 1-Jun-2013
+			//java.sql.Date sqlDate;
+			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
+			//get current date time with Date()
+			Date d = new Date();
+			
+			String currDate = dateFormat.format(d);
+			this.pTrans_date = new SimpleStringProperty(currDate);
+		} else {
+			this.pTrans_date = new SimpleStringProperty(date.getText());
+		}
+		
 
 		
 		// create a new purchase in the database
@@ -128,10 +167,12 @@ public class Purchase {
 			}
 					
 		}
+
 		// already in db, just create for view purposes
 		else {
 			this.pTransaction_ID = 
 					new SimpleIntegerProperty(Integer.parseInt(transaction_id.getText()));
+			if (quantity.getText().isEmpty()) quantity.setText("1");
 			setProperties(email_address.getText(),
 					Integer.parseInt(deal_id.getText()),
 					Integer.parseInt(quantity.getText()));
@@ -157,11 +198,14 @@ public class Purchase {
 			TextField eml = new TextField();
 
 		for(SimpleIntegerProperty voucher : vl) {
-			System.out.println("Purchase voucher id: "+voucher.get());
+			AppUtil.console("Purchase voucher id: "+voucher.get());
 			vid.setText( ((Integer) voucher.get()).toString());
 			tid.setText( ((Integer) getPTransaction_ID()).toString());
+			AppUtil.console("PURCHASE v: "+vid.getText()+" t: "+tid.getText());
 			pl.addAll(Purchase.retrieve(conn,vid,sts,did,tid,tdt,pid,cid,eml));
+			
 		}
+		AppUtil.console("PURCHASE CLASS PL SIZE: "+pl.size());
 		return pl;
 	}
 	
@@ -208,7 +252,7 @@ public class Purchase {
 		
 		this.pEmailAddress = new SimpleStringProperty(email_address);
 		this.pDeal_ID = new SimpleIntegerProperty(deal_id);
-		this.pStatus = new SimpleStringProperty("current");
+
 		this.pQuantity = new SimpleIntegerProperty(quantity);
 		
 		
@@ -217,18 +261,7 @@ public class Purchase {
 		
 		Integer paymentID = PaymentMethod.getPaymentID(customerID);
 		this.pPayment_ID = new SimpleIntegerProperty(paymentID);
-		
-		
-		
-		// 1-Jun-2013
-		//java.sql.Date sqlDate;
-		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
-		//get current date time with Date()
-		Date date = new Date();
-		
-		String currDate = dateFormat.format(date);
-		this.pTrans_date = new SimpleStringProperty(currDate);
-		return true;
+		return true; //not really needed att..
 	}
 
 	// CRUD
@@ -239,27 +272,44 @@ public class Purchase {
 		
 		if(!isValidDeal(deal_id)) return 0;
 		
-		
+		System.out.println("Setting properties..");
 		if(!setProperties(email_address,deal_id,quantity)) return 0;
 		
-		for(int i=1;i<=quantity;i++) {
-			vl.add(new SimpleIntegerProperty(Purchase.getUnsoldVoucherID(deal_id)));
-		}
+		vl = Purchase.getVouchers(deal_id,quantity);
 		
-		// not enough vouchers :(
-		if(vl.size() < quantity) return 0;
+		//not enough vouchers
+		if(vl.isEmpty()) return 0;
 		
 		int transaction_id = 0;
 		
 		
 		
-		
+		boolean initial = true;
 		for(SimpleIntegerProperty voucher : vl) {
 			
 			//   INSERT INTO Transaction VALUES (seq_transaction.nextval,'01-Apr-2013','1','1','1');
-			String setTransactionSql = "BEGIN INSERT INTO " +
-					"Transaction (transaction_ID,trans_date,voucher_ID,payment_ID,customer_ID) " +
-					"VALUES (seq_transaction.nextval, ?,?,?,?) RETURNING transaction_ID INTO ?; END;";
+			//  insert into transaction values (seq_transaction.nextval,'01-apr-2010','66','10','10');
+			
+			/*
+			BEGIN INSERT INTO 
+			Transaction (transaction_ID,trans_date,voucher_ID,payment_ID,customer_ID) 
+			VALUES (seq_transaction.nextval, ?,?,?,?) RETURNING transaction_ID INTO ?; END;
+			*/
+			
+			// the if else keeps the same tid for multiple vouchers.
+			String setTransactionSql = null;
+			if(initial) {
+				setTransactionSql = "BEGIN INSERT INTO " +
+						"Transaction (transaction_ID,trans_date,voucher_ID,payment_ID,customer_ID) " +
+						"VALUES (seq_transaction.nextval, ?,?,?,?) RETURNING transaction_ID INTO ?; END;";
+				initial=false;
+			}
+			else {
+				setTransactionSql = "BEGIN INSERT INTO " +
+						"Transaction (transaction_ID,trans_date,voucher_ID,payment_ID,customer_ID) " +
+						"VALUES ("+this.getPTransaction_ID()+", ?,?,?,?) RETURNING transaction_ID INTO ?; END;";
+			}
+			
 			
 			java.sql.CallableStatement stmt = null;
 			
@@ -271,6 +321,7 @@ public class Purchase {
 				stmt.setInt(4, this.getPCustomer_ID());
 				
 				stmt.registerOutParameter(5, java.sql.Types.INTEGER);	
+				AppUtil.console(stmt.toString());
 				stmt.execute();
 				transaction_id = stmt.getInt(5);
 				this.pTransaction_ID = new SimpleIntegerProperty(transaction_id);
@@ -278,10 +329,18 @@ public class Purchase {
 				
 			} catch (SQLException sqle) {
 				AppUtil.console("Purchase insert error: "+setTransactionSql+"\n"+sqle);
+				//AppUtil.console("tid: "+this.pTransaction_ID);
+				AppUtil.console("did: "+this.getPDeal_ID());
+				AppUtil.console("vid: "+voucher.get());
+				AppUtil.console("dat: "+this.getPTrans_date());
+				AppUtil.console("eml: "+this.getPEmailAddress());
+				AppUtil.console("qty: "+quantity);
+				AppUtil.console("cid: "+this.getPCustomer_ID());
+				AppUtil.console("sts: "+this.getPStatus());
 				return -1;
 			}
 			
-			AppUtil.console("Purchase_ID: "+transaction_id);
+			AppUtil.console("Transaction_ID: "+transaction_id);
 		}
 		return transaction_id;
 	}
@@ -381,6 +440,8 @@ public class Purchase {
 			TextField tfEmailAddress = new TextField();
 			TextField tfQuantity = new TextField();
 			TextField tfVoucherID = new TextField();
+			TextField tfTransDate = new TextField();
+			TextField tfStatus = new TextField();
 			
 			while (rs.next()) {
 				
@@ -389,13 +450,17 @@ public class Purchase {
 				tfDealID.setText( ((Integer) rs.getInt("deal_ID")).toString());
 				tfQuantity.setText("1");
 				tfVoucherID.setText( ((Integer) rs.getInt("voucher_ID")).toString() );
+				tfTransDate.setText(rs.getString("trans_date"));
+				tfStatus.setText(rs.getString("status"));
 				
 				pl.add(new Purchase(Purchase.conn,
 						tfTransactionID,
 						tfEmailAddress,
 						tfDealID,
 						tfQuantity,
-						tfVoucherID));			
+						tfVoucherID,
+						tfTransDate,
+						tfStatus));			
  
 			}
  
@@ -422,7 +487,7 @@ public class Purchase {
 		AppUtil.console("Modifying voucher status: "+oldPurchase.getPVoucher_ID());
 		
 		String sql = "UPDATE Voucher SET "+
-				"status= \'"+newPurchase.getPStatus()+"\',"+
+				"status= \'"+newPurchase.getPStatus()+"\'"+
 				" WHERE voucher_ID = \'"+newPurchase.getPVoucher_ID()+"\'";
 		
 		AppUtil.console("UPDATE: "+sql);
@@ -475,7 +540,7 @@ public class Purchase {
 		AppUtil.console("Updating voucher status. ");
 		
 		String sql = "UPDATE Voucher SET "+
-				"status= \'1\',"+
+				"sold= \'1\'"+
 				" WHERE voucher_ID = \'"+voucher_id+"\'";
 		
 		AppUtil.console("UPDATE: "+sql);
@@ -494,25 +559,51 @@ public class Purchase {
 		return true;
 	}
 
-		public static Integer getUnsoldVoucherID(Integer deal_id) {
+		public static ArrayList<SimpleIntegerProperty> getVouchers(Integer deal_id, Integer quantity) {
 			AppUtil.console("P getUnsoldVoucher..");
+			
+			ArrayList<SimpleIntegerProperty> il = new ArrayList<SimpleIntegerProperty>();
+			
+			String getVoucherCountSql = "SELECT COUNT(voucher_ID) as vcount FROM Voucher WHERE deal_ID=\'"+deal_id+"\'"+
+					" AND sold=\'0\'";
 			String getVoucherIDsql = "SELECT voucher_ID FROM Voucher WHERE deal_ID=\'"+deal_id+"\'"+
 					" AND sold=\'0\'";
 			
-			Integer id = 0;
+			Integer actualQuantity = 0;
 			connect();
 			ResultSet rs = null;
 			PreparedStatement preparedStatement = null;
 			try {
-				preparedStatement = conn.prepareStatement(getVoucherIDsql);
+				preparedStatement = conn.prepareStatement(getVoucherCountSql);
 				rs = preparedStatement.executeQuery();
 				rs.next();
-				id = rs.getInt("voucher_ID");
+				actualQuantity = rs.getInt("vcount");
+				
+				// not enough vouchers :(
+				if(actualQuantity < quantity) {
+					AppUtil.console("NOT ENOUGH VOUCHERS..TRY ANOTHER DEAL!");
+					return il;
+				}
+				
+				// query for unsold vouchers
+				preparedStatement = conn.prepareStatement(getVoucherIDsql);
+				rs = preparedStatement.executeQuery();
+				
+				Integer vid = 0;
+				for(int i=1;i<=quantity;i++) {
+					rs.next();
+					vid = rs.getInt("voucher_ID");
+					AppUtil.console("voucher id: "+((Integer)vid).toString());
+					il.add(new SimpleIntegerProperty(vid));
+					sellVoucher(vid);
+				}
+				
 				preparedStatement.close();
+				
 			} catch (Exception e) {
 				AppUtil.console("Error getting unsold voucher."+getVoucherIDsql+e);
 			}
-			return id;
+			return il;
 		}
 
 	private static boolean connect() {
