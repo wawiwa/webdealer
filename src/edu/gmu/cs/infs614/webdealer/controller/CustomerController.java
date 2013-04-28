@@ -24,7 +24,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
+import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
 import edu.gmu.cs.infs614.webdealer.model.Customer;
+import edu.gmu.cs.infs614.webdealer.model.Purchase;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
@@ -82,6 +84,10 @@ public class CustomerController implements Initializable {
 	Button clear;
 	@FXML
 	Button search;
+	@FXML
+	Button purchases;
+	@FXML
+	Button payment;
 	
 	
 	@FXML
@@ -235,11 +241,31 @@ public class CustomerController implements Initializable {
 		
 	}
 	
+	public void onSelectPurhcaseHistory(ActionEvent event) {
+		AppUtil.console("Loading purchases..");
+		displayPurchases();
+		
+	}
+	
+
+	public void displayPurchases() {
+		try {
+			String pv = "/edu/gmu/cs/infs614/webdealer/view/PurchaseView.fxml";
+			WebDealerApplicationController.fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(pv)));
+			PurchaseController.data.clear();
+			PurchaseController.data.addAll(Purchase.getPurchaseViews(conn, tfCustomer_ID, UserCreds.getLogin()));
+		} catch (IOException e) {
+			AppUtil.console(e.toString());
+		}
+	}
+	
+	
 	public void onEditPaymentMethod(ActionEvent event) {
 		AppUtil.console("Loading payment method..");
 		displayPaymentMethod();
 		
 	}
+	
 
 	public void displayPaymentMethod() {
 		try {

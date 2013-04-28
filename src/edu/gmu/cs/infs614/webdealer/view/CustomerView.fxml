@@ -80,12 +80,12 @@
             <Button fx:id="search" layoutX="497.0" layoutY="33.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
             <TextField id="priceInput" fx:id="tfCustomer_ID" layoutX="289.0" layoutY="67.0" prefWidth="130.0" promptText="Customer ID" />
             <Button id="clear" fx:id="update" layoutX="497.0" layoutY="60.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="73.0" text="Update" />
-            <Button id="clear" fx:id="fxPurchaseHistoryButton" layoutX="578.0" layoutY="5.0" mnemonicParsing="false" onAction="#onEditPaymentMethod" prefWidth="89.0" text="Edit &#10;Payment &#10;Method">
+            <Button id="clear" fx:id="payment" layoutX="578.0" layoutY="5.0" mnemonicParsing="false" onAction="#onEditPaymentMethod" prefWidth="89.0" text="Edit &#10;Payment &#10;Method">
               <font>
                 <Font size="12.0" fx:id="x1" />
               </font>
             </Button>
-            <Button id="clear" font="$x1" layoutX="578.0" layoutY="61.0" mnemonicParsing="false" onAction="#onEditPaymentMethod" prefWidth="89.0" text="Show&#10;Purchase&#10;History" />
+            <Button id="clear" fx:id="puchases" font="$x1" layoutX="578.0" layoutY="61.0" mnemonicParsing="false" onAction="#onSelectPurhcaseHistory" prefWidth="89.0" text="Show&#10;Purchase&#10;History" />
           </children>
           <stylesheets>
             <URL value="@FormValidationStyle.css" />
