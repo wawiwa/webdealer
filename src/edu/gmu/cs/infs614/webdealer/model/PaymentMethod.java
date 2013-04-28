@@ -225,7 +225,8 @@ public class PaymentMethod {
 		
 		String sql = "UPDATE Payment_Method SET "+
 				"cc_vendor= \'"+newPayment.getPmVendorName()+"\',"+
-				"cc_number= \'"+newPayment.getPmCardNumber()+"\'"+
+				"cc_number= \'"+newPayment.getPmCardNumber()+"\',"+
+				"cc_default= \'"+newPayment.getPmPrimary()+"\'"+
 				" WHERE payment_ID = \'"+newPayment.getPmPaymentID()+"\'";
 		
 		AppUtil.console("UPDATE: "+sql);

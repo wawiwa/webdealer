@@ -84,6 +84,8 @@ public class PurchaseController implements Initializable {
 	@FXML
 	Button fxbBuy;
 	
+
+	
 	
 	// DEFINE VARIABLES
 	

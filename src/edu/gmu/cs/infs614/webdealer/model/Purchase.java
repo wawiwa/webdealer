@@ -350,13 +350,14 @@ public class Purchase {
 				
 			} catch (SQLException sqle) {
 				AppUtil.console("Purchase insert error: "+setTransactionSql+"\n"+sqle);
-				//AppUtil.console("tid: "+this.pTransaction_ID);
+				
 				AppUtil.console("did: "+this.getPDeal_ID());
 				AppUtil.console("vid: "+voucher.get());
 				AppUtil.console("dat: "+this.getPTrans_date());
 				AppUtil.console("eml: "+this.getPEmailAddress());
 				AppUtil.console("qty: "+quantity);
 				AppUtil.console("cid: "+this.getPCustomer_ID());
+				AppUtil.console("tid: "+this.pTransaction_ID);
 				AppUtil.console("sts: "+this.getPStatus());
 				return -1;
 			}
