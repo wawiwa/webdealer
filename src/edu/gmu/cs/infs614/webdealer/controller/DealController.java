@@ -1,6 +1,7 @@
 package edu.gmu.cs.infs614.webdealer.controller;
 
 //import java.io.IOException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-//import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,21 +23,23 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-//import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
-//import edu.gmu.cs.infs614.webdealer.model.Customer;
+import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
 import edu.gmu.cs.infs614.webdealer.model.Deal;
+import edu.gmu.cs.infs614.webdealer.model.Purchase;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
-//import edu.gmu.cs.infs614.webdealer.model.connector.DealConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
+//import javafx.fxml.FXMLLoader;
+//import javafx.scene.layout.AnchorPane;
+//import edu.gmu.cs.infs614.webdealer.model.Customer;
+//import edu.gmu.cs.infs614.webdealer.model.connector.DealConnection;
 
 public class DealController implements Initializable {
 	
 
-	// MAIN VIEWS
-		@FXML
-		Button fxDealButton;
+
 		
 		// DEFINE TABLE
 		
@@ -51,9 +54,9 @@ public class DealController implements Initializable {
 		@FXML
 		TableColumn<Deal, Integer> tcQuantityLimit;
 		@FXML
-		TableColumn<Deal, Double> tcOriginalPrice;
+		TableColumn<Deal, Float> tcOriginalPrice;
 		@FXML
-		TableColumn<Deal, Double> tcDealPrice;
+		TableColumn<Deal, Float> tcDealPrice;
 		@FXML
 		TableColumn<Deal, String> tcSaleStartTime;
 		@FXML
@@ -63,7 +66,12 @@ public class DealController implements Initializable {
 		@FXML
 		TableColumn<Deal, Integer> tcCategoryID;
 		@FXML
+		TableColumn<Deal, String> tcMerchant;
+		@FXML
 		TableColumn<Deal, Integer> tcMerchantID;
+		@FXML
+		TableColumn<Deal, String> tcCity;
+
 		
 		// DEFINE FORM
 		@FXML
@@ -99,6 +107,25 @@ public class DealController implements Initializable {
 		@FXML
 		static
 		TextField tfmerchant_ID;
+		@FXML
+		static
+		TextField tfmerchant;
+		@FXML
+		static
+		TextField tfcity;
+		@FXML
+		static
+		TextField tfstate;
+		@FXML
+		static
+		TextField tfcountry;
+		@FXML
+		static
+		TextField tfcontinent;
+		@FXML
+		static
+		TextField tfquantity;
+		
 		
 		@FXML
 		Button submit;
@@ -108,6 +135,12 @@ public class DealController implements Initializable {
 		Button clear;
 		@FXML
 		Button search;
+		@FXML
+		Button update;
+		@FXML
+		Button showOpenDeals;
+		@FXML
+		Button buy;
 		
 		
 		@FXML
@@ -130,6 +163,8 @@ public class DealController implements Initializable {
 		Label categoryIDLabel;
 		@FXML
 		Label merchantIDLabel;
+		@FXML
+		Label quantityLabel;
 		
 		// DEFINE VARIABLES
 		
@@ -156,16 +191,18 @@ public class DealController implements Initializable {
 			index.set(-1);
 			
 			tcDealID.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dID"));
-			tcExpirationDate.setCellValueFactory(new PropertyValueFactory<Deal, String>("dExpirationDate"));
+			tcExpirationDate.setCellValueFactory(new PropertyValueFactory<Deal, String>("dExpDate"));
 			tcDescription.setCellValueFactory(new PropertyValueFactory<Deal, String>("dDescription"));
-			tcQuantityLimit.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dQuantityLimit"));
-			tcOriginalPrice.setCellValueFactory(new PropertyValueFactory<Deal, Double>("dOriginalPrice"));
-			tcDealPrice.setCellValueFactory(new PropertyValueFactory<Deal, Double>("dDealPrice"));
-			tcSaleStartTime.setCellValueFactory(new PropertyValueFactory<Deal, String>("dSaleStartTime"));
-			tcSaleEndTime.setCellValueFactory(new PropertyValueFactory<Deal, String>("dSaleEndTime"));
-			tcLocationID.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dLocationID"));
-			tcCategoryID.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dCategoryID"));
-			tcMerchantID.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dMerchantID"));
+			//tcQuantityLimit.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dQuantity"));
+			//tcOriginalPrice.setCellValueFactory(new PropertyValueFactory<Deal, Float>("dOrigPrice"));
+			tcDealPrice.setCellValueFactory(new PropertyValueFactory<Deal, Float>("dDealPrice"));
+			
+			tcSaleEndTime.setCellValueFactory(new PropertyValueFactory<Deal, String>("dSaleEnd"));
+			
+			tcCity.setCellValueFactory(new PropertyValueFactory<Deal,String>("dCityName"));
+			
+			//tcMerchant.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dMerchant"));
+			tcMerchantID.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("mID"));
 			
 			   AppUtil.console("DATA contents: "+data);
 			   tvDeal.setItems(data);
@@ -302,6 +339,41 @@ public class DealController implements Initializable {
 			return -1;
 		}
 
+		public void onBuyItem(ActionEvent event) {
+			AppUtil.console("PC onAddItem..");
+			
+			displayPurchases();
+			
+			// need a trans id and voucher id hence two nulls
+			Purchase entry = new Purchase(conn,null,new TextField(UserCreds.getLogin()),
+					tfDeal_ID,tfquantity,null,null,null);
+		
+			if(!entry.isInDatabase) return;
+			
+			// insert multiple purchased vouchers into table
+			ArrayList<Purchase> pl = entry.getPurchaseViews();
+			AppUtil.console("PURCHASE LIST SIZE: "+pl.size());
+			PurchaseController.data.clear();
+			PurchaseController.data.addAll(pl);
+				
+			// clear TextFields
+			clearForm();
+			
+			
+				
+		}
+		
+
+		public void displayPurchases() {
+			try {
+				String pv = "/edu/gmu/cs/infs614/webdealer/view/PurchaseView.fxml";
+				WebDealerApplicationController.fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(pv)));
+			} catch (IOException e) {
+				AppUtil.console(e.toString());
+			}
+		}
+		
+		
 		private void clearForm() {
 			tfDeal_ID.clear();
 			tfexpiration_date.clear();

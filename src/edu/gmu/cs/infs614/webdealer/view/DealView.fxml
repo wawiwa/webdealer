@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fxmltableview.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="Content" fx:id="fxAnchorPane" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="693.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.DealController">
+  <children>
+    <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="View" textAlignment="CENTER" textFill="BLACK" wrapText="false">
+      <font>
+        <Font size="13.0" />
+      </font>
+    </Label>
+    <SplitPane dividerPositions="0.49005424954792043" focusTraversable="true" orientation="VERTICAL" prefHeight="555.0" prefWidth="766.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TableView id="tableID" fx:id="tvDeal" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="Deal ID" fx:id="tcDealID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="100.0" text="Description" fx:id="tcDescription">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="100.0" text="Expiration&#10;Date" fx:id="tcExpirationDate">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tName" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="75.0" text="Deal Price" fx:id="tcDealPrice">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tPrice" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="81.0" text="City" fx:id="tcCity">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tPrice" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="75.0" text="Merchant" fx:id="tcMerchantID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tPrice" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn minWidth="20.0" prefWidth="75.0" text="Sale &#10;End &#10;Time" fx:id="tcSaleEndTime">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="276.5" prefWidth="691.0">
+          <children>
+            <TextField id="nameInput" fx:id="tfDeal_ID" layoutX="14.0" layoutY="26.0" prefWidth="130.0" promptText="Deal ID" />
+            <TextField id="dateInput" fx:id="tfexpiration_date" layoutX="151.0" layoutY="25.0" prefWidth="130.0" promptText="Expiration Date" />
+            <TextField id="priceInput" fx:id="tfdescription" layoutX="289.0" layoutY="25.0" prefWidth="130.0" promptText="Description" />
+            <Button fx:id="submit" layoutX="586.0" layoutY="175.0" mnemonicParsing="false" onAction="#onAddItem" prefWidth="73.0" text="Create" />
+            <Button fx:id="delete" layoutX="586.0" layoutY="244.0" mnemonicParsing="false" onAction="#onDeleteItem" prefWidth="73.0" text="Delete" />
+            <Label id="dateLabel" fx:id="expirationDateLabel" layoutX="151.0" layoutY="47.0" prefWidth="130.00009999999747" text="" wrapText="true">
+              <font>
+                <Font size="10.0" fx:id="x1_x0" />
+              </font>
+            </Label>
+            <Label id="priceLabel" fx:id="descriptionLabel" font="$x1_x0" layoutX="289.0" layoutY="47.0" prefWidth="130.0" text="" wrapText="true" />
+            <Button fx:id="clear" layoutX="586.0" layoutY="25.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="148.0" prefWidth="73.0" rotate="0.0" text="Clear" />
+            <TextField id="nameInput" fx:id="tforiginal_price" layoutX="14.0" layoutY="67.0" prefWidth="130.0" promptText="Original Price" />
+            <Label id="nameLabel" fx:id="originalPriceLabel" font="$x1_x0" layoutX="14.0" layoutY="87.0" prefWidth="130.0" text="" wrapText="true" />
+            <TextField id="nameInput" fx:id="tfdeal_price" layoutX="151.0" layoutY="67.0" prefWidth="130.0" promptText="Deal Price" />
+            <Label id="nameLabel" fx:id="dealPriceLabel" font="$x1_x0" layoutX="152.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
+            <Button fx:id="search" layoutX="586.0" layoutY="198.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
+            <TextField id="priceInput" fx:id="tfsale_start_time" layoutX="289.0" layoutY="67.0" prefWidth="130.0" promptText="Sale Start Time" />
+            <Button id="clear" fx:id="update" layoutX="586.0" layoutY="221.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="73.0" text="Update" />
+            <Button id="clear" fx:id="buy" layoutX="289.0" layoutY="208.0" mnemonicParsing="false" onAction="#onBuyItem" prefHeight="57.0" prefWidth="186.0" text="Buy This Deal!!">
+              <font>
+                <Font size="12.0" fx:id="x1" />
+              </font>
+            </Button>
+            <TextField id="dateInput" fx:id="tfquantity_limit" layoutX="430.0" layoutY="25.0" prefWidth="130.0" promptText="Quantity Limit" />
+            <Label id="dateLabel" fx:id="quantityLimitLabel" font="$x1_x0" layoutX="430.0" layoutY="48.0" prefWidth="130.00009999999747" text="" wrapText="true" />
+            <TextField id="nameInput" fx:id="tfsale_end_time" layoutX="430.0" layoutY="67.0" prefWidth="130.0" promptText="Sale End Time" />
+            <Label id="nameLabel" fx:id="saleEndtimeLabel" font="$x1_x0" layoutX="431.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
+            <Button id="clear" fx:id="showOpenDeals" layoutX="14.0" layoutY="208.0" minWidth="29.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="267.0" rotate="0.0" text="Show Open Deals" />
+            <TextField id="dateInput" layoutX="431.0" layoutY="112.0" prefWidth="130.0" promptText="Merchant Name" />
+            <TextField id="priceInput" fx:id="tfmerchant_ID" layoutX="290.0" layoutY="112.0" prefWidth="130.0" promptText="Merchant ID" />
+            <Label id="priceLabel" fx:id="merchantIDLabel" font="$x1_x0" layoutX="290.0" layoutY="134.0" prefWidth="130.0" text="" wrapText="true" />
+            <TextField id="nameInput" layoutX="431.0" layoutY="154.0" prefWidth="130.0" promptText="Continent" />
+            <TextField id="dateInput" fx:id="tfcategory_ID" layoutX="152.0" layoutY="112.0" prefWidth="130.0" promptText="Category ID" />
+            <Label id="nameLabel" fx:id="locationIDLabel" font="$x1_x0" layoutX="15.0" layoutY="134.0" prefWidth="130.0" text="" wrapText="true" />
+            <TextField id="priceInput" layoutX="290.0" layoutY="154.0" prefWidth="130.0" promptText="Country" />
+            <TextField id="nameInput" layoutX="15.0" layoutY="154.0" prefWidth="130.0" promptText="City" />
+            <Label id="dateLabel" fx:id="categoryIDLabel" font="$x1_x0" layoutX="152.0" layoutY="134.0" prefWidth="130.00009999999747" text="" wrapText="true" />
+            <TextField id="nameInput" fx:id="tflocation_ID" layoutX="15.0" layoutY="113.0" prefWidth="130.0" promptText="Location ID" />
+            <TextField id="nameInput" layoutX="152.0" layoutY="154.0" prefWidth="130.0" promptText="State" />
+            <Label id="nameLabel" fx:id="saleStarttimeLabel" font="$x1_x0" layoutX="290.0" layoutY="88.0" prefWidth="130.0" text="" wrapText="true" />
+            <TextField id="nameInput" fx:id="tfquantity" layoutX="488.0" layoutY="208.0" prefWidth="73.0" promptText="Quantity" />
+            <Label id="nameLabel" fx:id="quantityLabel" font="$x1_x0" layoutX="488.0" layoutY="237.0" prefHeight="28.0" prefWidth="73.0" text="" wrapText="true" />
+          </children>
+          <stylesheets>
+            <URL value="@FormValidationStyle.css" />
+          </stylesheets>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </children>
+</AnchorPane>

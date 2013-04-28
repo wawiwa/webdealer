@@ -3,29 +3,24 @@ package edu.gmu.cs.infs614.webdealer.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.util.ArrayList;
-//import java.util.Calendar;
-//import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-
-
-
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
-
 import edu.gmu.cs.infs614.webdealer.model.connector.DealConnection;
-//import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
+//import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
+//import java.util.ArrayList;
+//import java.util.Calendar;
+//import java.sql.Date;
+//import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 
 
 //import edu.gmu.cs.infs614.webdealer.view.FormValidation;
@@ -55,32 +50,39 @@ public class Deal {
 	DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
 	
 	public boolean isInDatabase = false;
-	private SimpleIntegerProperty dID; 
-	private SimpleStringProperty dExpDate;
-	private SimpleStringProperty dDescription;
-	private SimpleIntegerProperty dQuantity;
-	private SimpleDoubleProperty dOrigPrice;
-	private SimpleDoubleProperty dDealPrice;
-	private SimpleStringProperty dSaleStart;
-	private SimpleStringProperty dSaleEnd;
-	private SimpleIntegerProperty lID;
-	private SimpleIntegerProperty catID;
-	private SimpleIntegerProperty mID;
+	private SimpleIntegerProperty dID = null; 
+	private SimpleStringProperty dExpDate = null;
+	private SimpleStringProperty dDescription = null;
+	private SimpleIntegerProperty dQuantity = null;
+	private SimpleFloatProperty dOrigPrice = null;
+	private SimpleFloatProperty dDealPrice = null;
+	private SimpleStringProperty dSaleStart = null;
+	private SimpleStringProperty dSaleEnd = null;
+	private SimpleIntegerProperty lID = null;
+	private SimpleIntegerProperty catID = null;
+	private SimpleIntegerProperty mID = null;
+	
+	
+	//more props
+	private SimpleStringProperty dCityName;
+	private SimpleStringProperty dMerchant;
+	
+	
 	private static Connection conn;
 
-	public Deal(Connection conn, Integer deal_ID, String expiration_date, String description, Integer quantity_limit,Double original_price, 
-			Double deal_price, String sale_start_time, String sale_end_time, Integer location_ID, Integer category_ID, Integer merchant_ID){
-		this.dID=null;
-		this.dExpDate=null;
-		this.dDescription=null;
-		this.dQuantity=null;
-		this.dOrigPrice=null;
-		this.dDealPrice=null;
-		this.dSaleStart=null;
-		this.dSaleEnd=null;
-		this.lID=null;
-		this.catID=null;
-		this.mID=null;
+	public Deal(Connection conn, 
+			Integer deal_ID, 
+			String expiration_date, 
+			String description, 
+			Integer quantity_limit,
+			Float original_price, 
+			Float deal_price, 
+			String sale_start_time, 
+			String sale_end_time, 
+			Integer location_ID, 
+			Integer category_ID, 
+			Integer merchant_ID){
+
 		Deal.conn=conn;
 		
 		// create a new deal in the database
@@ -106,8 +108,8 @@ public class Deal {
 				this.dExpDate=new SimpleStringProperty(expiration_date);
 				this.dDescription=new SimpleStringProperty(description);
 				this.dQuantity=new SimpleIntegerProperty(quantity_limit);
-				this.dOrigPrice=new SimpleDoubleProperty(original_price);
-				this.dDealPrice=new SimpleDoubleProperty(deal_price);
+				this.dOrigPrice=new SimpleFloatProperty(original_price);
+				this.dDealPrice=new SimpleFloatProperty(deal_price);
 				this.dSaleStart=new SimpleStringProperty(sale_start_time);
 				this.dSaleEnd=new SimpleStringProperty(sale_end_time);
 				this.lID=new SimpleIntegerProperty(location_ID);
@@ -134,21 +136,20 @@ public class Deal {
 				TextField tfmerchant_ID) {
 			Deal.conn = conn;
 			// had to check for null before calling tfDealID.getText(), so we just copied the constructor code
-			this.dID=null;
-			this.dExpDate=null;
-			this.dDescription=null;
-			this.dQuantity=null;
-			this.dOrigPrice=null;
-			this.dDealPrice=null;
-			this.dSaleStart=null;
-			this.dSaleEnd=null;
-			this.lID=null;
-			this.catID=null;
-			this.mID=null;
 			
+			
+			// if quantity not included, set to quantity
+			if(tfquantity_limit == null || tfquantity_limit.getText().isEmpty()) {
+				tfquantity_limit = new TextField();
+				tfquantity_limit.setText("0");
+				this.dQuantity = new SimpleIntegerProperty(Integer.parseInt(tfquantity_limit.getText()));
+			}else if (!tfquantity_limit.getText().isEmpty()){ // voucher id included in textfield
+						
+				this.dQuantity = new SimpleIntegerProperty(Integer.parseInt(tfquantity_limit.getText()));
+			}
 			
 			if(tfDeal_ID == null) {
-				int result = create(tfexpiration_date.getText(),tfdescription.getText(),Integer.parseInt(tfquantity_limit.getText()),Double.parseDouble(tforiginal_price.getText()),Double.parseDouble(tfdeal_price.getText()),
+				int result = create(tfexpiration_date.getText(),tfdescription.getText(),Integer.parseInt(tfquantity_limit.getText()),Float.parseFloat(tforiginal_price.getText()),Float.parseFloat(tfdeal_price.getText()),
 						tfsale_start_time.getText(),tfsale_end_time.getText(),Integer.parseInt(tflocation_ID.getText()),Integer.parseInt(tfcategory_ID.getText()),Integer.parseInt(tfmerchant_ID.getText()));
 				if(result == -1) {
 					isInDatabase = false;
@@ -162,13 +163,14 @@ public class Deal {
 			else {
 				this.dID = new SimpleIntegerProperty(Integer.parseInt(tfDeal_ID.getText()));
 			}
+
 			
 			
 			this.dExpDate=new SimpleStringProperty(tfexpiration_date.getText());
 			this.dDescription=new SimpleStringProperty(tfdescription.getText());
-			this.dQuantity=new SimpleIntegerProperty(Integer.parseInt(tfquantity_limit.getText()));
-			this.dOrigPrice=new SimpleDoubleProperty(Double.parseDouble(tforiginal_price.getText()));
-			this.dDealPrice=new SimpleDoubleProperty(Double.parseDouble(tfdeal_price.getText()));
+			//this.dQuantity=new SimpleIntegerProperty(Integer.parseInt(tfquantity_limit.getText()));
+			this.dOrigPrice=new SimpleFloatProperty(Float.parseFloat(tforiginal_price.getText()));
+			this.dDealPrice=new SimpleFloatProperty(Float.parseFloat(tfdeal_price.getText()));
 			this.dSaleStart=new SimpleStringProperty(tfsale_start_time.getText());
 			this.dSaleEnd=new SimpleStringProperty(tfsale_end_time.getText());
 			this.lID=new SimpleIntegerProperty(Integer.parseInt(tflocation_ID.getText()));
@@ -179,15 +181,24 @@ public class Deal {
 		}	
 
 		// CRUD
-		private int create(String expiration_date, String description, Integer quantity_limit,Double original_price, 
-				Double deal_price, String sale_start_time, String sale_end_time, Integer location_ID, Integer category_ID, Integer merchant_ID) {
+		private int create(
+				String expiration_date, 
+				String description, 
+				Integer quantity_limit,
+				Float original_price, 
+				Float deal_price, 
+				String sale_start_time, 
+				String sale_end_time, 
+				Integer location_ID,
+				Integer category_ID, 
+				Integer merchant_ID) {
 			
 			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
 			String sql = "BEGIN INSERT INTO " +
-							"Deal (deal_ID,expiration_date,description,quantity_limit,original_price,deal_price,sale_start_name," +
+							"Deal (deal_ID,expiration_date,description,quantity_limit,original_price,deal_price,sale_start_time," +
 							"sale_end_time,location_ID,category_ID,merchant_ID) " +
-							"VALUES (seq_deal.nextval, ?,?,?,?,?,?,?,?,?,?,?) RETURNING deal_ID INTO ?; END;";
+							"VALUES (seq_deal.nextval, ?,?,?,?,?,?,?,?,?,?) RETURNING deal_ID INTO ?; END;";
 			
 			java.sql.CallableStatement stmt = null;
 			
@@ -199,8 +210,8 @@ public class Deal {
 				stmt.setString(1, expiration_date);
 				stmt.setString(2, description);
 				stmt.setInt(3, quantity_limit);
-				stmt.setDouble(4, original_price);
-				stmt.setDouble(5, deal_price);
+				stmt.setFloat(4, original_price);
+				stmt.setFloat(5, deal_price);
 				stmt.setString(6, sale_start_time);
 				stmt.setString(7, sale_end_time);
 				stmt.setInt(8, location_ID);
@@ -242,7 +253,7 @@ public class Deal {
 			}
 			
 			if(FormValidation.textFieldNotEmpty(tfdescription)) {
-				String description = "description = "+"regexp_LIKE(description, '*" + tfdescription.getText() +"*','i')'";
+				String description = "regexp_LIKE(description, '*" + tfdescription.getText() +"*','i')";
 				if(start>0) sqlWhere+=" AND "+description;
 				else sqlWhere += description;
 				start++;
@@ -321,6 +332,19 @@ public class Deal {
 			ArrayList<Deal> dl = new ArrayList<Deal>();
 			
 			
+			
+			TextField tfdid = new TextField();
+			TextField tfexp = new TextField();
+			TextField tfdes = new TextField();
+			TextField tfqty = new TextField();
+			TextField tforg = new TextField();
+			TextField tfprc = new TextField();
+			TextField tfstr = new TextField();
+			TextField tfend = new TextField();
+			TextField tfloc = new TextField();
+			TextField tfcat = new TextField();
+			TextField tfmid = new TextField();
+			
 			try {
 
 				preparedStatement = conn.prepareStatement(selectSQL);
@@ -331,25 +355,27 @@ public class Deal {
 	 
 				while (rs.next()) {
 					
-					dl.add(new Deal(Deal.conn,
-							rs.getInt("deal_ID"),
-							rs.getString("expiration_date"),
-							rs.getString("description"),
-							rs.getInt("quantity_limit"),
-							rs.getDouble("original_price"),
-							rs.getDouble("deal_price"),
-							rs.getString("sale_start_time"),
-							rs.getString("sale_end_time"),
-							rs.getInt("location_ID"),
-							rs.getInt("category_ID"),
-							rs.getInt("merchant_ID")));
+					tfdid.setText(((Integer)rs.getInt("deal_ID")).toString());
+					tfexp.setText(rs.getString("expiration_date"));
+					tfdes.setText(rs.getString("description"));
+					tfqty.setText(((Integer)rs.getInt("quantity_limit")).toString());
+					tforg.setText(((Float)rs.getFloat("original_price")).toString());
+					tfprc.setText(((Float)rs.getFloat("deal_price")).toString());
+					tfstr.setText(rs.getString("sale_start_time"));
+					tfend.setText(rs.getString("sale_end_time"));
+					tfloc.setText(((Integer)rs.getInt("location_ID")).toString());
+					tfcat.setText(((Integer)rs.getInt("category_ID")).toString());
+					tfmid.setText(((Integer)rs.getInt("merchant_ID")).toString());
+					
+					dl.add(new Deal(Deal.conn,tfdid,tfexp,tfdes,tfqty,
+							tforg,tfprc,tfstr,tfend,tfloc,tfcat,tfmid));
 
 					AppUtil.console("deal_ID : " + rs.getInt("deal_ID"));
 					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
 					AppUtil.console("description : " + rs.getString("description"));
 					AppUtil.console("quantity_limit : " + rs.getInt("quantity_limit"));
-					AppUtil.console("original_price : " + rs.getDouble("original_price"));
-					AppUtil.console("deal_price : " + rs.getDouble("deal_price"));
+					AppUtil.console("original_price : " + rs.getFloat("original_price"));
+					AppUtil.console("deal_price : " + rs.getFloat("deal_price"));
 					AppUtil.console("sale_start_time : " + rs.getString("sale_start_time"));
 					AppUtil.console("sale_end_time : " + rs.getString("sale_end_time"));
 					AppUtil.console("location_ID : " + rs.getInt("location_ID"));
@@ -368,7 +394,7 @@ public class Deal {
 				
 			}
 			
-			
+			AppUtil.console("DL list size: " + dl.size());
 			return dl;
 	 
 		}
@@ -434,7 +460,8 @@ public class Deal {
 
 	
 	public static ArrayList<Deal> citySearchretrieve(Connection conn,TextField tfDeal_ID,TextField tfexpiration_date,TextField tfdescription,
-				TextField tfquantity_limit,TextField tforiginal_price,TextField tfdeal_price,TextField tfsale_start_time,TextField tfsale_end_time,TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID, TextField tfcity_name) 
+				TextField tfquantity_limit,TextField tforiginal_price,TextField tfdeal_price,TextField tfsale_start_time,TextField tfsale_end_time,
+				TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID, TextField tfcity_name) 
 		{
 			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
@@ -442,7 +469,7 @@ public class Deal {
 			String sqlWhere = "WHERE D.merchant_id=M.merchant_ID AND D.location_ID=L.location_id";
 		
 			if(FormValidation.textFieldNotEmpty(tfcity_name)) {
-				String city_search = " AND regexp_LIKE(L.city, '*" + tfcity_name.getText() +"*','i')";
+				String city_search = " AND regexp_LIKE(L.city, \'*" + tfcity_name.getText() +"*\',\'i\')";
 				sqlWhere += city_search;
 				start++;
 			}
@@ -472,6 +499,20 @@ public class Deal {
 				// execute select SQL
 				rs = preparedStatement.executeQuery();
 	 
+				/*
+				 * public Deal(Connection conn, 
+			Integer deal_ID, 
+			String expiration_date, 
+			String description, 
+			Integer quantity_limit,
+			Float original_price, 
+			Float deal_price, 
+			String sale_start_time, 
+			String sale_end_time, 
+			Integer location_ID, 
+			Integer category_ID, 
+			Integer merchant_ID
+				 */
 				while (rs.next()) {
 					
 					/*dl.add(new Deal(Deal.conn,
@@ -479,8 +520,8 @@ public class Deal {
 							rs.getString("expiration_date"),
 							rs.getString("description"),
 							rs.getInt("quantity_limit"),
-							rs.getDouble("original_price"),
-							rs.getDouble("deal_price"),
+							rs.getFloat("original_price"),
+							rs.getFloat("deal_price"),
 							rs.getString("sale_start_time"),
 							rs.getString("sale_end_time"),
 							rs.getInt("L.location_ID"),
@@ -496,8 +537,8 @@ public class Deal {
 					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
 					AppUtil.console("description : " + rs.getString("description"));
 					AppUtil.console("quantity_limit : " + rs.getInt("quantity_limit"));
-					AppUtil.console("original_price : " + rs.getDouble("original_price"));
-					AppUtil.console("deal_price : " + rs.getDouble("deal_price"));
+					AppUtil.console("original_price : " + rs.getFloat("original_price"));
+					AppUtil.console("deal_price : " + rs.getFloat("deal_price"));
 					AppUtil.console("sale_start_time : " + rs.getString("sale_start_time"));
 					AppUtil.console("sale_end_time : " + rs.getString("sale_end_time"));
 					AppUtil.console("location_ID : " + rs.getInt("location_ID"));
@@ -546,11 +587,11 @@ public Integer getDQuantity() {
 	return dQuantity.get();
 }
 
-public Double getDOrigPrice() {
+public Float getDOrigPrice() {
 	return dOrigPrice.get();
 }
 
-public Double getDDealPrice() {
+public Float getDDealPrice() {
 	return dDealPrice.get();
 }
 

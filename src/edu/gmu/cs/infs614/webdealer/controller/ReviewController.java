@@ -24,11 +24,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
-
 import edu.gmu.cs.infs614.webdealer.model.Review;
-
-import edu.gmu.cs.infs614.webdealer.model.connector.ReviewConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
+import edu.gmu.cs.infs614.webdealer.model.connector.ReviewConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 public class ReviewController implements Initializable {

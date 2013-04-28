@@ -3,28 +3,21 @@ package edu.gmu.cs.infs614.webdealer.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.util.ArrayList;
-//import java.util.Calendar;
-//import java.sql.Date;
-
 import java.util.ArrayList;
-
-
-
-
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
-
 import edu.gmu.cs.infs614.webdealer.model.connector.ReviewConnection;
-//import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
+//import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
+//import java.util.ArrayList;
+//import java.util.Calendar;
+//import java.sql.Date;
+//import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 
 
 //import edu.gmu.cs.infs614.webdealer.view.FormValidation;

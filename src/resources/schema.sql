@@ -112,7 +112,9 @@ PRIMARY KEY (category_ID)
 CREATE TABLE Merchant(
 merchant_ID INTEGER, 
 merchant_name VARCHAR2(50),
-PRIMARY KEY (merchant_ID));
+PRIMARY KEY (merchant_ID) 
+);
+
 ALTER TABLE Merchant
 add constraint Merchant_name UNIQUE (merchant_name);
 
@@ -143,7 +145,7 @@ merchant_ID INTEGER,
 PRIMARY KEY (deal_ID),
 FOREIGN KEY (location_ID) REFERENCES Location (location_ID),
 FOREIGN KEY (category_ID) REFERENCES Category (category_ID),
-FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID)
+FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID) 
 );
 
 // status=used,current,expired,refunded,sold

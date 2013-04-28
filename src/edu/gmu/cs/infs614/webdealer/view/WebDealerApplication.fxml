@@ -65,7 +65,7 @@
               </textFill>
             </Label>
             <Button fx:id="fxMerchantButton" layoutY="119.0" mnemonicParsing="false" onAction="#displayMerchantDialogue" prefHeight="24.0" prefWidth="123.0" text="MERCHANTS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="25.0" />
-            <Button fx:id="fxDealButton" layoutY="177.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="124.0" text="DEALS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0" />
+            <Button fx:id="fxDealButton" layoutY="177.0" mnemonicParsing="false" onAction="#displayDealDialogue" prefHeight="24.0" prefWidth="124.0" text="DEALS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0" />
             <Button fx:id="fxCustomerButton" layoutY="206.0" mnemonicParsing="false" onAction="#displayCustomerDialogue" prefHeight="24.0" prefWidth="124.0" text="CUSTOMERS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0">
               <font>
                 <Font size="13.0" />

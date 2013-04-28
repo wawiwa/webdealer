@@ -137,7 +137,7 @@ public class Merchant {
 			start++;
 		}
 		if(FormValidation.textFieldNotEmpty(tfMerchantName)) {
-			String merchant_name = "merchant_name = "+"\'"+tfMerchantName.getText()+"\'";
+			String merchant_name = "regexp_LIKE(merchant_name, '*"+tfMerchantName.getText()+"*','i')";
 			if(start>0) sqlWhere+=" AND "+merchant_name;
 			else sqlWhere += merchant_name;
 			start++;
