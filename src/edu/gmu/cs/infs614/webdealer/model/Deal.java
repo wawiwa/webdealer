@@ -242,7 +242,7 @@ public class Deal {
 			}
 			
 			if(FormValidation.textFieldNotEmpty(tfdescription)) {
-				String description = "description = "+"\'"+tfdescription.getText()+"\'";
+				String description = "description = "+"regexp_LIKE(description, '*" + tfdescription.getText() +"*','i')'";
 				if(start>0) sqlWhere+=" AND "+description;
 				else sqlWhere += description;
 				start++;
@@ -433,6 +433,100 @@ public class Deal {
 		}
 
 	
+	public static ArrayList<Deal> citySearchretrieve(Connection conn,TextField tfDeal_ID,TextField tfexpiration_date,TextField tfdescription,
+				TextField tfquantity_limit,TextField tforiginal_price,TextField tfdeal_price,TextField tfsale_start_time,TextField tfsale_end_time,TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID, TextField tfcity_name) 
+		{
+			if(!connect()) AppUtil.console("Not able to connect to database!");
+			
+			int start = 0;
+			String sqlWhere = "WHERE D.merchant_id=M.merchant_ID AND D.location_ID=L.location_id";
+		
+			if(FormValidation.textFieldNotEmpty(tfcity_name)) {
+				String city_search = " AND regexp_LIKE(L.city, '*" + tfcity_name.getText() +"*','i')";
+				sqlWhere += city_search;
+				start++;
+			}
+			
+			
+				
+			PreparedStatement preparedStatement = null;
+			
+			String selectSQL;
+			if(start>0) {
+				selectSQL = "SELECT D.deal_id,D.expiration_date,D.description,D.quantity_limit,D.original_price,D.deal_price,D.sale_start_time,D.sale_end_time,D.location_ID,D.category_ID,D.merchant_ID,M.merchant_name,L.city,L.state,L.country,L.continent FROM DEAL D, MERCHANT M, LOCATION L "+sqlWhere;
+			}else {
+				selectSQL = "SELECT D.deal_id,D.expiration_date,D.description,D.quantity_limit,D.original_price,D.deal_price,D.sale_start_time,D.sale_end_time,D.location_ID,D.category_ID,D.merchant_ID,M.merchant_name,L.city,L.state,L.country,L.continent FROM DEAL D, MERCHANT M, LOCATION L";
+			}
+			
+			AppUtil.console("Select String: "+selectSQL);
+	 
+			ResultSet rs = null;
+			ArrayList<Deal> dl = new ArrayList<Deal>();
+			
+			
+			try {
+
+				preparedStatement = conn.prepareStatement(selectSQL);
+				
+	 
+				// execute select SQL
+				rs = preparedStatement.executeQuery();
+	 
+				while (rs.next()) {
+					
+					/*dl.add(new Deal(Deal.conn,
+							rs.getInt("deal_ID"),
+							rs.getString("expiration_date"),
+							rs.getString("description"),
+							rs.getInt("quantity_limit"),
+							rs.getDouble("original_price"),
+							rs.getDouble("deal_price"),
+							rs.getString("sale_start_time"),
+							rs.getString("sale_end_time"),
+							rs.getInt("L.location_ID"),
+							rs.getInt("category_ID"),
+							rs.getInt("M.merchant_ID"),
+							rs.getString("M.merchant_name"),
+							rs.getString("L.city"),
+							rs.getString("L.state"),
+							rs.getString("L.country"),
+							rs.getString("L.continent")));*/
+
+					AppUtil.console("deal_ID : " + rs.getInt("deal_ID"));
+					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
+					AppUtil.console("description : " + rs.getString("description"));
+					AppUtil.console("quantity_limit : " + rs.getInt("quantity_limit"));
+					AppUtil.console("original_price : " + rs.getDouble("original_price"));
+					AppUtil.console("deal_price : " + rs.getDouble("deal_price"));
+					AppUtil.console("sale_start_time : " + rs.getString("sale_start_time"));
+					AppUtil.console("sale_end_time : " + rs.getString("sale_end_time"));
+					AppUtil.console("location_ID : " + rs.getInt("location_ID"));
+					AppUtil.console("category_ID : " + rs.getInt("category_ID"));
+					AppUtil.console("merchant_ID : " + rs.getInt("merchant_ID"));
+	 
+				}
+	 
+				preparedStatement.close();
+				//rs.first(); // It seems this non-scrollable result set resets to first automagically
+				
+				
+			} catch (SQLException e) {
+	 
+				AppUtil.console(e.getMessage());
+				
+			}
+			
+			
+			return dl;
+	 
+		}	
+		
+		
+		
+		
+	
+		
+		
 // getters 
 
 public Integer getDID() {
