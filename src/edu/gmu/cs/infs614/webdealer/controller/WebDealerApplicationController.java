@@ -63,6 +63,9 @@ public class WebDealerApplicationController implements Initializable {
 	Button fxConnectButton;
 	
 	@FXML
+	Button fxReviewButton;
+	
+	@FXML
 	public static TextArea fxConsoleTextArea;
 	
 	// USER INFO
@@ -365,5 +368,41 @@ public class WebDealerApplicationController implements Initializable {
 			   AppUtil.console(e.toString());
 		}
 	}
+	
+	// DISPLAY DEAL TABLE
+	
+		public void displayDealDialogue(ActionEvent event) {
+		   AppUtil.console("Showing Deal dialogue.");
+		   dealDialogue();
+		}
+		
+		private void dealDialogue() {
+			   try {
+				    AppUtil.console(fxScrollPane.idProperty().toString());
+					String dv = "/edu/gmu/cs/infs614/webdealer/view/DealView.fxml";
+					fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(dv)));
+			   } catch (IOException e) {
+					   // TODO Auto-generated catch block
+				   AppUtil.console(e.toString());
+			}
+		}
+		// DISPLAY REVIEW TABLE
+		
+			public void displayReviewDialogue(ActionEvent event) {
+			   AppUtil.console("Showing Review dialogue.");
+			   reviewDialogue();
+			}
+			
+			private void reviewDialogue() {
+				   try {
+					    AppUtil.console(fxScrollPane.idProperty().toString());
+						String rv = "/edu/gmu/cs/infs614/webdealer/view/ReviewView.fxml";
+						fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(rv)));
+				   } catch (IOException e) {
+						   // TODO Auto-generated catch block
+					   AppUtil.console(e.toString());
+				}
+			}
+	
 	
 }

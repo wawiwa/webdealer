@@ -187,7 +187,7 @@ public class Deal {
 			String sql = "BEGIN INSERT INTO " +
 							"Deal (deal_ID,expiration_date,description,quantity_limit,original_price,deal_price,sale_start_name," +
 							"sale_end_time,location_ID,category_ID,merchant_ID) " +
-							"VALUES (seq_customer.nextval, ?,?,?,?,?,?,?,?,?,?,?) RETURNING deal_ID INTO ?; END;";
+							"VALUES (seq_deal.nextval, ?,?,?,?,?,?,?,?,?,?,?) RETURNING deal_ID INTO ?; END;";
 			
 			java.sql.CallableStatement stmt = null;
 			
@@ -344,7 +344,7 @@ public class Deal {
 							rs.getInt("category_ID"),
 							rs.getInt("merchant_ID")));
 
-					AppUtil.console("deal_ID : " + rs.getString("deal_ID"));
+					AppUtil.console("deal_ID : " + rs.getInt("deal_ID"));
 					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
 					AppUtil.console("description : " + rs.getString("description"));
 					AppUtil.console("quantity_limit : " + rs.getInt("quantity_limit"));
