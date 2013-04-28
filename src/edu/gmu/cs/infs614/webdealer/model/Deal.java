@@ -1,15 +1,18 @@
 package edu.gmu.cs.infs614.webdealer.model;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+//import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 //import java.util.Calendar;
-import java.sql.Date;
+//import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 
 
@@ -19,10 +22,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
+
 import edu.gmu.cs.infs614.webdealer.model.connector.DealConnection;
-
-
+//import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
+
+
+//import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 
 
@@ -76,6 +82,7 @@ public class Deal {
 		this.catID=null;
 		this.mID=null;
 		Deal.conn=conn;
+		
 		// create a new deal in the database
 		if(deal_ID == null) {
 			int result = create(expiration_date,description,quantity_limit,original_price,deal_price,sale_start_time,sale_end_time,location_ID,category_ID,merchant_ID);
@@ -200,9 +207,9 @@ public class Deal {
 				stmt.setInt(9, category_ID);
 				stmt.setInt(10, merchant_ID);
 								
-				stmt.registerOutParameter(2, java.sql.Types.INTEGER);	
+				stmt.registerOutParameter(11, java.sql.Types.INTEGER);	
 				stmt.execute();
-				generatedKey = stmt.getInt(2);
+				generatedKey = stmt.getInt(11);
 				stmt.close();
 				
 			} catch (SQLException sqle) {
@@ -214,8 +221,217 @@ public class Deal {
 			return generatedKey;
 		}
 
+		public static ArrayList<Deal> retrieve(Connection conn,TextField tfDeal_ID,TextField tfexpiration_date,TextField tfdescription,
+				TextField tfquantity_limit,TextField tforiginal_price,TextField tfdeal_price,TextField tfsale_start_time,TextField tfsale_end_time,TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID) 
+		{
+			if(!connect()) AppUtil.console("Not able to connect to database!");
+			
+			int start = 0;
+			String sqlWhere = " WHERE ";
+			if(FormValidation.textFieldTypeInteger(tfDeal_ID)) {
+				String deal_ID = "deal_ID = "+"\'"+tfDeal_ID.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+ deal_ID;
+				sqlWhere += deal_ID;
+				start++;
+			}
+			if(FormValidation.textFieldNotEmpty(tfexpiration_date)) {
+				String expiration_date = "expiration_date = "+"\'"+tfexpiration_date.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+expiration_date;
+				else sqlWhere += expiration_date;
+				start++;
+			}
+			
+			if(FormValidation.textFieldNotEmpty(tfdescription)) {
+				String description = "description = "+"\'"+tfdescription.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+description;
+				else sqlWhere += description;
+				start++;
+			}
+			
+			if(FormValidation.textFieldNotEmpty(tfquantity_limit)) {
+				String quantity_limit = "quantity_limit = "+"\'"+tfquantity_limit.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+quantity_limit;
+				else sqlWhere += quantity_limit;
+				start++;
+			}
+			
+			
+			if(FormValidation.textFieldNotEmpty(tforiginal_price)) {
+				String original_price = "original_price = "+"\'"+tforiginal_price.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+original_price;
+				else sqlWhere += original_price;
+				start++;
+			}
+			
+			if(FormValidation.textFieldNotEmpty(tfdeal_price)) {
+				String deal_price = "deal_price = "+"\'"+tfdeal_price.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+deal_price;
+				else sqlWhere += deal_price;
+				start++;
+			}
+			
+			
+			if(FormValidation.textFieldNotEmpty(tfsale_start_time)) {
+				String sale_start_time = "sale_start_time = "+"\'"+tfsale_start_time.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+sale_start_time;
+				else sqlWhere += sale_start_time;
+				start++;
+			}
+			
+			if(FormValidation.textFieldNotEmpty(tfsale_end_time)) {
+				String sale_end_time = "sale_end_time = "+"\'"+tfsale_end_time.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+sale_end_time;
+				else sqlWhere += sale_end_time;
+				start++;
+			}
+			
+			if(FormValidation.textFieldNotEmpty(tflocation_ID)) {
+				String location_ID = "location_ID = "+"\'"+tflocation_ID.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+location_ID;
+				else sqlWhere += location_ID;
+				start++;
+			}
+			
+			if(FormValidation.textFieldNotEmpty(tfcategory_ID)) {
+				String category_ID = "category_ID = "+"\'"+tfcategory_ID.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+category_ID;
+				else sqlWhere += category_ID;
+				start++;
+			}
+			
+			if(FormValidation.textFieldNotEmpty(tfmerchant_ID)) {
+				String merchant_ID = "merchant_ID = "+"\'"+tfmerchant_ID.getText()+"\'";
+				if(start>0) sqlWhere+=" AND "+merchant_ID;
+				else sqlWhere += merchant_ID;
+				start++;
+			}
+				
+			PreparedStatement preparedStatement = null;
+			
+			String selectSQL;
+			if(start>0) {
+				selectSQL = "SELECT * FROM DEAL "+sqlWhere;
+			}else {
+				selectSQL = "SELECT * FROM DEAL";
+			}
+			
+			AppUtil.console("Select String: "+selectSQL);
+	 
+			ResultSet rs = null;
+			ArrayList<Deal> dl = new ArrayList<Deal>();
+			
+			
+			try {
 
-//STILL NEED TO ADD RETRIEVE, UPDATE, DELETE, and ADDITIONAL QUERY INFO
+				preparedStatement = conn.prepareStatement(selectSQL);
+				
+	 
+				// execute select SQL
+				rs = preparedStatement.executeQuery();
+	 
+				while (rs.next()) {
+					
+					dl.add(new Deal(Deal.conn,
+							rs.getInt("deal_ID"),
+							rs.getString("expiration_date"),
+							rs.getString("description"),
+							rs.getInt("quantity_limit"),
+							rs.getDouble("original_price"),
+							rs.getDouble("deal_price"),
+							rs.getString("sale_start_time"),
+							rs.getString("sale_end_time"),
+							rs.getInt("location_ID"),
+							rs.getInt("category_ID"),
+							rs.getInt("merchant_ID")));
+
+					AppUtil.console("deal_ID : " + rs.getString("deal_ID"));
+					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
+					AppUtil.console("description : " + rs.getString("description"));
+					AppUtil.console("quantity_limit : " + rs.getInt("quantity_limit"));
+					AppUtil.console("original_price : " + rs.getDouble("original_price"));
+					AppUtil.console("deal_price : " + rs.getDouble("deal_price"));
+					AppUtil.console("sale_start_time : " + rs.getString("sale_start_time"));
+					AppUtil.console("sale_end_time : " + rs.getString("sale_end_time"));
+					AppUtil.console("location_ID : " + rs.getInt("location_ID"));
+					AppUtil.console("category_ID : " + rs.getInt("category_ID"));
+					AppUtil.console("merchant_ID : " + rs.getInt("merchant_ID"));
+	 
+				}
+	 
+				preparedStatement.close();
+				//rs.first(); // It seems this non-scrollable result set resets to first automagically
+				
+				
+			} catch (SQLException e) {
+	 
+				AppUtil.console(e.getMessage());
+				
+			}
+			
+			
+			return dl;
+	 
+		}
+			
+		public static boolean update(Deal oldDeal, Deal newDeal) {
+			if(!connect()) AppUtil.console("Not able to connect to database!");
+			
+			
+			AppUtil.console("Modifying deal: "+oldDeal.getDID());
+			
+			String sql = "UPDATE Deal SET "+
+					"expiration_date = \'"+newDeal.getDExpDate()+"\',"+
+					"description = \'"+newDeal.getDDescription()+"\',"+
+					"quantity_limit = \'"+newDeal.getDQuantity()+"\',"+
+					"original_price = \'"+newDeal.getDOrigPrice()+"\',"+
+					"deal_price = \'"+newDeal.getDDealPrice()+"\',"+
+					"sale_start_time = \'"+newDeal.getDSaleStart()+"\',"+
+					"sale_end_time = \'"+newDeal.getDSaleEnd()+"\',"+
+					"location_ID = \'"+newDeal.getLID()+"\',"+
+					"category_ID = \'"+newDeal.getCatID()+"\',"+
+					"merchant_ID = \'"+newDeal.getMID()+"\'"+
+					
+					" WHERE deal_ID = \'"+newDeal.getDID()+"\'";
+			
+		
+			AppUtil.console("UPDATE: "+sql);
+
+			PreparedStatement preparedStatement = null;
+			try {
+				preparedStatement = conn.prepareStatement(sql);
+				preparedStatement.executeQuery();
+				preparedStatement.close();
+			} catch (Exception e) {
+				
+				AppUtil.console("M: Most likely a DDL error, not a problem."+e);
+				return false;
+				
+			}
+			return true;
+		}		
+			
+		public static boolean delete(Deal oldDeal) {
+			if(!connect()) AppUtil.console("Not able to connect to database!");
+			
+			
+			AppUtil.console("Deleting deal: "+oldDeal.getDID());
+			
+			String sql = "DELETE FROM Deal "+ 
+					"WHERE deal_ID = \'"+oldDeal.getDID()+"\'";
+			
+			AppUtil.console("DELETE: "+sql);
+
+			PreparedStatement preparedStatement = null;
+			try {
+				preparedStatement = conn.prepareStatement(sql);
+				preparedStatement.executeQuery();
+				preparedStatement.close();
+			} catch (Exception e) {
+				AppUtil.console("M: Most likely a DDL error, not a problem."+e);
+			}
+			return true;
+		}
+
 	
 // getters 
 
