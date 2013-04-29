@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.WebDealerApplicationController">
+  <children>
+    <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
+      <image>
+        <Image url="@OpenQueryView/AlertDialog.png" />
+      </image>
+    </ImageView>
+    <VBox maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" prefWidth="400.0" spacing="7.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+      <children>
+        <TextField fx:id="fxtfOpenQuery" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="400.0" promptText="Enter open query" />
+        <HBox id="HBox" fx:id="actionParent" alignment="CENTER">
+          <children>
+            <Button id="actionButton" fx:id="fxbOpenQuerySubmit" mnemonicParsing="false" onAction="#displayOpenQuery" prefWidth="59.0" text="Query" HBox.hgrow="NEVER">
+              <HBox.margin>
+                <Insets right="14.0" />
+              </HBox.margin>
+            </Button>
+            <Pane maxWidth="+Infinity" HBox.hgrow="ALWAYS">
+              <children>
+                <Button id="cancelButton" fx:id="fxbOpenQueryClear" cancelButton="true" layoutX="84.0" layoutY="1.0" minWidth="80.0" mnemonicParsing="false" onAction="#openQueryClearText" text="Clear" />
+                <HBox id="HBox" fx:id="okParent" alignment="CENTER" />
+                <Button id="okButton" fx:id="fxbOpenQueryClose" layoutX="247.0" layoutY="0.0" minWidth="80.0" mnemonicParsing="false" onAction="#displayOpenQueryExitDialogue" text="Close" />
+              </children>
+            </Pane>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+    <HBox maxHeight="-Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
+  </children>
+  <columnConstraints>
+    <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
+  </columnConstraints>
+  <padding>
+    <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+  </padding>
+  <rowConstraints>
+    <RowConstraints maxHeight="+Infinity" minHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" valignment="TOP" vgrow="ALWAYS" />
+  </rowConstraints>
+  <stylesheets>
+    <URL value="@OpenQueryView/AlertDialog.css" />
+  </stylesheets>
+</GridPane>

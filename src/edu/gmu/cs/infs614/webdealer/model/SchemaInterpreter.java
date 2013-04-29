@@ -27,6 +27,7 @@ public class SchemaInterpreter implements Iterable<String> // Create a new class
         return fs;
 	}
 	
+	
 	public String processLargeStatement(String sql_file) {
 		String resource = RESOURCE_DIR+sql_file;
 		String line;

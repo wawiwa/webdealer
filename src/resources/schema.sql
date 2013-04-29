@@ -147,8 +147,8 @@ category_ID INTEGER,
 merchant_ID INTEGER,
 PRIMARY KEY (deal_ID),
 FOREIGN KEY (location_ID) REFERENCES Location (location_ID),
-FOREIGN KEY (category_ID) REFERENCES Category (category_ID),
-FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID) 
+FOREIGN KEY (category_ID) REFERENCES Category (category_ID) on delete cascade,
+FOREIGN KEY (merchant_ID) REFERENCES Merchant (merchant_ID) on delete cascade
 );
 
 // status=used,current,expired,refunded,sold
@@ -158,7 +158,7 @@ status VARCHAR2(30),
 deal_ID INTEGER,
 sold INTEGER,
 PRIMARY KEY (voucher_ID),
-FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID)
+FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID) on delete cascade
 );
 
 CREATE TABLE Transaction(
@@ -168,7 +168,7 @@ voucher_ID INTEGER,
 payment_ID INTEGER,
 customer_ID INTEGER,
 PRIMARY KEY (transaction_ID,voucher_ID),
-FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID),
+FOREIGN KEY (voucher_ID) REFERENCES Voucher (voucher_ID) on delete cascade,
 FOREIGN KEY (payment_ID,customer_ID) REFERENCES Payment_Method (payment_ID,customer_ID) on delete cascade
 );
 
@@ -181,7 +181,7 @@ comments VARCHAR2(500),
 deal_ID INTEGER,
 customer_ID INTEGER,
 PRIMARY KEY (review_ID),
-FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID),
+FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID) on delete cascade,
 FOREIGN KEY (customer_ID) REFERENCES Customer (customer_ID) on delete cascade
 );
 
