@@ -76,7 +76,7 @@
             <TextField fx:id="fxUsernameTextField" layoutY="335.0" prefWidth="138.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
             <Label layoutY="357.0" prefWidth="76.0" text="Password" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="54.0" />
             <PasswordField id="fxPasswordTextField" fx:id="fxPasswordField" layoutY="373.0" prefWidth="138.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="11.0" />
-            <Button layoutY="451.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="106.0" text="Show &#10;Table Names" textAlignment="CENTER" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="19.0" />
+            <Button fx:id="fxbShowTableNames" layoutY="451.0" mnemonicParsing="false" onAction="#showOpenTables" prefHeight="38.0" prefWidth="106.0" text="Show &#10;Table Names" textAlignment="CENTER" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="19.0" />
             <Button fx:id="fxbOpenQuery" layoutY="500.0" mnemonicParsing="false" onAction="#displayOpenQueryDialogue" prefHeight="38.0" prefWidth="106.0" text="Perform &#10;Open Query" textAlignment="CENTER" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="18.0" />
             <Button fx:id="fxConnectButton" layoutX="19.0" layoutY="396.0" mnemonicParsing="false" onAction="#onConnect" prefWidth="131.0" text="Press to Connect" />
             <Button id="fxShoppingCartButton" layoutY="264.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="124.0" text="REVIEWS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0" />

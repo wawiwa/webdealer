@@ -78,6 +78,9 @@ public class WebDealerApplicationController implements Initializable {
 
 	@FXML
 	Button fxReviewButton;
+	
+	@FXML
+	Button fxbShowTableNames;
 
 	// Open Query
 	@FXML
@@ -483,6 +486,7 @@ public class WebDealerApplicationController implements Initializable {
 	public void displayOpenQuery(ActionEvent event) {
 		openQuery();
 	}
+
 	public void openQuery() {
 		fxConsoleTextArea.setText("");
 
@@ -540,5 +544,47 @@ public class WebDealerApplicationController implements Initializable {
 	public void openQueryExitDialogue() {
 		fxScrollPane.setContent(fxPreviousView); 
 		fxSplitPane.setDividerPosition(1, 0.7607);
+	}
+	
+	public void showOpenTables() {
+		fxConsoleTextArea.setText("");
+
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+
+		try {
+
+			String query = "SELECT table_name FROM user_tables";
+
+			preparedStatement = oracleConn.getConnection().prepareStatement(query);
+
+
+			// execute select SQL
+			rs = preparedStatement.executeQuery();
+
+			ResultSetMetaData meta = rs.getMetaData();
+			final int columnCount = meta.getColumnCount();
+
+			AppUtil.console(meta.getColumnLabel(1)+"\n");
+			
+			while(rs.next()) {
+				
+				for(int i=1;i<=columnCount;i++) {
+					AppUtil.console(rs.getObject(i).toString());
+				}
+			}
+			
+			AppUtil.console("\nQUERY: "+query);
+
+			preparedStatement.close();
+			//rs.first(); // It seems this non-scrollable result set resets to first automagically
+
+
+		} catch (SQLException e) {
+
+
+			AppUtil.console(e.getMessage());
+
+		}
 	}
 }
