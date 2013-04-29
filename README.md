@@ -61,38 +61,38 @@ Getting Started
 
 Design Goals
 
-  This project was designed according to the Model-View-Controller format. There's a CRUD model for most all tables.
-  The controller interfaces with the model code to manipulate the database. The view provides a (F)XML based GUI 
-  interface to the controller. As buttons are selected from the view, events are fired that trigger the controller to
-  do something with models that interface with the database.
+    This project was designed according to the Model-View-Controller format. There's a CRUD model for most all tables.
+    The controller interfaces with the model code to manipulate the database. The view provides a (F)XML based GUI 
+    interface to the controller. As buttons are selected from the view, events are fired that trigger the controller to
+    do something with models that interface with the database.
 
-  The model constructs a tuple in the database and also in the view, depending on the state of the ID passed. If the
-  ID is null, the model will create a tuple in the database, whereas if the ID is valid, the constructor will only pass
-  information to the observable list for the view.
+    The model constructs a tuple in the database and also in the view, depending on the state of the ID passed. If the
+    ID is null, the model will create a tuple in the database, whereas if the ID is valid, the constructor will only pass
+    information to the observable list for the view.
 
-  As for schema, we load it based on a preliminary check of existing tables. If all tables exist, then no schema is
-  loaded. If some or even one is missing then we drop all tables, all sequences and triggers and reload. Our schema,
-  inserts, triggers and some queries are stored in resources files (/resources/blabla.sql).
+    As for schema, we load it based on a preliminary check of existing tables. If all tables exist, then no schema is
+    loaded. If some or even one is missing then we drop all tables, all sequences and triggers and reload. Our schema,
+    inserts, triggers and some queries are stored in resources files (/resources/blabla.sql).
 
 Weirdness
 
-  Ultimately we decided to trigger vouchers based on quantity limit within deals. This is bad. We have vouchers
-  unecessarily created in the db waiting to be purchased. This did make it much easier to deal with having
-  multiple vouchers associate with a single purchase ie. one transaction ID for several vouchers AKA shopping cart.
+    Ultimately we decided to trigger vouchers based on quantity limit within deals. This is bad. We have vouchers
+    unecessarily created in the db waiting to be purchased. This did make it much easier to deal with having
+    multiple vouchers associate with a single purchase ie. one transaction ID for several vouchers AKA shopping cart.
 
-  Join is unbelievably slow. The purchase table is a join of vouchers, customers, and transacions. It takes much
-  longer to render purchases than a single table query like retrieving deals.
+    Join is unbelievably slow. The purchase table is a join of vouchers, customers, and transacions. It takes much
+    longer to render purchases than a single table query like retrieving deals.
 
   
 Tools
 
-  The project was created using the e(FX)clipse plugin. We also used Oracle Scenebuilder to perform our theming and
-  FXML generation.
+    The project was created using the e(FX)clipse plugin. We also used Oracle Scenebuilder to perform our theming and
+    FXML generation.
 
 Colophon
 
-  Miriam Joy and Wade Ward
-  Dr. Jessica Lin
+    Miriam Joy and Wade Ward
+    Dr. Jessica Lin
 
 
 
