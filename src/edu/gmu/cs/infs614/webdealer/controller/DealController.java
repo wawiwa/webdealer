@@ -54,9 +54,9 @@ public class DealController implements Initializable {
 		@FXML
 		TableColumn<Deal, Integer> tcQuantityLimit;
 		@FXML
-		TableColumn<Deal, Float> tcOriginalPrice;
+		TableColumn<Deal, Integer> tcOriginalPrice;
 		@FXML
-		TableColumn<Deal, Float> tcDealPrice;
+		TableColumn<Deal, Integer> tcDealPrice;
 		@FXML
 		TableColumn<Deal, String> tcSaleStartTime;
 		@FXML
@@ -194,8 +194,8 @@ public class DealController implements Initializable {
 			tcExpirationDate.setCellValueFactory(new PropertyValueFactory<Deal, String>("dExpDate"));
 			tcDescription.setCellValueFactory(new PropertyValueFactory<Deal, String>("dDescription"));
 			//tcQuantityLimit.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dQuantity"));
-			//tcOriginalPrice.setCellValueFactory(new PropertyValueFactory<Deal, Float>("dOrigPrice"));
-			tcDealPrice.setCellValueFactory(new PropertyValueFactory<Deal, Float>("dDealPrice"));
+			//tcOriginalPrice.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dOrigPrice"));
+			tcDealPrice.setCellValueFactory(new PropertyValueFactory<Deal, Integer>("dDealPrice"));
 			
 			tcSaleEndTime.setCellValueFactory(new PropertyValueFactory<Deal, String>("dSaleEnd"));
 			

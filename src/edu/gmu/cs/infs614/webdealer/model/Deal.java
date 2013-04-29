@@ -26,9 +26,6 @@ import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 //import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 
-
-
-
 //Immutable tuple (aka primary key)
 
 /*deal_ID INTEGER,
@@ -54,8 +51,8 @@ public class Deal {
 	private SimpleStringProperty dExpDate = null;
 	private SimpleStringProperty dDescription = null;
 	private SimpleIntegerProperty dQuantity = null;
-	private SimpleFloatProperty dOrigPrice = null;
-	private SimpleFloatProperty dDealPrice = null;
+	private SimpleIntegerProperty dOrigPrice = null;
+	private SimpleIntegerProperty dDealPrice = null;
 	private SimpleStringProperty dSaleStart = null;
 	private SimpleStringProperty dSaleEnd = null;
 	private SimpleIntegerProperty lID = null;
@@ -75,8 +72,8 @@ public class Deal {
 			String expiration_date, 
 			String description, 
 			Integer quantity_limit,
-			Float original_price, 
-			Float deal_price, 
+			Integer original_price, 
+			Integer deal_price, 
 			String sale_start_time, 
 			String sale_end_time, 
 			Integer location_ID, 
@@ -108,8 +105,8 @@ public class Deal {
 				this.dExpDate=new SimpleStringProperty(expiration_date);
 				this.dDescription=new SimpleStringProperty(description);
 				this.dQuantity=new SimpleIntegerProperty(quantity_limit);
-				this.dOrigPrice=new SimpleFloatProperty(original_price);
-				this.dDealPrice=new SimpleFloatProperty(deal_price);
+				this.dOrigPrice=new SimpleIntegerProperty(original_price);
+				this.dDealPrice=new SimpleIntegerProperty(deal_price);
 				this.dSaleStart=new SimpleStringProperty(sale_start_time);
 				this.dSaleEnd=new SimpleStringProperty(sale_end_time);
 				this.lID=new SimpleIntegerProperty(location_ID);
@@ -148,8 +145,56 @@ public class Deal {
 				this.dQuantity = new SimpleIntegerProperty(Integer.parseInt(tfquantity_limit.getText()));
 			}
 			
+			
+			if(tforiginal_price == null || tforiginal_price.getText().isEmpty()) {
+				tforiginal_price = new TextField();
+				tforiginal_price.setText("0");
+				this.dOrigPrice = new SimpleIntegerProperty(Integer.parseInt(tforiginal_price.getText()));
+			}else if (!tforiginal_price.getText().isEmpty()){ 
+						
+				this.dOrigPrice = new SimpleIntegerProperty(Integer.parseInt(tforiginal_price.getText()));
+			}
+			
+			if(tfdeal_price == null || tfdeal_price.getText().isEmpty()) {
+				tfdeal_price = new TextField();
+				tfdeal_price.setText("0");
+				this.dDealPrice = new SimpleIntegerProperty(Integer.parseInt(tfdeal_price.getText()));
+			}else if (!tfdeal_price.getText().isEmpty()){ 
+						
+				this.dDealPrice = new SimpleIntegerProperty(Integer.parseInt(tfdeal_price.getText()));
+			}
+			
+			
+			if(tflocation_ID == null || tflocation_ID.getText().isEmpty()) {
+				tflocation_ID = new TextField();
+				tflocation_ID.setText("0");
+				this.lID = new SimpleIntegerProperty(Integer.parseInt(tflocation_ID.getText()));
+			}else if (!tflocation_ID.getText().isEmpty()){ 
+						
+				this.lID = new SimpleIntegerProperty(Integer.parseInt(tflocation_ID.getText()));
+			}
+			
+			if(tfcategory_ID == null || tfcategory_ID.getText().isEmpty()) {
+				tfcategory_ID = new TextField();
+				tfcategory_ID.setText("0");
+				this.catID = new SimpleIntegerProperty(Integer.parseInt(tfcategory_ID.getText()));
+			}else if (!tfcategory_ID.getText().isEmpty()){ 
+						
+				this.catID = new SimpleIntegerProperty(Integer.parseInt(tfcategory_ID.getText()));
+			}
+			
+			if(tfmerchant_ID == null || tfmerchant_ID.getText().isEmpty()) {
+				tfmerchant_ID = new TextField();
+				tfmerchant_ID.setText("0");
+				this.mID = new SimpleIntegerProperty(Integer.parseInt(tfmerchant_ID.getText()));
+			}else if (!tfmerchant_ID.getText().isEmpty()){ 
+						
+				this.mID = new SimpleIntegerProperty(Integer.parseInt(tfmerchant_ID.getText()));
+			}
+			
+			
 			if(tfDeal_ID == null) {
-				int result = create(tfexpiration_date.getText(),tfdescription.getText(),Integer.parseInt(tfquantity_limit.getText()),Float.parseFloat(tforiginal_price.getText()),Float.parseFloat(tfdeal_price.getText()),
+				int result = create(tfexpiration_date.getText(),tfdescription.getText(),Integer.parseInt(tfquantity_limit.getText()),Integer.parseInt(tforiginal_price.getText()),Integer.parseInt(tfdeal_price.getText()),
 						tfsale_start_time.getText(),tfsale_end_time.getText(),Integer.parseInt(tflocation_ID.getText()),Integer.parseInt(tfcategory_ID.getText()),Integer.parseInt(tfmerchant_ID.getText()));
 				if(result == -1) {
 					isInDatabase = false;
@@ -169,8 +214,8 @@ public class Deal {
 			this.dExpDate=new SimpleStringProperty(tfexpiration_date.getText());
 			this.dDescription=new SimpleStringProperty(tfdescription.getText());
 			//this.dQuantity=new SimpleIntegerProperty(Integer.parseInt(tfquantity_limit.getText()));
-			this.dOrigPrice=new SimpleFloatProperty(Float.parseFloat(tforiginal_price.getText()));
-			this.dDealPrice=new SimpleFloatProperty(Float.parseFloat(tfdeal_price.getText()));
+			this.dOrigPrice=new SimpleIntegerProperty(Integer.parseInt(tforiginal_price.getText()));
+			this.dDealPrice=new SimpleIntegerProperty(Integer.parseInt(tfdeal_price.getText()));
 			this.dSaleStart=new SimpleStringProperty(tfsale_start_time.getText());
 			this.dSaleEnd=new SimpleStringProperty(tfsale_end_time.getText());
 			this.lID=new SimpleIntegerProperty(Integer.parseInt(tflocation_ID.getText()));
@@ -185,8 +230,8 @@ public class Deal {
 				String expiration_date, 
 				String description, 
 				Integer quantity_limit,
-				Float original_price, 
-				Float deal_price, 
+				Integer original_price, 
+				Integer deal_price, 
 				String sale_start_time, 
 				String sale_end_time, 
 				Integer location_ID,
@@ -210,13 +255,15 @@ public class Deal {
 				stmt.setString(1, expiration_date);
 				stmt.setString(2, description);
 				stmt.setInt(3, quantity_limit);
-				stmt.setFloat(4, original_price);
-				stmt.setFloat(5, deal_price);
+				stmt.setInt(4, original_price);
+				stmt.setInt(5, deal_price);
 				stmt.setString(6, sale_start_time);
 				stmt.setString(7, sale_end_time);
 				stmt.setInt(8, location_ID);
 				stmt.setInt(9, category_ID);
 				stmt.setInt(10, merchant_ID);
+				
+				
 								
 				stmt.registerOutParameter(11, java.sql.Types.INTEGER);	
 				stmt.execute();
@@ -321,9 +368,9 @@ public class Deal {
 			
 			String selectSQL;
 			if(start>0) {
-				selectSQL = "SELECT * FROM DEAL "+sqlWhere;
+				selectSQL = "SELECT deal_ID, to_char(expiration_date,'DD-MON-YYYY') as expiration_date, description, quantity_limit, original_price, deal_price, to_char(sale_start_time, 'DD-MON-YYYY') as sale_start_time, to_char(sale_end_time, 'DD-MON-YYYY') as sale_end_time, location_ID, category_ID, merchant_ID FROM DEAL "+sqlWhere;
 			}else {
-				selectSQL = "SELECT * FROM DEAL";
+				selectSQL = "SELECT deal_ID, to_char(expiration_date,'DD-MON-YYYY') as expiration_date, description, quantity_limit, original_price, deal_price, to_char(sale_start_time, 'DD-MON-YYYY') as sale_start_time, to_char(sale_end_time, 'DD-MON-YYYY') as sale_end_time, location_ID, category_ID, merchant_ID FROM DEAL";
 			}
 			
 			AppUtil.console("Select String: "+selectSQL);
@@ -359,8 +406,8 @@ public class Deal {
 					tfexp.setText(rs.getString("expiration_date"));
 					tfdes.setText(rs.getString("description"));
 					tfqty.setText(((Integer)rs.getInt("quantity_limit")).toString());
-					tforg.setText(((Float)rs.getFloat("original_price")).toString());
-					tfprc.setText(((Float)rs.getFloat("deal_price")).toString());
+					tforg.setText(((Integer)rs.getInt("original_price")).toString());
+					tfprc.setText(((Integer)rs.getInt("deal_price")).toString());
 					tfstr.setText(rs.getString("sale_start_time"));
 					tfend.setText(rs.getString("sale_end_time"));
 					tfloc.setText(((Integer)rs.getInt("location_ID")).toString());
@@ -450,8 +497,11 @@ public class Deal {
 			PreparedStatement preparedStatement = null;
 			try {
 				preparedStatement = conn.prepareStatement(sql);
+				AppUtil.console("prep");
 				preparedStatement.executeQuery();
+				AppUtil.console("execute");
 				preparedStatement.close();
+				AppUtil.console("close");
 			} catch (Exception e) {
 				AppUtil.console("M: Most likely a DDL error, not a problem."+e);
 			}
@@ -587,11 +637,11 @@ public Integer getDQuantity() {
 	return dQuantity.get();
 }
 
-public Float getDOrigPrice() {
+public Integer getDOrigPrice() {
 	return dOrigPrice.get();
 }
 
-public Float getDDealPrice() {
+public Integer getDDealPrice() {
 	return dDealPrice.get();
 }
 

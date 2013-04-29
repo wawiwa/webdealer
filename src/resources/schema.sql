@@ -2,16 +2,17 @@ COMMIT;
 
 DROP TRIGGER InsertNewVoucher;
 
-DROP TABLE Customer CASCADE CONSTRAINTS;
+
 DROP TABLE Payment_Method CASCADE CONSTRAINTS;
 DROP TABLE Transaction CASCADE CONSTRAINTS;
 DROP TABLE Voucher CASCADE CONSTRAINTS;
 DROP TABLE Review CASCADE CONSTRAINTS;
 DROP TABLE Merchant CASCADE CONSTRAINTS;
-DROP TABLE Deal CASCADE CONSTRAINTS;
 DROP TABLE Location CASCADE CONSTRAINTS;
 DROP TABLE Category CASCADE CONSTRAINTS;	
-DROP VIEW Purchase;
+DROP VIEW Purchase CASCADE CONSTRAINTS;
+DROP TABLE Deal CASCADE CONSTRAINTS;
+DROP TABLE Customer CASCADE CONSTRAINTS;
 
 
 DROP SEQUENCE seq_customer;
@@ -131,12 +132,14 @@ add constraint Location_name UNIQUE (city, state);
 
 
 CREATE TABLE Deal(
+
+
 deal_ID INTEGER,
 expiration_date DATE,
 description VARCHAR2(500),
 quantity_limit INTEGER,
-original_price REAL,
-deal_price REAL,
+original_price INTEGER,
+deal_price INTEGER,
 sale_start_time DATE,
 sale_end_time DATE,
 location_ID INTEGER,
@@ -155,7 +158,7 @@ status VARCHAR2(30),
 deal_ID INTEGER,
 sold INTEGER,
 PRIMARY KEY (voucher_ID),
-FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID) on delete cascade
+FOREIGN KEY (deal_ID) REFERENCES Deal (deal_ID)
 );
 
 CREATE TABLE Transaction(
