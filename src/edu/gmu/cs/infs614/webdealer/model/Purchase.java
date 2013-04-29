@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
+import edu.gmu.cs.infs614.webdealer.controller.PurchaseController;
 import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.PurchaseConnection;
@@ -86,7 +87,7 @@ public class Purchase {
 	private SimpleStringProperty pTrans_date = null;
 	private SimpleIntegerProperty pPayment_ID = null;
 	private SimpleIntegerProperty pCustomer_ID = null;
-	private SimpleStringProperty pEmailAddress = null;
+	private static SimpleStringProperty pEmailAddress = null;
 	private SimpleIntegerProperty pQuantity = null;
 	
 	private ArrayList<SimpleIntegerProperty> vl = new ArrayList<SimpleIntegerProperty>();
@@ -232,6 +233,7 @@ public class Purchase {
 	
 	private boolean isValidDeal(Integer deal_id) {
 		AppUtil.console("P isValidDeal..");
+		if(!connect()) AppUtil.console("Not able to connect to database!");
 		
 		String selectSQL = "SELECT * FROM Deal WHERE deal_ID=\'"+deal_id+"\' AND sale_end_time>=\'"+this.getPTrans_date()+"\'";
 		
@@ -381,7 +383,9 @@ public class Purchase {
 			TextField fxtfEmailAddress) 
 	{
 		AppUtil.console("P retrieve..");
-		connect();
+		if(!connect()) AppUtil.console("Not able to connect to database!");
+		
+		
 		
 		int start = 0;
 		String sqlWhere = " WHERE ";
@@ -434,14 +438,13 @@ public class Purchase {
 			start++;
 		}
 		
-		
 		PreparedStatement preparedStatement = null;
  
 		String selectSQL;
 		if(start>0) {
 			selectSQL = "SELECT * FROM Purchase "+sqlWhere;
 		}else {
-			selectSQL = "SELECT * FROM Purchase";
+			selectSQL = "SELECT * FROM Purchase WHERE email_address=\'"+UserCreds.getLogin()+"\'";
 		}
 		
 		AppUtil.console("Select String: "+selectSQL);
@@ -583,6 +586,7 @@ public class Purchase {
 
 		public static ArrayList<SimpleIntegerProperty> getVouchers(Integer deal_id, Integer quantity) {
 			AppUtil.console("P getUnsoldVoucher..");
+			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
 			ArrayList<SimpleIntegerProperty> il = new ArrayList<SimpleIntegerProperty>();
 			
@@ -592,7 +596,7 @@ public class Purchase {
 					" AND sold=\'0\'";
 			
 			Integer actualQuantity = 0;
-			connect();
+
 			ResultSet rs = null;
 			PreparedStatement preparedStatement = null;
 			try {
@@ -630,11 +634,30 @@ public class Purchase {
 
 	private static boolean connect() {
 		AppUtil.console("P connect..");
+		
 		if(Purchase.conn==null) {
 			Purchase.conn=new PurchaseConnection(OracleConnection.user,OracleConnection.pass).getConnection();
 			return true;
 		}
-		return false;
+		try {
+			if(!Purchase.conn.isClosed()) {
+				return true;
+			}
+		} catch(SQLException e) {
+			AppUtil.console("DB connection invalid or timed out. Attempting reconnect...");
+		} finally {
+			Purchase.conn=new PurchaseConnection(OracleConnection.user,OracleConnection.pass).getConnection();
+			try {
+				if(!Purchase.conn.isClosed()) {
+					return true;
+				}
+				return false;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;	
 	}
 	
 	
