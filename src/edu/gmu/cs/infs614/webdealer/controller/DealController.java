@@ -27,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
 import edu.gmu.cs.infs614.webdealer.model.Deal;
+import edu.gmu.cs.infs614.webdealer.model.Merchant;
 import edu.gmu.cs.infs614.webdealer.model.Purchase;
 import edu.gmu.cs.infs614.webdealer.model.connector.CustomerConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
@@ -127,6 +128,9 @@ public class DealController implements Initializable {
 		TextField tfquantity;
 		
 		
+		
+		
+		
 		@FXML
 		Button submit;
 		@FXML
@@ -167,6 +171,9 @@ public class DealController implements Initializable {
 		Label quantityLabel;
 		
 		// DEFINE VARIABLES
+		
+		public static
+		String currentMerchant = null;
 		
 		// index for delete item
 		private IntegerProperty index = new SimpleIntegerProperty();
@@ -228,7 +235,7 @@ public class DealController implements Initializable {
 						tfcategory_ID.setText(d.getCatID().toString());
 						tfmerchant_ID.setText(d.getMID().toString());
 			
-						
+						currentMerchant = Merchant.retrieve(conn, tfmerchant_ID, null).get(0).getMName();
 						
 						index.set(data.indexOf(newValue));
 						AppUtil.console("OK index is: "+data.indexOf(newValue));
@@ -363,7 +370,6 @@ public class DealController implements Initializable {
 				
 		}
 		
-
 		public void displayPurchases() {
 			try {
 				String pv = "/edu/gmu/cs/infs614/webdealer/view/PurchaseView.fxml";
@@ -373,13 +379,25 @@ public class DealController implements Initializable {
 			}
 		}
 		
+		public void displayOpenDeals(ActionEvent event) {
+			openDeals();
+		}
+		
 		public void openDeals() {
+			AppUtil.console("Displaying open deals..");
+			ArrayList<Deal> dl = Deal.openDeals();
+			
 			try {
-				String pd = "/edu/gmu/cs/infs614/webdealer/view/DealView.fxml";
-				WebDealerApplicationController.fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(pd)));
-			} catch (IOException e) {
-				AppUtil.console(e.toString());
+				data.clear();
 			}
+			catch(Exception e) {
+				data.clear();
+			}
+			for(Deal d : dl) {
+				data.add(d);
+			}
+			// clear TextFields
+			clearForm();
 		}
 		
 		

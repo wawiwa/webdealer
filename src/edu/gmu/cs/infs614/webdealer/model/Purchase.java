@@ -13,7 +13,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
-import edu.gmu.cs.infs614.webdealer.controller.PurchaseController;
 import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.PurchaseConnection;

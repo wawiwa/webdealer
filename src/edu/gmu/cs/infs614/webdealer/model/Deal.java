@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
@@ -278,9 +278,20 @@ public class Deal {
 			AppUtil.console("Deal_ID: "+generatedKey);
 			return generatedKey;
 		}
+		
 
-		public static ArrayList<Deal> retrieve(Connection conn,TextField tfDeal_ID,TextField tfexpiration_date,TextField tfdescription,
-				TextField tfquantity_limit,TextField tforiginal_price,TextField tfdeal_price,TextField tfsale_start_time,TextField tfsale_end_time,TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID) 
+		public static ArrayList<Deal> retrieve(Connection conn,
+				TextField tfDeal_ID,
+				TextField tfexpiration_date,
+				TextField tfdescription,
+				TextField tfquantity_limit,
+				TextField tforiginal_price,
+				TextField tfdeal_price,
+				TextField tfsale_start_time,
+				TextField tfsale_end_time,
+				TextField tflocation_ID,
+				TextField tfcategory_ID,
+				TextField tfmerchant_ID) 
 		{
 			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
@@ -509,9 +520,7 @@ public class Deal {
 		}
 
 	
-	public static ArrayList<Deal> openDeals(Connection conn,TextField tfDeal_ID,TextField tfexpiration_date,TextField tfdescription,
-				TextField tfquantity_limit,TextField tforiginal_price,TextField tfdeal_price,TextField tfsale_start_time,TextField tfsale_end_time,
-				TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID) 
+	public static ArrayList<Deal> openDeals() 
 				
 				
 				
@@ -522,9 +531,13 @@ public class Deal {
 			
 			
 			PreparedStatement preparedStatement = null;
+			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
+			//get current date time with Date()
+			Date d = new Date();
 			
+			String currDate = dateFormat.format(d);
 			String selectSQL;
-			String sqlWhere = "WHERE sale_end_time >= current_date";
+			String sqlWhere = " WHERE sale_end_time >= \'"+currDate+"\'";
 			//String sqlWhere = "WHERE sale_end_time>= \'"+dateFormat.format(new Date())+"\'";
 			selectSQL = "SELECT deal_ID, to_char(expiration_date,'DD-MON-YYYY') as expiration_date, description, quantity_limit, original_price, deal_price, to_char(sale_start_time, 'DD-MON-YYYY') as sale_start_time, to_char(sale_end_time, 'DD-MON-YYYY') as sale_end_time, location_ID, category_ID, merchant_ID FROM DEAL"+sqlWhere;
 			

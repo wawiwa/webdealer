@@ -21,7 +21,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
-import edu.gmu.cs.infs614.webdealer.controller.access.UserCreds;
 import edu.gmu.cs.infs614.webdealer.model.Purchase;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.PurchaseConnection;

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fxmltableview.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="Content" fx:id="fxAnchorPane" minHeight="-1.0" minWidth="-1.0" prefHeight="555.0" prefWidth="597.0" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.gmu.cs.infs614.webdealer.controller.ReviewController">
+  <children>
+    <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="View" textAlignment="CENTER" textFill="BLACK" wrapText="false">
+      <font>
+        <Font size="13.0" fx:id="x1" />
+      </font>
+    </Label>
+    <SplitPane dividerPositions="0.7233273056057866" focusTraversable="true" orientation="VERTICAL" prefHeight="555.0" prefWidth="597.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <TableView id="tableID" fx:id="tvReview" prefHeight="210.0" prefWidth="598.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn maxWidth="5000.0" minWidth="20.0" prefWidth="64.0" text="Review&#10;ID" fx:id="tcReview_ID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tID" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="109.0" text="Rating" fx:id="tcRating">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="211.0" text="Comments" fx:id="tcComments">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="99.0" text="Deal ID" fx:id="tcDeal_ID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="95.0" text="Customer &#10;ID" fx:id="tcCustomer_ID">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="tDate" />
+                  </cellValueFactory>
+                </TableColumn>
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="141.0" prefWidth="595.0">
+          <children>
+            <TextField id="nameInput" fx:id="tfrating" layoutX="151.0" layoutY="62.0" prefWidth="130.0" promptText="Rating" />
+            <Button fx:id="submit" layoutX="487.0" layoutY="30.0" mnemonicParsing="false" onAction="#onAddItem" prefHeight="22.0" prefWidth="94.0" text="Create" />
+            <Label id="nameLabel" fx:id="ratingLabel" layoutX="151.0" layoutY="84.0" prefWidth="130.0" text="" wrapText="true">
+              <font>
+                <Font size="10.0" fx:id="x1_x0" />
+              </font>
+            </Label>
+            <Label id="nameLabel" fx:id="merchantNameLabel" layoutX="14.0" layoutY="11.0" minHeight="22.0" prefHeight="44.0" prefWidth="267.0" text="" wrapText="true">
+              <effect>
+                <Bloom />
+              </effect>
+              <font>
+                <Font size="20.0" fx:id="x2" />
+              </font>
+            </Label>
+            <TextField id="nameInput" fx:id="tfreview_ID" layoutX="14.0" layoutY="62.0" prefWidth="130.0" promptText="Review ID" />
+            <TextField id="nameInput" fx:id="tfdeal_ID" layoutX="287.0" layoutY="62.0" prefWidth="130.0" promptText="Deal ID" />
+            <Button id="submit" fx:id="update" layoutX="487.0" layoutY="55.0" mnemonicParsing="false" onAction="#onUpdateItem" prefHeight="22.0" prefWidth="94.0" text="Update" />
+            <Button id="submit" fx:id="search" layoutX="487.0" layoutY="80.0" mnemonicParsing="false" onAction="#onSearchItem" prefHeight="22.0" prefWidth="94.0" text="Retrieve" />
+            <Button id="submit" fx:id="delete" layoutX="487.0" layoutY="105.0" mnemonicParsing="false" onAction="#onDeleteItem" prefHeight="22.0" prefWidth="94.0" text="Delete" />
+            <Label id="nameLabel" fx:id="AverageRatingLabel" font="$x2" layoutX="329.0" layoutY="11.0" prefHeight="44.0" prefWidth="88.0" text="" textAlignment="CENTER" wrapText="true">
+              <effect>
+                <Bloom />
+              </effect>
+            </Label>
+            <Label id="nameLabel" fx:id="deal_IDLabel" font="$x1_x0" layoutX="287.0" layoutY="84.0" prefWidth="130.0" text="" wrapText="true" />
+            <TextField id="nameInput" fx:id="tfcomments" layoutX="14.0" layoutY="105.0" prefWidth="130.0" promptText="Comment" />
+            <Button id="submit" fx:id="clear" layoutX="427.0" layoutY="62.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="65.0" prefWidth="50.0" text="Clear">
+              <font>
+                <Font size="11.0" />
+              </font>
+            </Button>
+            <Label id="nameLabel" font="$x1_x0" layoutX="287.0" layoutY="11.0" prefHeight="44.0" prefWidth="41.0" text="Average&#10;Rating:" textAlignment="RIGHT" wrapText="true">
+              <effect>
+                <Bloom />
+              </effect>
+            </Label>
+            <TextField id="nameInput" fx:id="tfcustomer_ID" layoutX="287.0" layoutY="105.0" prefWidth="130.0" promptText="Customer ID" />
+            <TextField id="nameInput" fx:id="tfMerchant" layoutX="151.0" layoutY="105.0" prefWidth="130.0" promptText="Merchant" />
+            <Label id="nameLabel" fx:id="customer_IDLabel" font="$x1_x0" layoutX="287.0" layoutY="126.0" prefWidth="130.0" text="" wrapText="true" />
+            <Label id="nameLabel" fx:id="commentsLabel" font="$x1_x0" layoutX="14.0" layoutY="126.0" prefWidth="130.0" text="" wrapText="true" />
+          </children>
+          <stylesheets>
+            <URL value="@FormValidationStyle.css" />
+          </stylesheets>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </children>
+</AnchorPane>

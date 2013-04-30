@@ -47,8 +47,13 @@ public class WebDealerApplicationController implements Initializable {
 
 	@FXML
 	AnchorPane fxAnchorPane;
+	
+	@FXML
+	public static
+	AnchorPane merchant;
 
 	@FXML
+	public
 	static
 	SplitPane fxSplitPane;
 
@@ -381,7 +386,9 @@ public class WebDealerApplicationController implements Initializable {
 		try {
 			AppUtil.console(fxScrollPane.idProperty().toString());
 			String mv = "/edu/gmu/cs/infs614/webdealer/view/MerchantView.fxml";
-			fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(mv)));
+			merchant = (AnchorPane) FXMLLoader.load(getClass().getResource(mv));
+			fxScrollPane.setContent(merchant);
+			
 			fxSplitPane.setDividerPosition(1, 0.7607);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -440,6 +447,7 @@ public class WebDealerApplicationController implements Initializable {
 			String rv = "/edu/gmu/cs/infs614/webdealer/view/ReviewView.fxml";
 			fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(rv)));
 			fxSplitPane.setDividerPosition(1, 0.7607);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			AppUtil.console(e.toString());

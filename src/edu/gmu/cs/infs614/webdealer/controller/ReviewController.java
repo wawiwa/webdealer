@@ -16,33 +16,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
+import edu.gmu.cs.infs614.webdealer.model.Deal;
+import edu.gmu.cs.infs614.webdealer.model.Merchant;
 import edu.gmu.cs.infs614.webdealer.model.Review;
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.model.connector.ReviewConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
 public class ReviewController implements Initializable {
-	// COMPLEX APPLICATION SEGMENTS
-	@FXML
-	ScrollPane fxScrollPane;
-	
-	@FXML
-	AnchorPane fxAnchorPane;
-	
-	@FXML
-	TextArea fxConsoleTextArea;
-	
-	// MAIN VIEWS
-	@FXML
-	Button fxReviewButton;
+
 	
 	// DEFINE TABLE
 	
@@ -70,6 +57,10 @@ public class ReviewController implements Initializable {
 	@FXML
 	TextField tfdeal_ID;
 	@FXML
+	TextField tfMerchant;
+	@FXML
+	TextField tfMerchant_ID;
+	@FXML
 	TextField tfcustomer_ID;
 	
 	
@@ -81,6 +72,8 @@ public class ReviewController implements Initializable {
 	Button clear;
 	@FXML
 	Button search;
+	@FXML
+	Button update;
 	
 	
 	@FXML
@@ -91,7 +84,12 @@ public class ReviewController implements Initializable {
 	Label deal_IDLabel;
 	@FXML
 	Label customer_IDLabel;
-	
+	@FXML
+	public static
+	Label merchantNameLabel;
+	@FXML
+	public static
+	Label AverageRatingLabel;
 
 	
 	// DEFINE VARIABLES
@@ -108,7 +106,7 @@ public class ReviewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		
+		AverageRatingLabel.setText(MerchantController.currentAvg.toString());
 		
 		displayReview();
 		
@@ -137,8 +135,15 @@ public class ReviewController implements Initializable {
 				tfdeal_ID.setText(r.getDID().toString());
 				tfcustomer_ID.setText(r.getCID().toString());
 			
-				
-				
+				ArrayList<Deal> dl = Deal.retrieve(conn, tfdeal_ID, null, null, null, 
+						null, null, null, null, null, null, null);
+				String mid = dl.get(0).getMID().toString();
+				ArrayList<Merchant> ml = Merchant.retrieve(conn, new TextField(mid), null);
+				String mname = ml.get(0).getMName();
+				merchantNameLabel.setText(mname);
+				Double avg = Review.getAvgRating(new TextField(mid));
+				//System.out.println("AVG: "+avg);
+				AverageRatingLabel.setText(avg.toString());
 				index.set(data.indexOf(newValue));
 				AppUtil.console("OK index is: "+data.indexOf(newValue));
 				AppUtil.console(r.getRID().toString());
@@ -172,10 +177,19 @@ public class ReviewController implements Initializable {
 		
 	}
 	
+
 	public void displayReview() {
 		AppUtil.console("Displaying reviews..");
-		ArrayList<Review> rl =
-				Review.retrieve(conn, tfreview_ID, tfrating, tfcomments, tfdeal_ID, tfcustomer_ID);
+		ArrayList<Review> rl;
+		if(WebDealerApplicationController.merchant != null || MerchantController.currentMerchant != null) {
+			merchantNameLabel.setText(MerchantController.currentMerchant);
+			AverageRatingLabel.setText(MerchantController.currentAvg.toString());
+			rl = Review.retrieve(conn, tfreview_ID, tfrating, tfcomments, tfdeal_ID, tfcustomer_ID);
+		} else {
+			merchantNameLabel.setText("");
+			rl = Review.retrieve(conn, tfreview_ID, tfrating, tfcomments, tfdeal_ID, tfcustomer_ID);
+		}
+		
 		try {
 			data.clear();
 		}

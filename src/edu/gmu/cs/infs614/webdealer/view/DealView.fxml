@@ -93,7 +93,7 @@
             <Label id="dateLabel" fx:id="quantityLimitLabel" font="$x1_x0" layoutX="430.0" layoutY="48.0" prefWidth="130.00009999999747" text="" wrapText="true" />
             <TextField id="nameInput" fx:id="tfsale_end_time" layoutX="430.0" layoutY="67.0" prefWidth="130.0" promptText="Sale End Time" />
             <Label id="nameLabel" fx:id="saleEndtimeLabel" font="$x1_x0" layoutX="431.0" layoutY="86.0" prefWidth="130.0" text="" wrapText="true" />
-            <Button id="clear" fx:id="showOpenDeals" layoutX="14.0" layoutY="208.0" minWidth="29.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="267.0" rotate="0.0" text="Show Open Deals" />
+            <Button id="clear" fx:id="showOpenDeals" layoutX="14.0" layoutY="208.0" minWidth="29.0" mnemonicParsing="false" onAction="#displayOpenDeals" prefHeight="57.0" prefWidth="267.0" rotate="0.0" text="Show Open Deals" />
             <TextField id="dateInput" layoutX="431.0" layoutY="112.0" prefWidth="130.0" promptText="Merchant Name" />
             <TextField id="priceInput" fx:id="tfmerchant_ID" layoutX="290.0" layoutY="112.0" prefWidth="130.0" promptText="Merchant ID" />
             <Label id="priceLabel" fx:id="merchantIDLabel" font="$x1_x0" layoutX="290.0" layoutY="134.0" prefWidth="130.0" text="" wrapText="true" />

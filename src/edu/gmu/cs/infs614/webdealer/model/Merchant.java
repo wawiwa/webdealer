@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TextField;
@@ -22,6 +23,7 @@ public class Merchant {
 	public boolean isInDatabase = false;
 	private SimpleIntegerProperty mID; 
 	private SimpleStringProperty mName;
+	private SimpleDoubleProperty mAvg;
 	private static Connection conn;
 
 	
@@ -41,11 +43,13 @@ public class Merchant {
 			}
 			
 			this.mID = new SimpleIntegerProperty(result);
+			this.mAvg = new SimpleDoubleProperty(Review.getAvgRating(new TextField(this.getMID().toString())));
 					
 			}
 		// create just a customer view
 		else {
 			this.mID = new SimpleIntegerProperty(merchant_ID);
+			this.mAvg = new SimpleDoubleProperty(Review.getAvgRating(new TextField(this.getMID().toString())));
 		}
 		
 		this.mName = new SimpleStringProperty(name);
@@ -75,9 +79,11 @@ public class Merchant {
 				isInDatabase = true;
 			}
 			this.mID = new SimpleIntegerProperty(result);
+			this.mAvg = new SimpleDoubleProperty(Review.getAvgRating(new TextField(this.getMID().toString())));
 			}
 		else {
 			this.mID = new SimpleIntegerProperty(Integer.parseInt(tfMerchant_ID.getText()));
+			this.mAvg = new SimpleDoubleProperty(Review.getAvgRating(new TextField(this.getMID().toString())));
 		}
 		
 		this.mName = new SimpleStringProperty(tfMerchantName.getText());
@@ -249,6 +255,10 @@ public class Merchant {
 	
 	public String getMName() {
 		return mName.get();
+	}
+	
+	public Double getMAvg() {
+		return mAvg.get();
 	}
 
 	private static boolean connect() {

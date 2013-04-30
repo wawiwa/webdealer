@@ -1,5 +1,6 @@
 package edu.gmu.cs.infs614.webdealer.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -54,6 +56,8 @@ public class MerchantController implements Initializable {
 	TableColumn<Merchant, Integer> tcMerchant_ID;
 	@FXML
 	TableColumn<Merchant, String> tcMerchantName;
+	@FXML
+	TableColumn<Merchant, Double> tcMerchantAvg;
 
 	
 	// DEFINE FORM
@@ -70,10 +74,14 @@ public class MerchantController implements Initializable {
 	Button clear;
 	@FXML
 	Button search;
+	@FXML
+	Button reviews;
 	
 	
 	@FXML
 	Label merchantNameLabel;
+	@FXML
+	Label merchantAvgLabel;
 	
 //	@FXML
 //	Label nameInput;
@@ -82,6 +90,12 @@ public class MerchantController implements Initializable {
 //	Label nameLabel;
 	
 	// DEFINE VARIABLES
+	
+	public static
+	String currentMerchant = null;
+	
+	public static
+	Double currentAvg = 0.0;
 	
 	// index for delete item
 	private IntegerProperty index = new SimpleIntegerProperty();
@@ -102,9 +116,12 @@ public class MerchantController implements Initializable {
 		// fix delete button working if not selecting once a table row
 		index.set(-1);
 		
+		
+		
 		tcMerchant_ID.setCellValueFactory(new PropertyValueFactory<Merchant, Integer>("mID"));
 		tcMerchantName.setCellValueFactory(new PropertyValueFactory<Merchant, String>("mName"));
-		
+		tcMerchantAvg.setCellValueFactory(new PropertyValueFactory<Merchant, Double>("mAvg"));
+
 
         AppUtil.console("DATA contents: "+data);
 
@@ -119,7 +136,9 @@ public class MerchantController implements Initializable {
 				tfMerchant_ID.setText(m.getMID().toString()); 
 				tfMerchantName.setText(m.getMName());
 				
+				currentMerchant = tfMerchantName.getText();
 				
+				currentAvg = m.getMAvg();
 				index.set(data.indexOf(newValue));
 				AppUtil.console("OK index is: "+data.indexOf(newValue));
 				AppUtil.console(m.getMID().toString());
@@ -201,7 +220,25 @@ public class MerchantController implements Initializable {
 		
 	}
 
+	// DISPLAY REVIEW TABLE
 
+	public void displayReviewDialogue(ActionEvent event) {
+		AppUtil.console("Showing Review dialogue.");
+		reviewDialogue();
+	}
+
+	private void reviewDialogue() {
+		try {
+			AppUtil.console(fxScrollPane.idProperty().toString());
+			String rv = "/edu/gmu/cs/infs614/webdealer/view/ReviewView.fxml";
+			WebDealerApplicationController.fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(rv)));
+			WebDealerApplicationController.fxSplitPane.setDividerPosition(1, 0.7607);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			AppUtil.console(e.toString());
+		}
+	}
 
 	private void clearForm() {
 		tfMerchant_ID.clear();
