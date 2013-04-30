@@ -368,7 +368,7 @@ public class Deal {
 			
 			String selectSQL;
 			if(start>0) {
-				selectSQL = "SELECT deal_ID, to_char(expiration_date,'DD-MON-YYYY') as expiration_date, description, quantity_limit, original_price, deal_price, to_char(sale_start_time, 'DD-MON-YYYY') as sale_start_time, to_char(sale_end_time, 'DD-MON-YYYY') as sale_end_time, location_ID, category_ID, merchant_ID FROM DEAL "+sqlWhere;
+				selectSQL = "SELECT deal_ID, to_char(expiration_date,'DD-MON-YYYY') as expiration_date, description, quantity_limit, original_price, deal_price, to_char(sale_start_time, 'DD-MON-YYYY') as sale_start_time, to_char(sale_end_time, 'DD-MON-YYYY') as sale_end_time, location_ID, category_ID, merchant_ID FROM DEAL"+sqlWhere;
 			}else {
 				selectSQL = "SELECT deal_ID, to_char(expiration_date,'DD-MON-YYYY') as expiration_date, description, quantity_limit, original_price, deal_price, to_char(sale_start_time, 'DD-MON-YYYY') as sale_start_time, to_char(sale_end_time, 'DD-MON-YYYY') as sale_end_time, location_ID, category_ID, merchant_ID FROM DEAL";
 			}
@@ -509,37 +509,45 @@ public class Deal {
 		}
 
 	
-	public static ArrayList<Deal> citySearchretrieve(Connection conn,TextField tfDeal_ID,TextField tfexpiration_date,TextField tfdescription,
+	public static ArrayList<Deal> openDeals(Connection conn,TextField tfDeal_ID,TextField tfexpiration_date,TextField tfdescription,
 				TextField tfquantity_limit,TextField tforiginal_price,TextField tfdeal_price,TextField tfsale_start_time,TextField tfsale_end_time,
-				TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID, TextField tfcity_name) 
+				TextField tflocation_ID,TextField tfcategory_ID,TextField tfmerchant_ID) 
+				
+				
+				
 		{
 			if(!connect()) AppUtil.console("Not able to connect to database!");
 			
-			int start = 0;
-			String sqlWhere = "WHERE D.merchant_id=M.merchant_ID AND D.location_ID=L.location_id";
-		
-			if(FormValidation.textFieldNotEmpty(tfcity_name)) {
-				String city_search = " AND regexp_LIKE(L.city, \'*" + tfcity_name.getText() +"*\',\'i\')";
-				sqlWhere += city_search;
-				start++;
-			}
+			//DateFormat dateFormat = new SimpleDateFormat("DD-MON-YYYY");
 			
 			
-				
 			PreparedStatement preparedStatement = null;
 			
 			String selectSQL;
-			if(start>0) {
-				selectSQL = "SELECT D.deal_id,D.expiration_date,D.description,D.quantity_limit,D.original_price,D.deal_price,D.sale_start_time,D.sale_end_time,D.location_ID,D.category_ID,D.merchant_ID,M.merchant_name,L.city,L.state,L.country,L.continent FROM DEAL D, MERCHANT M, LOCATION L "+sqlWhere;
-			}else {
-				selectSQL = "SELECT D.deal_id,D.expiration_date,D.description,D.quantity_limit,D.original_price,D.deal_price,D.sale_start_time,D.sale_end_time,D.location_ID,D.category_ID,D.merchant_ID,M.merchant_name,L.city,L.state,L.country,L.continent FROM DEAL D, MERCHANT M, LOCATION L";
-			}
+			String sqlWhere = "WHERE sale_end_time >= current_date";
+			//String sqlWhere = "WHERE sale_end_time>= \'"+dateFormat.format(new Date())+"\'";
+			selectSQL = "SELECT deal_ID, to_char(expiration_date,'DD-MON-YYYY') as expiration_date, description, quantity_limit, original_price, deal_price, to_char(sale_start_time, 'DD-MON-YYYY') as sale_start_time, to_char(sale_end_time, 'DD-MON-YYYY') as sale_end_time, location_ID, category_ID, merchant_ID FROM DEAL"+sqlWhere;
+			
 			
 			AppUtil.console("Select String: "+selectSQL);
 	 
 			ResultSet rs = null;
-			ArrayList<Deal> dl = new ArrayList<Deal>();
+			ArrayList<Deal> pd = new ArrayList<Deal>();
 			
+			
+	
+			//the following is the same code as what's in retrieve, with pd substituted for dl
+			TextField tfdid = new TextField();
+			TextField tfexp = new TextField();
+			TextField tfdes = new TextField();
+			TextField tfqty = new TextField();
+			TextField tforg = new TextField();
+			TextField tfprc = new TextField();
+			TextField tfstr = new TextField();
+			TextField tfend = new TextField();
+			TextField tfloc = new TextField();
+			TextField tfcat = new TextField();
+			TextField tfmid = new TextField();
 			
 			try {
 
@@ -549,39 +557,22 @@ public class Deal {
 				// execute select SQL
 				rs = preparedStatement.executeQuery();
 	 
-				/*
-				 * public Deal(Connection conn, 
-			Integer deal_ID, 
-			String expiration_date, 
-			String description, 
-			Integer quantity_limit,
-			Float original_price, 
-			Float deal_price, 
-			String sale_start_time, 
-			String sale_end_time, 
-			Integer location_ID, 
-			Integer category_ID, 
-			Integer merchant_ID
-				 */
 				while (rs.next()) {
 					
-					/*dl.add(new Deal(Deal.conn,
-							rs.getInt("deal_ID"),
-							rs.getString("expiration_date"),
-							rs.getString("description"),
-							rs.getInt("quantity_limit"),
-							rs.getFloat("original_price"),
-							rs.getFloat("deal_price"),
-							rs.getString("sale_start_time"),
-							rs.getString("sale_end_time"),
-							rs.getInt("L.location_ID"),
-							rs.getInt("category_ID"),
-							rs.getInt("M.merchant_ID"),
-							rs.getString("M.merchant_name"),
-							rs.getString("L.city"),
-							rs.getString("L.state"),
-							rs.getString("L.country"),
-							rs.getString("L.continent")));*/
+					tfdid.setText(((Integer)rs.getInt("deal_ID")).toString());
+					tfexp.setText(rs.getString("expiration_date"));
+					tfdes.setText(rs.getString("description"));
+					tfqty.setText(((Integer)rs.getInt("quantity_limit")).toString());
+					tforg.setText(((Integer)rs.getInt("original_price")).toString());
+					tfprc.setText(((Integer)rs.getInt("deal_price")).toString());
+					tfstr.setText(rs.getString("sale_start_time"));
+					tfend.setText(rs.getString("sale_end_time"));
+					tfloc.setText(((Integer)rs.getInt("location_ID")).toString());
+					tfcat.setText(((Integer)rs.getInt("category_ID")).toString());
+					tfmid.setText(((Integer)rs.getInt("merchant_ID")).toString());
+					
+					pd.add(new Deal(Deal.conn,tfdid,tfexp,tfdes,tfqty,
+							tforg,tfprc,tfstr,tfend,tfloc,tfcat,tfmid));
 
 					AppUtil.console("deal_ID : " + rs.getInt("deal_ID"));
 					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
@@ -607,8 +598,10 @@ public class Deal {
 				
 			}
 			
+			AppUtil.console("PD list size: " + pd.size());
 			
-			return dl;
+			
+			return pd;
 	 
 		}	
 		

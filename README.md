@@ -7,7 +7,7 @@ Overview
 
   webdealer has 6 main views "MERCHANTS","LOCATIONS","DEALS","CUSTOMERS","PURCHASES" and "REVIEWS". Typically
   each view contains common CRUD (Create/Retrieve/Update/Delete) actions, with some slight variations depending
-  on the business logic constraints of our assignment, and the abilty to harmlessly "Clear" textfields.
+  on the business logic constraints of our assignment, and the ability to harmlessly "Clear" textfields.
 
     MERCHANTS: Provides a list of existing merchants, common CRUD, and the ability to "Show reviews & ratings" for
       a specifically selected merchant.
@@ -42,7 +42,7 @@ Getting Started
     The quickest way to get started, is to simply click Login under "Oracle Username". The default creds
     should return "Confirmed!" on the login button.
 
-    If you do login with different creds and something goes wrong, the login button will report "Incorrect!" Let
+    If you do login with different credentials and something goes wrong, the login button will report "Incorrect!" Let
     t/s ensue.
 
   Example run:

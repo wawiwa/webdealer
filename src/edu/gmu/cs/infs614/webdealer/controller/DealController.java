@@ -373,6 +373,15 @@ public class DealController implements Initializable {
 			}
 		}
 		
+		public void openDeals() {
+			try {
+				String pd = "/edu/gmu/cs/infs614/webdealer/view/DealView.fxml";
+				WebDealerApplicationController.fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(pd)));
+			} catch (IOException e) {
+				AppUtil.console(e.toString());
+			}
+		}
+		
 		
 		private void clearForm() {
 			tfDeal_ID.clear();
