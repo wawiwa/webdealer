@@ -86,6 +86,9 @@ public class WebDealerApplicationController implements Initializable {
 	
 	@FXML
 	Button fxbShowTableNames;
+	
+	@FXML
+	Button fxLocationButton;
 
 	// Open Query
 	@FXML
@@ -453,6 +456,27 @@ public class WebDealerApplicationController implements Initializable {
 			AppUtil.console(e.toString());
 		}
 	}
+	
+	// DISPLAY LOCATION TABLE
+
+		public void displayLocationDialogue(ActionEvent event) {
+			AppUtil.console("Showing Location dialogue.");
+			locationDialogue();
+		}
+
+		private void locationDialogue() {
+			try {
+				AppUtil.console(fxScrollPane.idProperty().toString());
+				String lv = "/edu/gmu/cs/infs614/webdealer/view/LocationView.fxml";
+				fxScrollPane.setContent((AnchorPane) FXMLLoader.load(getClass().getResource(lv)));
+				fxSplitPane.setDividerPosition(1, 0.7607);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				AppUtil.console(e.toString());
+			}
+		}
+
 
 	// Query View Controls
 

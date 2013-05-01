@@ -56,7 +56,7 @@
       <items>
         <AnchorPane>
           <children>
-            <Label fx:id="fxMasterLabel" alignment="CENTER" layoutY="14.0" minWidth="60.0" prefWidth="110.0" style="&#10;" text="Web Dealer" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="19.0">
+            <Label fx:id="fxMasterLabel" alignment="CENTER" layoutY="14.0" minWidth="60.0" prefWidth="110.0" style="&#10;" text="Web Dealer" textAlignment="CENTER" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="19.0">
               <font>
                 <Font size="18.0" fx:id="x1" />
               </font>
@@ -64,7 +64,7 @@
                 <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
               </textFill>
             </Label>
-            <Button fx:id="fxMerchantButton" layoutY="119.0" mnemonicParsing="false" onAction="#displayMerchantDialogue" prefHeight="24.0" prefWidth="123.0" text="MERCHANTS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="25.0" />
+            <Button fx:id="fxMerchantButton" layoutY="119.0" mnemonicParsing="false" onAction="#displayMerchantDialogue" prefHeight="24.0" prefWidth="123.0" text="MERCHANTS" textAlignment="CENTER" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="24.0" />
             <Button fx:id="fxDealButton" layoutY="177.0" mnemonicParsing="false" onAction="#displayDealDialogue" prefHeight="24.0" prefWidth="124.0" text="DEALS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0" />
             <Button fx:id="fxCustomerButton" layoutY="206.0" mnemonicParsing="false" onAction="#displayCustomerDialogue" prefHeight="24.0" prefWidth="124.0" text="CUSTOMERS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0">
               <font>
@@ -80,7 +80,7 @@
             <Button fx:id="fxbOpenQuery" layoutY="500.0" mnemonicParsing="false" onAction="#displayOpenQueryDialogue" prefHeight="38.0" prefWidth="106.0" text="Perform &#10;Open Query" textAlignment="CENTER" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="18.0" />
             <Button fx:id="fxConnectButton" layoutX="19.0" layoutY="396.0" mnemonicParsing="false" onAction="#onConnect" prefWidth="131.0" text="Press to Connect" />
             <Button id="fxShoppingCartButton" fx:id="fxReviewButton" layoutY="264.0" mnemonicParsing="false" onAction="#displayReviewDialogue" prefHeight="24.0" prefWidth="124.0" text="REVIEWS" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="24.0" />
-            <Button id="fxShoppingCartButton" layoutX="20.0" layoutY="148.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="124.0" text="LOCATIONS" textAlignment="CENTER" />
+            <Button fx:id="fxLocationButton" layoutX="20.0" layoutY="148.0" mnemonicParsing="false" onAction="#displayLocationDialogue" prefHeight="24.0" prefWidth="124.0" text="LOCATIONS" textAlignment="CENTER" />
             <Label layoutY="47.0" prefWidth="144.0" text="Customer Username (email)" AnchorPane.leftAnchor="12.5" AnchorPane.rightAnchor="11.5">
               <font>
                 <Font size="10.0" />
@@ -90,10 +90,10 @@
             <Button id="fxConnectButton" fx:id="fxCustomerUsernameLoginButton" layoutX="17.0" layoutY="82.0" mnemonicParsing="false" onAction="#onCustomerUsernameLogin" prefWidth="131.0" text="Login" />
           </children>
         </AnchorPane>
-        <ScrollPane fx:id="fxScrollPane" content="$null" fitToHeight="true" fitToWidth="true" prefHeight="555.0" prefWidth="670.0" />
-        <AnchorPane prefHeight="-1.0" prefWidth="-1.0">
+        <ScrollPane fx:id="fxScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="555.0" prefWidth="670.0" />
+        <AnchorPane>
           <children>
-            <Label fx:id="fxConsoleLabel" alignment="CENTER" font="$x1" layoutY="14.0" style="&#10;" text="Console" textAlignment="CENTER" textFill="$x2" wrapText="false" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="184.0" />
+            <Label fx:id="fxConsoleLabel" alignment="CENTER" font="$x1" layoutY="14.0" style="&#10;" text="Console" textAlignment="CENTER" textFill="$x2" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="184.0" />
             <TextArea fx:id="fxConsoleTextArea" layoutY="58.0" prefHeight="378.0" prefWidth="239.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="16.0" />
             <Button id="delete" fx:id="fxClearConsole" layoutY="466.0" mnemonicParsing="false" onAction="#clearConsole" text="Clear Screen" AnchorPane.leftAnchor="83.0" AnchorPane.rightAnchor="85.0" />
           </children>
@@ -105,7 +105,7 @@
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
       <children>
-        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
+        <Label maxHeight="1.7976931348623157E308" text="Left status" HBox.hgrow="ALWAYS">
           <font>
             <Font size="11.0" fx:id="x3" />
           </font>
@@ -113,8 +113,8 @@
             <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
           </textFill>
         </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-        <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label font="$x3" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
       </children>
       <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

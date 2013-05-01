@@ -432,8 +432,8 @@ public class Deal {
 					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
 					AppUtil.console("description : " + rs.getString("description"));
 					AppUtil.console("quantity_limit : " + rs.getInt("quantity_limit"));
-					AppUtil.console("original_price : " + rs.getFloat("original_price"));
-					AppUtil.console("deal_price : " + rs.getFloat("deal_price"));
+					AppUtil.console("original_price : " + rs.getInt("original_price"));
+					AppUtil.console("deal_price : " + rs.getInt("deal_price"));
 					AppUtil.console("sale_start_time : " + rs.getString("sale_start_time"));
 					AppUtil.console("sale_end_time : " + rs.getString("sale_end_time"));
 					AppUtil.console("location_ID : " + rs.getInt("location_ID"));
@@ -591,8 +591,8 @@ public class Deal {
 					AppUtil.console("expiration_date : " + rs.getString("expiration_date"));
 					AppUtil.console("description : " + rs.getString("description"));
 					AppUtil.console("quantity_limit : " + rs.getInt("quantity_limit"));
-					AppUtil.console("original_price : " + rs.getFloat("original_price"));
-					AppUtil.console("deal_price : " + rs.getFloat("deal_price"));
+					AppUtil.console("original_price : " + rs.getInt("original_price"));
+					AppUtil.console("deal_price : " + rs.getInt("deal_price"));
 					AppUtil.console("sale_start_time : " + rs.getString("sale_start_time"));
 					AppUtil.console("sale_end_time : " + rs.getString("sale_end_time"));
 					AppUtil.console("location_ID : " + rs.getInt("location_ID"));
