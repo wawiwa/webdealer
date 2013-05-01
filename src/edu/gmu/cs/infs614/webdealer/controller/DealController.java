@@ -112,6 +112,7 @@ public class DealController implements Initializable {
 		static
 		TextField tfmerchant;
 		@FXML
+		public
 		static
 		TextField tfcity;
 		@FXML
@@ -234,6 +235,7 @@ public class DealController implements Initializable {
 						tflocation_ID.setText(d.getLID().toString());
 						tfcategory_ID.setText(d.getCatID().toString());
 						tfmerchant_ID.setText(d.getMID().toString());
+						tfcity.setText(d.getDCityName());
 			
 						currentMerchant = Merchant.retrieve(conn, tfmerchant_ID, null).get(0).getMName();
 						
@@ -385,7 +387,7 @@ public class DealController implements Initializable {
 		
 		public void openDeals() {
 			AppUtil.console("Displaying open deals..");
-			ArrayList<Deal> dl = Deal.openDeals();
+			ArrayList<Deal> dl = Deal.openDeals(tfcity);
 			
 			try {
 				data.clear();

@@ -47,21 +47,22 @@
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
-            <TextField id="nameInput" fx:id="tfcity" layoutX="14.0" layoutY="26.0" prefWidth="130.0" promptText="City" />
-            <Button fx:id="submit" layoutX="374.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAddItem" prefWidth="67.0" text="Create" />
-            <Button fx:id="delete" layoutX="458.0" layoutY="61.0" mnemonicParsing="false" onAction="#onDeleteItem" prefWidth="73.0" text="Delete" />
-            <Label id="nameLabel" fx:id="locationCityLabel" layoutX="14.0" layoutY="47.0" prefWidth="130.0" text="City Required" wrapText="true">
+            <TextField id="nameInput" fx:id="tfcity" layoutX="157.0" layoutY="28.0" prefWidth="130.0" promptText="City" />
+            <Button fx:id="submit" layoutX="517.0" layoutY="30.0" mnemonicParsing="false" onAction="#onAddItem" prefWidth="67.0" text="Create" />
+            <Button fx:id="delete" layoutX="601.0" layoutY="63.0" mnemonicParsing="false" onAction="#onDeleteItem" prefWidth="73.0" text="Delete" />
+            <Label id="nameLabel" fx:id="locationCityLabel" layoutX="157.0" layoutY="49.0" prefWidth="130.0" text="City Required" wrapText="true">
               <font>
                 <Font size="10.0" fx:id="x1_x0" />
               </font>
             </Label>
-            <Button fx:id="clear" layoutX="304.0" layoutY="13.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="83.0" prefWidth="58.0" text="Clear" />
-            <Button fx:id="search" layoutX="458.0" layoutY="26.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
-            <TextField id="priceInput" fx:id="tfstate" layoutX="157.0" layoutY="27.0" prefWidth="130.0" promptText="State" />
-            <Button id="clear" fx:id="update" layoutX="374.0" layoutY="61.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="67.0" text="Update" />
-            <TextField id="nameInput" fx:id="tfcountry" layoutX="14.0" layoutY="71.0" prefWidth="130.0" promptText="Country" />
-            <TextField id="nameInput" fx:id="tfcontinent" layoutX="157.0" layoutY="71.0" prefWidth="130.0" promptText="Continent" />
-            <Label id="nameLabel" fx:id="locationStateLabel" font="$x1_x0" layoutX="157.0" layoutY="47.0" prefWidth="130.0" text="State Required (two letter abbrev)" wrapText="true" />
+            <Button fx:id="clear" layoutX="447.0" layoutY="15.0" minWidth="29.0" mnemonicParsing="false" onAction="#onClearAction" prefHeight="83.0" prefWidth="58.0" text="Clear" />
+            <Button fx:id="search" layoutX="601.0" layoutY="28.0" mnemonicParsing="false" onAction="#onSearchItem" text="Retrieve" />
+            <TextField id="priceInput" fx:id="tfstate" layoutX="300.0" layoutY="29.0" prefWidth="130.0" promptText="State" />
+            <Button id="clear" fx:id="update" layoutX="517.0" layoutY="63.0" mnemonicParsing="false" onAction="#onUpdateItem" prefWidth="67.0" text="Update" />
+            <TextField id="nameInput" fx:id="tfcountry" layoutX="157.0" layoutY="73.0" prefWidth="130.0" promptText="Country" />
+            <TextField id="nameInput" fx:id="tfcontinent" layoutX="300.0" layoutY="73.0" prefWidth="130.0" promptText="Continent" />
+            <Label id="nameLabel" fx:id="locationStateLabel" font="$x1_x0" layoutX="300.0" layoutY="49.0" prefWidth="130.0" text="State Required (two letter abbrev)" wrapText="true" />
+            <TextField id="nameInput" fx:id="tflocation_ID" layoutX="14.0" layoutY="28.0" prefWidth="130.0" promptText="Location ID" />
           </children>
           <stylesheets>
             <URL value="@FormValidationStyle.css" />

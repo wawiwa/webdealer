@@ -268,7 +268,7 @@ public class WebDealerApplicationController implements Initializable {
 			return;
 		}
 
-		boolean c = Customer.exists(oracleConn.getConnection(),new Integer(-1), customerUsername.getLogin());
+		boolean c = Customer.exists(oracleConn.getConnection(),new Integer(-1), UserCreds.getLogin());
 		if (c) {
 			dealDialogue();
 			return;

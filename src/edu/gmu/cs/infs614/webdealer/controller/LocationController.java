@@ -27,9 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import edu.gmu.cs.infs614.webdealer.AppUtil;
 import edu.gmu.cs.infs614.webdealer.model.Location;
-
 import edu.gmu.cs.infs614.webdealer.model.connector.LocationConnection;
-
 import edu.gmu.cs.infs614.webdealer.model.connector.OracleConnection;
 import edu.gmu.cs.infs614.webdealer.view.FormValidation;
 
@@ -123,10 +121,10 @@ public class LocationController implements Initializable {
 			
 			
 			tcLocation_ID.setCellValueFactory(new PropertyValueFactory<Location, Integer>("lID"));
-			tcLocationCity.setCellValueFactory(new PropertyValueFactory<Location, String>("city"));
-			tcLocationState.setCellValueFactory(new PropertyValueFactory<Location, String>("state"));
-			tcLocationCountry.setCellValueFactory(new PropertyValueFactory<Location, String>("country"));
-			tcLocationContinent.setCellValueFactory(new PropertyValueFactory<Location, String>("continent"));
+			tcLocationCity.setCellValueFactory(new PropertyValueFactory<Location, String>("lCity"));
+			tcLocationState.setCellValueFactory(new PropertyValueFactory<Location, String>("lState"));
+			tcLocationCountry.setCellValueFactory(new PropertyValueFactory<Location, String>("lCountry"));
+			tcLocationContinent.setCellValueFactory(new PropertyValueFactory<Location, String>("lContinent"));
 
 
 	        AppUtil.console("DATA contents: "+data);
