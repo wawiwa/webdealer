@@ -11,7 +11,8 @@ Overview
 
     MERCHANTS: Provides a list of existing merchants, common CRUD, and the ability to "Show reviews & ratings" for
       a specifically selected merchant.
-    LOCATIONS: ........
+    LOCATIONS: Provides a list of existing locations and Create-Retrieve-Update-Delete functionality.  This is meant
+    to be a support table only and does not have advanced reporting options. 
     DEALS: Provides a list of existing deals, common CRUD, and filtering by "Open/Available Deals". From this
       view you can also purchase or "Buy" a deal. To buy a deal, you must specify a quantity. If the quantity
       exceeds the number of available vouchers, the system will notify you in the right pane console.
@@ -22,7 +23,7 @@ Overview
       intended as a rather immutable concept. Other than modifying status, one can only retrieve purchases.
       There's also a quick buy, where if you know the Deal ID you can buy it on the spot in the purchase view.
       Kind of left over from testing :)
-    REVIEWS: ..........
+    REVIEWS: This view allows a review to be made for each deal.  By extension, it also calculates an average rating per merchant.
       
 Getting Started
 
@@ -57,7 +58,7 @@ Getting Started
       5) Select "Buy this deal"
       6) If there are enough vouchers, you will see the recently purchased deals.
       7) Then look at your total purchase history by selecting "Retrieve"
-      8) ...
+     
 
 Design Goals
 
@@ -73,15 +74,6 @@ Design Goals
     As for schema, we load it based on a preliminary check of existing tables. If all tables exist, then no schema is
     loaded. If some or even one is missing then we drop all tables, all sequences and triggers and reload. Our schema,
     inserts, triggers and some queries are stored in resources files (/resources/blabla.sql).
-
-Weirdness
-
-    Ultimately we decided to trigger vouchers based on quantity limit within deals. This is bad. We have vouchers
-    unecessarily created in the db waiting to be purchased. This did make it much easier to deal with having
-    multiple vouchers associate with a single purchase ie. one transaction ID for several vouchers AKA shopping cart.
-
-    Join is unbelievably slow. The purchase table is a join of vouchers, customers, and transacions. It takes much
-    longer to render purchases than a single table query like retrieving deals.
 
   
 Tools
