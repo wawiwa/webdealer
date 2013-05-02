@@ -494,7 +494,7 @@ public class Deal {
 			preparedStatement.close();
 		} catch (Exception e) {
 
-			AppUtil.console("M: Most likely a DDL error, not a problem."+e);
+			AppUtil.console("M: Most likely a DDL error, not a problem."+sql+e);
 			return false;
 
 		}
